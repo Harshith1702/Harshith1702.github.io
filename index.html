@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harshith Padakanti</title>
+  <meta name="description" content="Harshith Padakanti: Building GrindLens, backend systems, and solving problems." />
+  <meta property="og:title" content="Harshith Padakanti / Building GrindLens" />
+  <meta property="og:description" content="Building GrindLens, backend systems, and solving problems." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@harshith_irl" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" sizes="192x192" href="img/favicon-192x192.png" />
+  <link rel="stylesheet" href="style.css?v=2" />
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    if (window.location.hash) {
+      try {
+        history.replaceState(null, '', window.location.href.split('#')[0]);
+      } catch (e) {}
+    }
+  </script>
+</head>
+<body class="archive-body">
+
+  <!-- Full-Screen 100vh Cinematic Intro Landing Page -->
+  <aside id="gateOverlay" class="gate-overlay" aria-label="Entrance Viewport">
+    <img src="img/landing_room.png" alt="Dim bedroom and study desk at night" class="gate-bg-image" fetchpriority="high" />
+
+    <div class="gate-content">
+      <h1 class="gate-title">HARSHITH PADAKANTI</h1>
+      <p class="gate-subtitle">19 &bull; CS UNDERGRAD &bull; <a href="https://grindlens.dev" target="_blank" rel="noopener" class="gate-link-inline">Building GrindLens</a></p>
+
+      <blockquote class="gate-quote">
+        &ldquo;I notice things. Then I can't leave them alone.&rdquo;
+      </blockquote>
+
+      <div class="gate-actions">
+        <button type="button" class="gate-btn gate-btn--enter" id="gateEnterBtn">
+          ENTER &rarr;
+        </button>
+        <button type="button" class="gate-btn gate-btn--direct" id="gateSkipBtn">
+          DIRECT VIEW
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Wednesday Addams "Thing" Easter Egg (Quiet top corner interaction) -->
+  <div class="thing-easter-egg" id="thingEasterEgg">
+    <img src="img/thing.png" alt="Thing" class="thing-hand-icon" />
+    <span class="thing-whisper mono" id="thingWhisper">Thing approves.</span>
+  </div>
+
+  <main id="mainContent">
+
+    <!-- CHAPTER 00: CINEMATIC VIEWPORT -->
+    <header class="chapter-section hero-first-room" id="ch0" data-chapter="00 / ROOM">
+      <!-- Top Header Navigation Strip -->
+      <div class="hero-top-strip"></div>
+
+      <!-- Main Two-Column Architectural Hero -->
+      <div class="hero-split-stage">
+        <!-- Left Editorial Column -->
+        <div class="hero-composition-content">
+          <!-- Identity Block -->
+          <div class="hero-id-block">
+            <span class="hero-id-name">HARSHITH P.</span>
+            <div class="hero-id-sub">
+              <span>19 &bull; INDIA</span>
+              <a href="https://grindlens.dev" target="_blank" rel="noopener" class="hero-id-building">Building GrindLens</a>
+            </div>
+          </div>
+
+          <!-- Main Sentence (Largest Text) -->
+          <h1 class="hero-cinematic-headline">
+            Most of this happens<br />
+            at a desk that<br />
+            doesn't stay in one place.
+          </h1>
+
+          <!-- Second Thought (Smaller and Quieter) -->
+          <p class="hero-whisper-thought">
+            I notice things.<br />
+            Then I can't leave them alone.
+          </p>
+
+          <!-- Scroll Indicator -->
+          <div class="hero-scroll-cue">
+            <a href="#ch1" class="hero-scroll-action" title="Scroll to Chapter 01">
+              <span class="scroll-arrow">&darr;</span>
+              <span class="scroll-label">SCROLL<br />FURTHER</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Side: Full Uncropped Original Image Plate -->
+        <div class="hero-plate-container">
+          <div class="hero-plate-frame">
+            <img src="img/screen_portal_harshith.jpg" alt="Harshith stepping out of the computer monitor from a sunlit forest into the nocturnal room" class="hero-plate-image" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CHAPTER 01: GrindLens (The Living Heartbeat) -->
+    <section class="chapter-section" id="ch1" data-chapter="01 / GrindLens">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">01</span> / GrindLens</span>
+          <span>CURRENT BUILD &bull; ACTIVE DEVELOPMENT</span>
+        </div>
+        <h2 class="chapter-title">I'm building GrindLens.</h2>
+        <p class="chapter-voice-lead">
+          A tool for engineers preparing for coding interviews.
+        </p>
+        <p class="chapter-lede">
+          It maps which algorithmic patterns you've actually practiced, shows what you're missing, and tells you what to solve next.
+        </p>
+      </div>
+
+      <div class="featured-showcase reveal">
+        <a href="https://grindlens.dev" target="_blank" rel="noopener" class="featured-image-link" title="Click to launch GrindLens in production">
+          <span class="click-overlay-badge">Visit grindlens.dev &rarr;</span>
+          <img src="img/grindlens_banner.png" alt="GrindLens live web interface and diagnostic dashboard" class="big-plate-img" loading="lazy" />
+          <div class="plate-caption">
+            <span><span class="mono">FIGURE 01</span> &bull; GrindLens dashboard</span>
+            <span>Live &bull; grindlens.dev</span>
+          </div>
+        </a>
+
+        <div class="featured-text-block">
+          <p class="story-paragraph">
+            I was solving problems every day and still didn't know what to solve next, or which patterns I was completely avoiding.
+          </p>
+          <p class="story-paragraph">
+            Most people grind hundreds of questions without knowing where their gaps are. GrindLens maps your submissions against problem patterns, shows your weak spots, and gives you a clear next problem to work on.
+          </p>
+
+          <!-- Evidence woven inside the story, not generic cards -->
+          <div class="story-evidence-strip">
+            <div class="evidence-pill">
+              <span class="evidence-tag">LAUNCHED:</span>
+              <span class="evidence-val">August 19</span>
+            </div>
+            <div class="evidence-pill">
+              <span class="evidence-tag">SIGNUPS:</span>
+              <span class="evidence-val"><span class="mono">150</span> users</span>
+            </div>
+            <div class="evidence-pill">
+              <span class="evidence-tag">UNIQUE VISITORS:</span>
+              <span class="evidence-val"><span class="mono">1,114</span></span>
+            </div>
+            <div class="evidence-pill">
+              <span class="evidence-tag">STATUS:</span>
+              <span class="evidence-val">Still actively being built</span>
+            </div>
+          </div>
+
+          <div class="link-cluster">
+            <a href="https://grindlens.dev" target="_blank" rel="noopener" class="nkc-metal-btn nkc-metal-btn--accent">
+              <span>Visit grindlens.dev &rarr;</span>
+            </a>
+            <a href="https://x.com/grindlensdev" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>@grindlensdev on X &rarr;</span>
+            </a>
+            <a href="https://www.linkedin.com/company/grindlens" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>LinkedIn &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 02: CONNECTED PROJECTS PROGRESSION (Evidence of a Pattern) -->
+    <section class="chapter-section" id="ch2" data-chapter="02 / BUILDS">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">02</span> / BUILDS</span>
+          <span>CONNECTED PROBLEMS</span>
+        </div>
+        <h2 class="chapter-title">Apparently I do this with other things too.</h2>
+        <p class="chapter-lede">
+          Each of these started because I wanted to see how something worked, or because doing it manually was annoying.
+        </p>
+      </div>
+
+      <div class="projects-narrative-flow">
+
+        <!-- 01: LeetCode Grind Tracker (The Antecedent) -->
+        <article class="narrative-project-block reveal">
+          <div class="project-story-lead">
+            <span class="story-chapter-tag"><span class="mono">01</span> / THE ANTECEDENT</span>
+            <h3 class="narrative-project-title">Before GrindLens became a product, it was this.</h3>
+            <p class="narrative-project-desc">
+              The first version was just a Python script fetching my LeetCode submissions, a MySQL database, a small PHP API, and a JavaScript dashboard to track streaks and weak topics. That script ran for months before I decided to turn it into a real product.
+            </p>
+          </div>
+
+          <a href="https://github.com/Harshith1702/leetcode-grind-tracker" target="_blank" rel="noopener" class="featured-image-link" title="Click to view LeetCode Grind Tracker source on GitHub">
+            <span class="click-overlay-badge">View repository &rarr;</span>
+            <img src="img/tracker_ui.png" alt="LeetCode Grind Tracker analytical dashboard" class="big-plate-img" loading="lazy" />
+            <div class="plate-caption">
+              <span><span class="mono">FIGURE 02.1</span> &bull; Early Grind Tracker dashboard</span>
+              <span>Python &bull; MySQL &bull; PHP &bull; JavaScript</span>
+            </div>
+          </a>
+
+          <div class="narrative-project-actions">
+            <a href="https://github.com/Harshith1702/leetcode-grind-tracker" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>View Tracker on GitHub &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- CINEMA INTERRUPTION (Observing / Thinking / Disappearing into stories) -->
+        <!-- No cheesy captions. No 'my creative side'. Let the image breathe. -->
+        <div class="visual-interruption-plate reveal" aria-label="Visual interlude">
+          <img src="img/cinema.jpg" alt="A cinematic movie theater looking toward an immense silver screen" class="interruption-img" loading="lazy" />
+          <div class="interruption-caption">
+            <span><span class="mono">FIGURE 02.X</span> &bull; Watching movies late at night</span>
+          </div>
+        </div>
+
+        <!-- 02: Open Chat -->
+        <article class="narrative-project-block reveal">
+          <div class="project-story-lead">
+            <span class="story-chapter-tag"><span class="mono">02</span> / NETWORKING PROTOCOLS</span>
+            <h3 class="narrative-project-title">I wanted somewhere to talk without anyone else keeping the conversation.</h3>
+            <p class="chapter-voice-lead">
+              So I built a chat app with no database.
+            </p>
+            <p class="narrative-project-desc">
+              There are no accounts or message logs. Messages only exist in memory while the room is open, and disappear completely as soon as the session ends.
+            </p>
+            <p class="narrative-project-note">
+              The original reason was considerably less technical.
+            </p>
+          </div>
+
+          <a href="https://open-chat-application-ubti.onrender.com" target="_blank" rel="noopener" class="featured-image-link" title="Click to launch live Open Chat Application on Render">
+            <span class="click-overlay-badge">Open live demo &rarr;</span>
+            <img src="img/chat_app.png" alt="RTRP Chat Rooms web interface showing active room presence isolation" class="big-plate-img" loading="lazy" />
+            <div class="plate-caption">
+              <span><span class="mono">FIGURE 02.2</span> &bull; RTRP Chat Rooms</span>
+              <span>Node.js &bull; Express &bull; Socket.io</span>
+            </div>
+          </a>
+
+          <div class="project-tech-notes">
+            <span>Room presence isolation</span>
+            <span>&bull;</span>
+            <span>100 user cap per room</span>
+            <span>&bull;</span>
+            <span>Automatic cleanup on disconnect</span>
+            <span>&bull;</span>
+            <span>Debounced socket broadcasts</span>
+          </div>
+
+          <div class="narrative-project-actions">
+            <a href="https://open-chat-application-ubti.onrender.com" target="_blank" rel="noopener" class="nkc-metal-btn nkc-metal-btn--accent">
+              <span>Open live demo &rarr;</span>
+            </a>
+            <a href="https://github.com/Harshith1702/Open_Chat_Application" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>View repository &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- 03: LeetCode Discord Reporter -->
+        <article class="narrative-project-block reveal">
+          <div class="project-story-lead">
+            <span class="story-chapter-tag"><span class="mono">03</span> / PRACTICAL AUTOMATION</span>
+            <h3 class="narrative-project-title">I was copying my solved problem links into our daily training group. Every day.</h3>
+            <p class="chapter-voice-lead">
+              I got tired of doing it. So I made a bot do it.
+            </p>
+            <p class="narrative-project-desc">
+              A bot that checks the LeetCode GraphQL endpoint every night at 10:15 PM IST for accepted submissions and posts them directly to our Discord server. I set it up on GitHub Actions once, and haven't had to touch it since.
+            </p>
+          </div>
+
+          <a href="https://github.com/Harshith1702/leetcode-discord-reporter" target="_blank" rel="noopener" class="featured-image-link" title="Click to view LeetCode Discord Reporter on GitHub">
+            <span class="click-overlay-badge">View repository &rarr;</span>
+            <div class="discord-preview-wrapper">
+              <img src="img/discord_reporter.png" alt="Discord message showing automated nightly LeetCode problem dispatch by Padakanti Harshith bot at 22:15" class="discord-plate-img" loading="lazy" />
+            </div>
+            <div class="plate-caption">
+              <span><span class="mono">FIGURE 02.3</span> &bull; Nightly Discord problem alert</span>
+              <span>Discord Webhook &bull; LeetCode GraphQL &bull; GitHub Actions</span>
+            </div>
+          </a>
+
+          <div class="technical-proof-box">
+            <div class="proof-line"><span class="proof-tag">Polling:</span> Queries LeetCode GraphQL recentAcSubmissionList</div>
+            <div class="proof-line"><span class="proof-tag">Verification:</span> Checks submission timestamp against daily IST window</div>
+            <div class="proof-line"><span class="proof-tag">Dispatch:</span> Formats difficulty stats and fires webhook payload</div>
+            <div class="proof-line"><span class="proof-tag">Schedule:</span> Scheduled nightly via GitHub Actions workflow</div>
+          </div>
+
+          <div class="narrative-project-actions">
+            <a href="https://github.com/Harshith1702/leetcode-discord-reporter" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>View repository on GitHub &rarr;</span>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CHAPTER 03: OPEN SOURCE -->
+    <section class="chapter-section" id="ch3" data-chapter="03 / OSS">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">03</span> / OPEN SOURCE</span>
+          <span>PRODUCTION CODEBASES</span>
+        </div>
+        <h2 class="chapter-title">I started sending code into other people's codebases.</h2>
+        <p class="chapter-lede">
+          Most of the work wasn't writing code. It was reading through unfamiliar architecture, following existing conventions, and making sure my changes didn't break things downstream.
+        </p>
+      </div>
+
+      <div class="oss-grid reveal">
+        <!-- Rocket.Chat -->
+        <div class="oss-card oss-card--highlight">
+          <div class="oss-meta">
+            <span class="oss-org">Rocket.Chat &bull; Core Infrastructure</span>
+            <span class="oss-status"><span class="mono">3</span> PRs merged into develop</span>
+          </div>
+          <h3 class="oss-name">Rocket.Chat Core Message Parser</h3>
+          <p class="oss-summary">
+            Worked inside Rocket.Chat's <code class="inline-code">message-parser</code> package in TypeScript. Fixed timestamp parsing inside formatted markdown, added defensive guard tests for <code class="inline-code">isNodeOfType</code>, and resolved regression edge cases in emoji handling within <code class="inline-code">reducePlainTexts</code>. Consolidated by maintainer ggazzo into batch merge PR #39853.
+          </p>
+
+          <div class="pr-list">
+            <a href="https://github.com/RocketChat/Rocket.Chat/pull/39853" class="pr-item pr-item--batch" target="_blank" rel="noopener">
+              <span class="pr-num mono">PR #39853</span>
+              <span class="pr-desc">Batch Merge: timestamp parsing &middot; isNodeOfType tests &middot; emoji coverage</span>
+              <span class="pr-arrow">&rarr;</span>
+            </a>
+            <a href="https://github.com/RocketChat/Rocket.Chat/pull/39455" class="pr-item" target="_blank" rel="noopener">
+              <span class="pr-num mono">PR #39455</span>
+              <span class="pr-desc">Fixed timestamp parsing inside formatted text</span>
+              <span class="pr-arrow">&rarr;</span>
+            </a>
+            <a href="https://github.com/RocketChat/Rocket.Chat/pull/39737" class="pr-item" target="_blank" rel="noopener">
+              <span class="pr-num mono">PR #39737</span>
+              <span class="pr-desc">Test coverage for isNodeOfType parser guard</span>
+              <span class="pr-arrow">&rarr;</span>
+            </a>
+            <a href="https://github.com/RocketChat/Rocket.Chat/pull/39733" class="pr-item" target="_blank" rel="noopener">
+              <span class="pr-num mono">PR #39733</span>
+              <span class="pr-desc">Emoji parsing behavior tests in reducePlainTexts</span>
+              <span class="pr-arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Cohort Programs -->
+        <div class="oss-card">
+          <div class="oss-meta">
+            <span class="oss-org">National Open Source Programs</span>
+            <span class="oss-status">NSoC 2026</span>
+          </div>
+          <h3 class="oss-name">Nexus Spring of Code (NSoC 2026)</h3>
+          <p class="oss-summary">
+            Selected contributor for Nexus Spring of Code (NSoC 2026). Merged 30+ Pull Requests across JavaScript and TypeScript open source repositories, ranked 70th out of 988 contributors nationwide.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 04: SKILLS (Editorial Typographic Workspace) -->
+    <section class="chapter-section skills-chapter" id="ch4" data-chapter="04 / SKILLS" data-chapter-index="4">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">04</span> / SKILLS</span>
+          <span>TOOLING &amp; FOUNDATIONS</span>
+        </div>
+        <h2 class="skills-hook-title">
+          usually, i learn things when i need them.
+        </h2>
+      </div>
+
+      <div class="skills-concise-stage reveal" id="skills">
+        
+        <!-- Category 01: CODE -->
+        <div class="skills-concise-row">
+          <div class="skills-cat-meta mono">
+            <span class="skills-cat-num">01</span>
+            <span class="skills-cat-name">CODE</span>
+          </div>
+          <div class="skills-inline-list">
+            <span class="skill-item">Java</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">TypeScript</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">JavaScript</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">Python</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">C</span>
+          </div>
+        </div>
+
+        <!-- Category 02: SYSTEMS -->
+        <div class="skills-concise-row">
+          <div class="skills-cat-meta mono">
+            <span class="skills-cat-num">02</span>
+            <span class="skills-cat-name">SYSTEMS</span>
+          </div>
+          <div class="skills-inline-list">
+            <span class="skill-item">Node.js</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">Express.js</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">WebSockets</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">REST APIs</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">MySQL</span>
+          </div>
+        </div>
+
+        <!-- Category 03: PROBLEM SOLVING -->
+        <div class="skills-concise-row">
+          <div class="skills-cat-meta mono">
+            <span class="skills-cat-num">03</span>
+            <span class="skills-cat-name">PROBLEM SOLVING</span>
+          </div>
+          <div class="skills-inline-list">
+            <span class="skill-item">DSA</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">OOP</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">Testing</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">Event-Driven Systems</span>
+          </div>
+        </div>
+
+        <!-- Category 04: TOOLS -->
+        <div class="skills-concise-row">
+          <div class="skills-cat-meta mono">
+            <span class="skills-cat-num">04</span>
+            <span class="skills-cat-name">TOOLS</span>
+          </div>
+          <div class="skills-inline-list">
+            <span class="skill-item">Git</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">GitHub</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">Linux</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">CI/CD</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">GitHub Actions</span>
+          </div>
+        </div>
+
+        <!-- Category 05: WORDS -->
+        <div class="skills-concise-row">
+          <div class="skills-cat-meta mono">
+            <span class="skills-cat-num">05</span>
+            <span class="skills-cat-name">WORDS</span>
+          </div>
+          <div class="skills-inline-list words-italic">
+            <span class="skill-item">Writing in public</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">Technical writing</span><span class="skill-dot">&bull;</span>
+            <span class="skill-item">Storytelling</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CHAPTER 05: ALGORITHMIC DISCIPLINE (DSA) -->
+    <section class="chapter-section" id="ch5" data-chapter="05 / RIGOR">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">05</span> / RIGOR</span>
+          <span>DATA STRUCTURES &amp; ALGORITHMS</span>
+        </div>
+        <h2 class="chapter-title">I also spend an unreasonable amount of time solving problems.</h2>
+        <p class="chapter-lede">
+          I solve problems every day under strict time and memory limits. It started as interview prep, but after a 200+ day streak it's just part of my daily routine.
+        </p>
+      </div>
+
+      <div class="rigor-showcase reveal">
+        <a href="https://leetcode.com/u/Harshith-2007/" target="_blank" rel="noopener" class="featured-image-link" title="Click to view verified profile on LeetCode">
+          <span class="click-overlay-badge">View on LeetCode &rarr;</span>
+          <img src="img/lc_streak.jpg" alt="LeetCode verified continuous streak badge and heatmap" class="big-plate-img" loading="lazy" />
+          <div class="plate-caption">
+            <span><span class="mono">FIGURE 05</span> &bull; Verified 200+ day continuous streak proof</span>
+            <span>LeetCode Profile &bull; Harshith-2007</span>
+          </div>
+        </a>
+
+        <div class="featured-text-block">
+          <div class="rigor-grid">
+            <div class="rigor-box">
+              <div class="rigor-num"><span class="mono">450+</span></div>
+              <div class="rigor-title">LeetCode Solved</div>
+              <div class="rigor-sub"><span class="mono">1720</span> Max Rating &bull; <span class="mono">60</span> Contests</div>
+            </div>
+
+            <div class="rigor-box">
+              <div class="rigor-num"><span class="mono">230+</span></div>
+              <div class="rigor-title">CodeChef Solved</div>
+              <div class="rigor-sub">2-Star Division &bull; <span class="mono">40</span> Contests</div>
+            </div>
+          </div>
+
+          <!-- Verified Profile Redirects from Previous Portfolio -->
+          <div class="link-cluster">
+            <a href="https://leetcode.com/u/Harshith-2007/" target="_blank" rel="noopener" class="nkc-metal-btn nkc-metal-btn--accent">
+              <span>LeetCode Profile &rarr;</span>
+            </a>
+            <a href="https://www.codechef.com/users/harshith_2007" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>CodeChef Profile &rarr;</span>
+            </a>
+            <a href="https://codeforces.com/profile/harshaharshith31" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>Codeforces Profile &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 06: BUILDING IN PUBLIC -->
+    <section class="chapter-section" id="ch6" data-chapter="06 / PUBLIC">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">06</span> / IN PUBLIC</span>
+          <span>BUILDING IN PUBLIC</span>
+        </div>
+        <h2 class="chapter-title">I started putting the process online.</h2>
+        <p class="chapter-lede">
+          I started sharing updates while building GrindLens: what broke, what worked, and what I was learning along the way.
+        </p>
+      </div>
+
+      <div class="public-grid reveal">
+        <a href="https://www.linkedin.com/in/harshith-padakanti/" target="_blank" rel="noopener" class="pub-card">
+          <div class="pub-stat"><span class="mono">101K</span></div>
+          <div class="pub-label">101K LinkedIn impressions &bull; 3 months</div>
+          <div class="pub-detail">
+            <p>47 posts across three months. Updates on GrindLens, notes on problem patterns, and things I ran into while building.</p>
+          </div>
+          <span class="pub-action text-link">View LinkedIn &rarr;</span>
+        </a>
+
+        <a href="https://x.com/harshith_irl" target="_blank" rel="noopener" class="pub-card">
+          <div class="pub-stat">Daily</div>
+          <div class="pub-label">X / Twitter Logs</div>
+          <p class="pub-detail">
+            Short updates, small experiments, and talking to other developers who are building things.
+          </p>
+          <span class="pub-action text-link">Follow on X &rarr;</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- PERSONAL OBSERVATION: CONTINUITY -->
+    <section class="chapter-section personal-fragments-section" id="chHabits" data-chapter="06.5 / CONTINUITY">
+      <div class="fragments-card reveal">
+        <div class="fragments-header">
+          <span>Observation</span>
+          <span>Different stack. Same habit.</span>
+        </div>
+        
+        <div class="fragments-body">
+          <p class="fragment-quote">
+            &ldquo;I don't like knowing better and doing nothing.&rdquo;
+          </p>
+          <p class="fragment-text">
+            I skipped the gym sometimes, but I still worked out at home. Showing up every day doesn't feel like discipline anymore, it just feels weird to stop. Most of it is just keeping distractions out of the way.
+          </p>
+        </div>
+      </div>
+
+      <!-- GALAXY ROOM INTERRUPTION (Scale, imagination, floating books. Unexplained.) -->
+      <div class="visual-interruption-plate galaxy-plate reveal" aria-label="Visual interlude">
+        <img src="img/galaxy-room.jpg" alt="A towering room with floating books and an infinite galaxy through the window" class="interruption-img" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- RESTRAINED OXBLOOD INK THREAD & THE PRIVATE WRITING THREAD -->
+    <!-- A single, subtle oxblood transition into the quiet interior room. -->
+    <div class="oxblood-transition-thread" aria-hidden="true">
+      <div class="oxblood-line"></div>
+    </div>
+
+    <!-- CHAPTER 07: THE INTERIOR (Private Writing & Poem) -->
+    <section class="chapter-section interior-section" id="ch7" data-chapter="07 / INTERIOR">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">07</span> / THE INTERIOR</span>
+          <span>WRITING &amp; SOUND</span>
+        </div>
+        <h2 class="chapter-title">The interior.</h2>
+      </div>
+
+      <!-- The Private Writing Thread (Lots of quiet space, IBM Plex Serif) -->
+      <div class="private-writing-thread reveal">
+        <blockquote class="private-diary-text">
+          <p>I spent years writing things I'd never let anyone read.</p>
+          <p>I'd tear it up. Small enough that nobody could piece them back together.</p>
+          <p class="diary-change">I don't do that anymore.</p>
+        </blockquote>
+      </div>
+
+      <div class="interior-grid reveal">
+        <article class="poem-block">
+          <div>
+            <div class="poem-header">
+              <span>Original Poem</span>
+              <span>Harshith Padakanti</span>
+            </div>
+
+            <h3 class="poem-title">The Boy the Shadows Kept</h3>
+
+            <div class="poem-body">
+              <p>He stopped talking.</p>
+              <i>Words are wasted on people who only hear themselves.</i>
+
+              <p>He stopped looking.</p>
+              <i>There was nothing out there worth the damage to his eyes.</i>
+
+              <p>The dark suited him.</p>
+              <i>It was the bright ones that lie.</i>
+
+              <p>They called him broken.<br />He did not care.</p>
+
+              <p>He did not come back.</p>
+              <i>What came back was something else wearing his patience as a coat.</i>
+
+              <p>Not a villain.</p>
+              <i>Villains still feel the need to explain themselves.</i>
+
+              <p>Not a hero.</p>
+              <i>He has no interest in saving people who walked into the fire themselves.</i>
+
+              <div class="poem-anchor">
+                <strong>He is the part that stayed after everything worth faking finally got killed.</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="poem-conclusion">
+            <em>He is not lost. He is just here<br />where the light was never welcome</em>
+            <span class="author-sig">HARSHITH PADAKANTI</span>
+          </div>
+        </article>
+
+        <div class="spotify-container">
+          <div class="spotify-header">
+            <span>Curated Soundscape</span>
+            <span>Night Coding</span>
+          </div>
+          
+          <div class="spotify-embed-box">
+            <iframe 
+              style="border-radius:12px; min-height: 380px; height: 100%; width: 100%;" 
+              src="https://open.spotify.com/embed/playlist/3swp8jCwb24b6spfAUA465?utm_source=generator&theme=0" 
+              width="100%" 
+              height="100%" 
+              frameBorder="0" 
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+              loading="lazy">
+            </iframe>
+          </div>
+
+          <div class="spotify-caption">
+            <span>Playlist:</span>
+            <a href="https://open.spotify.com/playlist/3swp8jCwb24b6spfAUA465" target="_blank" rel="noopener" class="text-link">Open in Spotify &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 08: THE FINAL HUMAN SECTION (Night Train Portrait) -->
+    <section class="chapter-section" id="ch8" data-chapter="08 / ABOUT">
+      <div class="chapter-header reveal">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">08</span> / ABOUT</span>
+          <span>HUMAN PRESENCE &bull; STACK</span>
+        </div>
+        <h2 class="chapter-title">About, more or less.</h2>
+        <p class="chapter-lede">
+          I'm still figuring out what all of this becomes. For now, I'm building.
+        </p>
+      </div>
+
+      <div class="about-grid reveal">
+        <div class="about-photo-frame">
+          <img src="img/about.jpg" alt="Harshith sitting in a night train looking through a rain-streaked window" class="about-photo" loading="lazy" />
+          <div class="plate-caption">
+            <span><span class="mono">FIGURE 08</span> &bull; Night train transit</span>
+            <span>Harshith P.</span>
+          </div>
+        </div>
+
+        <div class="featured-text-block">
+          <p class="chapter-desc">
+            Computer science student based in India. Currently building GrindLens and working on backend systems. If you want to talk about something interesting or need help building, reach out.
+          </p>
+
+          <div class="contact-strip">
+            <div class="contact-item">
+              <span class="contact-lbl">DIRECT EMAIL</span>
+              <a href="mailto:harshith.dev.work@gmail.com" class="contact-val">harshith.dev.work@gmail.com</a>
+            </div>
+            <div class="contact-item">
+              <span class="contact-lbl">LOCATION</span>
+              <span class="contact-val">India (IST / UTC+5:30)</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-lbl">DEGREE</span>
+              <span class="contact-val">B.Tech Computer Science (CGPA: 8.52)</span>
+            </div>
+          </div>
+
+          <p class="site-presence-note" id="visitorPresenceNote"><span id="visitorCountVal"></span> people have been here.</p>
+
+          <div class="closing-links">
+            <a href="https://github.com/Harshith1702" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>GitHub &rarr;</span>
+            </a>
+            <a href="https://www.linkedin.com/in/harshith-padakanti/" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>LinkedIn &rarr;</span>
+            </a>
+            <a href="https://x.com/harshith_irl" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>X / Twitter &rarr;</span>
+            </a>
+            <a href="https://leetcode.com/u/Harshith-2007/" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>LeetCode &rarr;</span>
+            </a>
+            <a href="https://www.codechef.com/users/harshith_2007" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>CodeChef &rarr;</span>
+            </a>
+            <a href="https://codeforces.com/profile/harshaharshith31" target="_blank" rel="noopener" class="nkc-metal-btn">
+              <span>Codeforces &rarr;</span>
+            </a>
+          </div>
+
+          <div class="secret-wrapper">
+            <button type="button" class="secret-btn" id="secretLink">
+              there is a ninth chapter, if you look.
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 09: AFTER HOURS -->
+    <section class="chapter-secret secret-chapter" id="chSecret" data-chapter="09 / AFTER HOURS" style="display:none;">
+      <div class="chapter-header">
+        <div class="chapter-eyebrow">
+          <span><span class="mono">09</span> / AFTER HOURS</span>
+        </div>
+        <blockquote class="afterhours-statement">
+          &ldquo;I don't always know what I'm looking for.<br />
+          I usually find something anyway.&rdquo;
+        </blockquote>
+      </div>
+
+      <div class="featured-showcase">
+        <div class="hero-photo-frame">
+          <img src="img/afterdark.jpg" alt="A quiet desk at night" class="big-plate-img" loading="lazy" />
+          <div class="plate-caption">
+            <span><span class="mono">FIGURE 09</span> &bull; After hours</span>
+            <span>Study plate</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Filmstrip Dock (Unified Controller) -->
+  <nav class="filmstrip-dock" id="filmstripDock" aria-label="Archive Filmstrip Dock">
+    <div class="dock-track" id="dockTrack">
+      <a href="#ch0" class="dock-item active" data-target="ch0" data-chapter-index="0"><span class="dock-num mono">00</span><span class="dock-name">ROOM</span></a>
+      <a href="#ch1" class="dock-item" data-target="ch1" data-chapter-index="1"><span class="dock-num mono">01</span><span class="dock-name">GrindLens</span></a>
+      <a href="#ch2" class="dock-item" data-target="ch2" data-chapter-index="2"><span class="dock-num mono">02</span><span class="dock-name">BUILDS</span></a>
+      <a href="#ch3" class="dock-item" data-target="ch3" data-chapter-index="3"><span class="dock-num mono">03</span><span class="dock-name">OSS</span></a>
+      <a href="#ch4" class="dock-item" data-target="ch4" data-chapter-index="4"><span class="dock-num mono">04</span><span class="dock-name">SKILLS</span></a>
+      <a href="#ch5" class="dock-item" data-target="ch5" data-chapter-index="5"><span class="dock-num mono">05</span><span class="dock-name">RIGOR</span></a>
+      <a href="#ch6" class="dock-item" data-target="ch6" data-chapter-index="6"><span class="dock-num mono">06</span><span class="dock-name">PUBLIC</span></a>
+      <a href="#ch7" class="dock-item" data-target="ch7" data-chapter-index="7"><span class="dock-num mono">07</span><span class="dock-name">INTERIOR</span></a>
+      <a href="#ch8" class="dock-item" data-target="ch8" data-chapter-index="8"><span class="dock-num mono">08</span><span class="dock-name">ABOUT</span></a>
+    </div>
+
+    <div class="dock-divider"></div>
+
+    <a href="https://github.com/Harshith1702" target="_blank" rel="noopener" class="dock-ext-link" title="GitHub">GH</a>
+    <a href="https://x.com/harshith_irl" target="_blank" rel="noopener" class="dock-ext-link" title="X / Twitter">X</a>
+    <a href="https://www.linkedin.com/in/harshith-padakanti/" target="_blank" rel="noopener" class="dock-ext-link" title="LinkedIn">IN</a>
+  </nav>
+
+  <!-- Persistent Editorial Footer -->
+  <footer class="archive-footer">
+    <div class="footer-left">
+      <span>HARSHITH PADAKANTI &bull; INDIA</span>
+      <span class="footer-sub">Building GrindLens</span>
+    </div>
+    <div class="footer-right">
+      <span>&copy; 2026 &bull; Harshith Padakanti</span>
+    </div>
+  </footer>
+
+  <script src="script.js?v=2"></script>
+</body>
+</html>

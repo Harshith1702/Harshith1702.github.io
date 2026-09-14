@@ -1,0 +1,21 @@
+{
+  "name": "harshith-portfolio",
+  "version": "1.0.0",
+  "description": "Harshith Padakanti - Nocturnal Archive Portfolio & Unique Visitor Counter",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "portfolio",
+    "nocturnal-archive",
+    "harshith-padakanti",
+    "backend"
+  ],
+  "author": "Harshith Padakanti",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
