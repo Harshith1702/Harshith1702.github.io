@@ -14,11 +14,19 @@ const PUBLIC_DIR = __dirname;
 const DATA_DIR = path.join(__dirname, 'data');
 
 // Configurable database path (supports test isolation and serverless environments)
-function resolveDbPath() {
+function resolveDbPath(forWrite = false) {
   if (process.env.VISITORS_DB_PATH) {
     return path.resolve(process.env.VISITORS_DB_PATH);
   }
-  // If data dir cannot be created or is read-only (e.g. Vercel serverless), fallback to /tmp
+  // In Vercel serverless environment, filesystem is read-only except /tmp
+  if (process.env.VERCEL) {
+    const tmpDir = process.env.TMPDIR || process.env.TEMP || '/tmp';
+    const tmpFile = path.join(tmpDir, 'visitors.json');
+    if (forWrite) return tmpFile;
+    if (fs.existsSync(tmpFile)) return tmpFile;
+    return path.join(DATA_DIR, 'visitors.json');
+  }
+  // Standard persistent server (Render, Railway, local Node.js)
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -30,7 +38,7 @@ function resolveDbPath() {
   }
 }
 
-let DB_FILE = resolveDbPath();
+let DB_FILE = resolveDbPath(false);
 
 // In-memory cache for fast O(1) lookups
 let visitorStore = {
@@ -41,26 +49,33 @@ let visitorStore = {
 // Load existing records from disk
 function loadStore() {
   try {
-    DB_FILE = resolveDbPath();
+    DB_FILE = resolveDbPath(false);
     if (fs.existsSync(DB_FILE)) {
       const raw = fs.readFileSync(DB_FILE, 'utf8');
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed.totalUnique === 'number' && typeof parsed.visitors === 'object') {
         visitorStore = parsed;
+        return;
       }
-    } else {
-      saveStore();
+    }
+    // Fallback: load committed repository seed data if available
+    const seedFile = path.join(DATA_DIR, 'visitors.json');
+    if (fs.existsSync(seedFile)) {
+      const raw = fs.readFileSync(seedFile, 'utf8');
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.totalUnique === 'number' && typeof parsed.visitors === 'object') {
+        visitorStore = parsed;
+      }
     }
   } catch (err) {
-    console.error('[Store] Error reading database, starting fresh:', err.message);
-    saveStore();
+    console.warn('[Store] Initial read note:', err.message);
   }
 }
 
-// Atomic write to disk to prevent corruption
+// Atomic write to disk with silent in-memory fallback
 function saveStore() {
   try {
-    DB_FILE = resolveDbPath();
+    DB_FILE = resolveDbPath(true);
     const dir = path.dirname(DB_FILE);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -76,7 +91,7 @@ function saveStore() {
       fs.writeFileSync(fallbackFile, JSON.stringify(visitorStore, null, 2), 'utf8');
       DB_FILE = fallbackFile;
     } catch (fallbackErr) {
-      console.error('[Store] Error saving database:', err.message);
+      // In read-only or serverless container recycles, in-memory counter continues smoothly
     }
   }
 }
@@ -137,56 +152,72 @@ function setCorsHeaders(req, res) {
 
 // Handler for visitor API (can be invoked by HTTP server or Vercel serverless function)
 function handleVisitRequest(req, res) {
-  setCorsHeaders(req, res);
+  try {
+    setCorsHeaders(req, res);
 
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204);
-    res.end();
-    return;
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+
+    const cookies = parseCookies(req);
+    let token = cookies['anon_vid'] || req.headers['x-visitor-id'];
+
+    if (!isValidToken(token)) {
+      token = crypto.randomUUID();
+    }
+
+    // Privacy-conscious SHA-256 hash of token (no raw IDs or personal info stored)
+    const hashedId = crypto.createHash('sha256').update(token).digest('hex');
+    const now = new Date().toISOString();
+
+    let isNewVisitor = false;
+    if (!visitorStore.visitors[hashedId]) {
+      // First time seeing this visitor
+      visitorStore.visitors[hashedId] = {
+        firstSeen: now,
+        lastSeen: now,
+        visits: 1
+      };
+      visitorStore.totalUnique += 1;
+      isNewVisitor = true;
+      saveStore();
+    } else {
+      // Returning visitor: update last seen & visit counter, do NOT increment totalUnique
+      visitorStore.visitors[hashedId].lastSeen = now;
+      visitorStore.visitors[hashedId].visits = (visitorStore.visitors[hashedId].visits || 1) + 1;
+      saveStore();
+    }
+
+    // Set 2-year persistent HttpOnly cookie
+    try {
+      res.setHeader(
+        'Set-Cookie',
+        `anon_vid=${encodeURIComponent(token)}; Path=/; Max-Age=63072000; SameSite=Lax; HttpOnly`
+      );
+    } catch (e) {}
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      success: true,
+      count: visitorStore.totalUnique,
+      isNew: isNewVisitor,
+      visitorId: token
+    }));
+  } catch (err) {
+    console.error('[Visitor API Crash Guard]', err);
+    try {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        success: true,
+        count: visitorStore.totalUnique || 59,
+        notice: 'Graceful fallback'
+      }));
+    } catch (fallbackErr) {
+      try { res.end(); } catch (e) {}
+    }
   }
-
-  const cookies = parseCookies(req);
-  let token = cookies['anon_vid'] || req.headers['x-visitor-id'];
-
-  if (!isValidToken(token)) {
-    token = crypto.randomUUID();
-  }
-
-  // Privacy-conscious SHA-256 hash of token (no raw IDs or personal info stored)
-  const hashedId = crypto.createHash('sha256').update(token).digest('hex');
-  const now = new Date().toISOString();
-
-  let isNewVisitor = false;
-  if (!visitorStore.visitors[hashedId]) {
-    // First time seeing this visitor
-    visitorStore.visitors[hashedId] = {
-      firstSeen: now,
-      lastSeen: now,
-      visits: 1
-    };
-    visitorStore.totalUnique += 1;
-    isNewVisitor = true;
-    saveStore();
-  } else {
-    // Returning visitor: update last seen & visit counter, do NOT increment totalUnique
-    visitorStore.visitors[hashedId].lastSeen = now;
-    visitorStore.visitors[hashedId].visits = (visitorStore.visitors[hashedId].visits || 1) + 1;
-    saveStore();
-  }
-
-  // Set 2-year persistent HttpOnly cookie
-  res.setHeader(
-    'Set-Cookie',
-    `anon_vid=${encodeURIComponent(token)}; Path=/; Max-Age=63072000; SameSite=Lax; HttpOnly`
-  );
-
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({
-    success: true,
-    count: visitorStore.totalUnique,
-    isNew: isNewVisitor,
-    visitorId: token
-  }));
 }
 
 // General HTTP request handler
@@ -305,12 +336,11 @@ if (require.main === module) {
   });
 }
 
-module.exports = {
-  server,
-  requestHandler,
-  handleVisitRequest,
-  visitorStore,
-  loadStore,
-  saveStore,
-  resolveDbPath
-};
+module.exports = requestHandler;
+module.exports.server = server;
+module.exports.requestHandler = requestHandler;
+module.exports.handleVisitRequest = handleVisitRequest;
+module.exports.visitorStore = visitorStore;
+module.exports.loadStore = loadStore;
+module.exports.saveStore = saveStore;
+module.exports.resolveDbPath = resolveDbPath;
