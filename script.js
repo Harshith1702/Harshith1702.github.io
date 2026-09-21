@@ -321,27 +321,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // -----------------------------------------------------------
-  // 5. SECRET CHAPTER REVEAL
-  // -----------------------------------------------------------
-  const secretLink = document.getElementById('secretLink');
-  const chSecret = document.getElementById('chSecret');
-
-  if (secretLink && chSecret) {
-    secretLink.addEventListener('click', () => {
-      chSecret.style.display = 'block';
-      chSecret.scrollIntoView({ behavior: 'smooth' });
-
-      chSecret.querySelectorAll('.reveal').forEach(el => {
-        el.classList.add('in');
-      });
-
-      secretLink.textContent = 'after hours unlocked.';
-      secretLink.style.cursor = 'default';
-      secretLink.style.opacity = '0.5';
-      secretLink.disabled = true;
-    });
-  }
 
 
   // -----------------------------------------------------------
