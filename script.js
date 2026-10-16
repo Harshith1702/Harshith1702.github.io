@@ -330,9 +330,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
   // -----------------------------------------------------------
-  // 6. REAL UNIQUE VISITOR COUNTER
+  // 5. OTHER PROJECTS DRAWER (OPENS WHEN PRESSED ONLY)
+  // -----------------------------------------------------------
+  const otherProjectsTrigger = document.getElementById('otherProjectsTrigger');
+  const otherProjectsPanel = document.getElementById('otherProjectsPanel');
+  if (otherProjectsTrigger && otherProjectsPanel) {
+    otherProjectsTrigger.addEventListener('click', () => {
+      const isExpanded = otherProjectsTrigger.getAttribute('aria-expanded') === 'true';
+      const willExpand = !isExpanded;
+      otherProjectsTrigger.setAttribute('aria-expanded', String(willExpand));
+      otherProjectsPanel.hidden = !willExpand;
+      const numSpan = otherProjectsTrigger.querySelector('.trigger-num');
+      if (numSpan) {
+        numSpan.textContent = willExpand ? '[-]' : '[+]';
+      }
+    });
+  }
+
   // -----------------------------------------------------------
   async function initVisitorCounter() {
     const noteEl = document.getElementById('visitorPresenceNote');

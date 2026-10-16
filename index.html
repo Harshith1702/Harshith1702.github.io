@@ -18,7 +18,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="apple-touch-icon" sizes="192x192" href="img/favicon-192x192.png" />
-  <link rel="stylesheet" href="style.css?v=5" />
+  <link rel="stylesheet" href="style.css?v=6" />
   <script>
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -184,238 +184,200 @@
       </div>
     </section>
 
-    <!-- CHAPTER 02: BUILDS -->
+    <!-- CHAPTER 02: CONNECTED BUILDS PROGRESSION -->
     <section class="chapter-section" id="ch2" data-chapter="02 / BUILDS">
       <div class="chapter-header reveal">
         <div class="chapter-eyebrow">
           <span><span class="mono">02</span> / BUILDS</span>
         </div>
-        <h2 class="chapter-title">Projects</h2>
+        <h2 class="chapter-title">Apparently I do this with other things too.</h2>
         <p class="chapter-lede">
-          Tools, backend systems, and experiments built to solve real problems.
+          Each of these started because I wanted to see how something worked, or because doing it manually was annoying.
         </p>
       </div>
 
-      <div class="projects-clean-grid">
+      <div class="projects-narrative-flow">
 
-        <!-- 01: GrindLens (Featured) -->
-        <article class="project-clean-card project-clean-card--featured reveal">
-          <div class="project-clean-header">
-            <div>
-              <h3 class="project-clean-title">GrindLens</h3>
+        <!-- 01: LeetCode Grind Tracker -->
+        <article class="narrative-project-block reveal">
+          <div class="project-story-lead">
+            <span class="story-chapter-tag"><span class="mono">01</span> / LeetCode Grind Tracker</span>
+            <h3 class="narrative-project-title">Before GrindLens became a product, it was this.</h3>
+            <p class="narrative-project-desc">
+              The first version was just a Python script fetching my LeetCode submissions, a MySQL database, a small PHP API, and a JavaScript dashboard to track streaks and weak topics. That script ran for months before I decided to turn it into a real product.
+            </p>
+          </div>
+
+          <a href="https://github.com/Harshith1702/leetcode-grind-tracker" target="_blank" rel="noopener" class="featured-image-link" title="Click to view LeetCode Grind Tracker source on GitHub">
+            <span class="click-overlay-badge">View repository &nearr;</span>
+            <img src="img/tracker_ui.png" alt="LeetCode Grind Tracker analytical dashboard" class="big-plate-img" loading="lazy" />
+            <div class="plate-caption">
+              <span><span class="mono">FIGURE 02.1</span> &bull; Early Grind Tracker dashboard</span>
+              <span>Python &bull; MySQL &bull; PHP &bull; JavaScript</span>
             </div>
-            <span class="project-status-pill project-status-pill--live">
-              <span class="status-dot"></span>Live
-            </span>
-          </div>
+          </a>
 
-          <p class="project-clean-desc">
-            Pattern-recognition and analytics platform for technical interview prep. Maps solved problems against standard curriculum patterns (Blind 75, NeetCode 150), surfaces practice blind spots, and recommends the next best problem to solve.
-          </p>
-
-          <div class="project-clean-tags">
-            <span class="project-clean-tag">TypeScript</span>
-            <span class="project-clean-tag">React</span>
-            <span class="project-clean-tag">Next.js</span>
-            <span class="project-clean-tag">Node.js</span>
-            <span class="project-clean-tag">GraphQL</span>
-          </div>
-
-          <div class="project-clean-actions">
-            <a href="https://grindlens.dev" target="_blank" rel="noopener" class="pill-btn pill-btn--accent">
-              <span>Visit grindlens.dev</span>
-              <span class="pill-arrow">&nearr;</span>
-            </a>
-            <a href="#ch1" class="pill-btn">
-              <span>Chapter 01 Showcase</span>
+          <div class="narrative-project-actions">
+            <a href="https://github.com/Harshith1702/leetcode-grind-tracker" target="_blank" rel="noopener" class="pill-btn">
+              <span>View Tracker on GitHub</span>
               <span class="pill-arrow">&nearr;</span>
             </a>
           </div>
         </article>
 
-        <!-- 02: Open Chat (RTRP Chat) -->
-        <article class="project-clean-card reveal">
-          <div class="project-clean-header">
-            <h3 class="project-clean-title">Open Chat (RTRP Chat)</h3>
-            <span class="project-status-pill project-status-pill--live">
-              <span class="status-dot"></span>Live
-            </span>
+        <!-- CINEMA INTERRUPTION (Observing / Thinking / Disappearing into stories) -->
+        <div class="visual-interruption-plate reveal" aria-label="Visual interlude">
+          <img src="img/cinema.jpg" alt="A cinematic movie theater looking toward an immense silver screen" class="interruption-img" loading="lazy" />
+          <div class="interruption-caption">
+            <span><span class="mono">FIGURE 02.X</span> &bull; Watching movies late at night</span>
+          </div>
+        </div>
+
+        <!-- 02: Open Chat -->
+        <article class="narrative-project-block reveal">
+          <div class="project-story-lead">
+            <span class="story-chapter-tag"><span class="mono">02</span> / Open Chat</span>
+            <h3 class="narrative-project-title">I wanted somewhere to talk without anyone else keeping the conversation.</h3>
+            <p class="chapter-voice-lead">
+              So I built a chat app with no database.
+            </p>
+            <p class="narrative-project-desc">
+              There are no accounts or message logs. Messages only exist in memory while the room is open, and disappear completely as soon as the session ends.
+            </p>
+            <p class="narrative-project-note">
+              The original reason was considerably less technical.
+            </p>
           </div>
 
-          <div class="project-clean-thumb">
-            <img src="img/chat_app.png" alt="RTRP Chat Rooms web interface" loading="lazy" />
+          <a href="https://open-chat-application-ubti.onrender.com" target="_blank" rel="noopener" class="featured-image-link" title="Click to launch live Open Chat Application on Render">
+            <span class="click-overlay-badge">Open live demo &nearr;</span>
+            <img src="img/chat_app.png" alt="RTRP Chat Rooms web interface showing active room presence isolation" class="big-plate-img" loading="lazy" />
+            <div class="plate-caption">
+              <span><span class="mono">FIGURE 02.2</span> &bull; RTRP Chat Rooms</span>
+              <span>Node.js &bull; Express &bull; Socket.io</span>
+            </div>
+          </a>
+
+          <div class="project-tech-notes">
+            <span>Room presence isolation</span>
+            <span>&bull;</span>
+            <span>100 user cap per room</span>
+            <span>&bull;</span>
+            <span>Automatic cleanup on disconnect</span>
+            <span>&bull;</span>
+            <span>Debounced socket broadcasts</span>
           </div>
 
-          <p class="project-clean-desc">
-            Ephemeral room-based chat application built with WebSockets. Operates with zero database and zero persistent logs. Messages exist strictly in server memory during the active session and vanish automatically when rooms close.
-          </p>
-
-          <div class="project-clean-tags">
-            <span class="project-clean-tag">Node.js</span>
-            <span class="project-clean-tag">Express</span>
-            <span class="project-clean-tag">Socket.io</span>
-            <span class="project-clean-tag">WebSockets</span>
-          </div>
-
-          <div class="project-clean-actions">
+          <div class="narrative-project-actions">
             <a href="https://open-chat-application-ubti.onrender.com" target="_blank" rel="noopener" class="pill-btn pill-btn--accent">
-              <span>Live Demo</span>
+              <span>Open live demo</span>
               <span class="pill-arrow">&nearr;</span>
             </a>
             <a href="https://github.com/Harshith1702/Open_Chat_Application" target="_blank" rel="noopener" class="pill-btn">
-              <span>Source Code</span>
+              <span>View repository</span>
               <span class="pill-arrow">&nearr;</span>
             </a>
           </div>
         </article>
 
-        <!-- 03: LeetCode Grind Tracker -->
-        <article class="project-clean-card reveal">
-          <div class="project-clean-header">
-            <h3 class="project-clean-title">LeetCode Grind Tracker</h3>
-            <span class="project-status-pill project-status-pill--oss">
-              <span class="status-dot"></span>Open Source
-            </span>
+        <!-- 03: LeetCode Discord Reporter -->
+        <article class="narrative-project-block reveal">
+          <div class="project-story-lead">
+            <span class="story-chapter-tag"><span class="mono">03</span> / Discord Reporter</span>
+            <h3 class="narrative-project-title">I was copying my solved problem links into our daily training group. Every day.</h3>
+            <p class="chapter-voice-lead">
+              I got tired of doing it. So I made a bot do it.
+            </p>
+            <p class="narrative-project-desc">
+              A bot that cronjob.org triggers on schedule, checks the LeetCode GraphQL endpoint for accepted submissions, and posts them directly to our Discord server. I set it up once, and haven't had to touch it since.
+            </p>
           </div>
 
-          <div class="project-clean-thumb">
-            <img src="img/tracker_ui.png" alt="LeetCode Grind Tracker analytical dashboard" loading="lazy" />
+          <a href="https://github.com/Harshith1702/leetcode-discord-reporter" target="_blank" rel="noopener" class="featured-image-link" title="Click to view LeetCode Discord Reporter on GitHub">
+            <span class="click-overlay-badge">View repository &nearr;</span>
+            <div class="discord-preview-wrapper">
+              <img src="img/discord_reporter.png" alt="Discord message showing automated nightly LeetCode problem dispatch by Padakanti Harshith bot at 22:15" class="discord-plate-img" loading="lazy" />
+            </div>
+            <div class="plate-caption">
+              <span><span class="mono">FIGURE 02.3</span> &bull; Nightly Discord problem alert</span>
+              <span>Discord Webhook &bull; LeetCode GraphQL &bull; cronjob.org</span>
+            </div>
+          </a>
+
+          <div class="technical-proof-box">
+            <div class="proof-line"><span class="proof-tag">Polling:</span> Queries LeetCode GraphQL recentAcSubmissionList</div>
+            <div class="proof-line"><span class="proof-tag">Verification:</span> Checks submission timestamp against daily IST window</div>
+            <div class="proof-line"><span class="proof-tag">Dispatch:</span> Formats difficulty stats and fires webhook payload</div>
+            <div class="proof-line"><span class="proof-tag">Schedule:</span> Triggered on schedule via cronjob.org</div>
           </div>
 
-          <p class="project-clean-desc">
-            Automated submission tracking dashboard that queries LeetCode problem history to record daily consistency streaks, problem categories, and weak algorithmic topics.
-          </p>
-
-          <div class="project-clean-tags">
-            <span class="project-clean-tag">Python</span>
-            <span class="project-clean-tag">MySQL</span>
-            <span class="project-clean-tag">PHP</span>
-            <span class="project-clean-tag">JavaScript</span>
-          </div>
-
-          <div class="project-clean-actions">
-            <a href="https://github.com/Harshith1702/leetcode-grind-tracker" target="_blank" rel="noopener" class="pill-btn">
-              <span>Source Code</span>
-              <span class="pill-arrow">&nearr;</span>
-            </a>
-          </div>
-        </article>
-
-        <!-- 04: LeetCode Discord Reporter -->
-        <article class="project-clean-card reveal">
-          <div class="project-clean-header">
-            <h3 class="project-clean-title">Discord Problem Reporter</h3>
-            <span class="project-status-pill project-status-pill--oss">
-              <span class="status-dot"></span>Open Source
-            </span>
-          </div>
-
-          <div class="project-clean-thumb">
-            <img src="img/discord_reporter.png" alt="Discord message showing automated nightly LeetCode problem dispatch" loading="lazy" />
-          </div>
-
-          <p class="project-clean-desc">
-            Automated service running on cronjob.org that queries LeetCode GraphQL endpoints for daily accepted submissions and dispatches formatted alerts directly to Discord webhooks.
-          </p>
-
-          <div class="project-clean-tags">
-            <span class="project-clean-tag">Python</span>
-            <span class="project-clean-tag">LeetCode GraphQL</span>
-            <span class="project-clean-tag">Discord Webhooks</span>
-            <span class="project-clean-tag">cronjob.org</span>
-          </div>
-
-          <div class="project-clean-actions">
+          <div class="narrative-project-actions">
             <a href="https://github.com/Harshith1702/leetcode-discord-reporter" target="_blank" rel="noopener" class="pill-btn">
-              <span>Source Code</span>
+              <span>View repository on GitHub</span>
               <span class="pill-arrow">&nearr;</span>
             </a>
           </div>
         </article>
 
-        <!-- 05: NPTEL IoT Exam Platform -->
-        <article class="project-clean-card reveal">
-          <div class="project-clean-header">
-            <h3 class="project-clean-title">NPTEL IoT Study Dashboard</h3>
-            <span class="project-status-pill project-status-pill--oss">
-              <span class="status-dot"></span>Open Source
+        <!-- OTHER BUILDS & EXPERIMENTS (Opens when pressed only) -->
+        <div class="other-projects-section reveal">
+          <button class="other-projects-trigger" id="otherProjectsTrigger" type="button" aria-expanded="false" aria-controls="otherProjectsPanel">
+            <span class="trigger-left">
+              <span class="mono trigger-num">[ + ]</span>
+              <span class="trigger-title">Other projects &amp; experiments</span>
             </span>
+            <span class="trigger-meta mono">3 repositories</span>
+          </button>
+
+          <div class="other-projects-panel" id="otherProjectsPanel" hidden>
+            <div class="other-projects-list">
+              <!-- NPTEL IoT -->
+              <div class="other-project-item">
+                <div class="other-project-main">
+                  <div class="other-project-heading">
+                    <h4 class="other-project-name">NPTEL IoT Study Dashboard</h4>
+                    <span class="other-project-tech mono">JS &bull; HTML5 &bull; CSS3</span>
+                  </div>
+                  <p class="other-project-desc">Interactive exam and study dashboard for IIT Kharagpur's Introduction to IoT course with 724 verified questions and searchable solutions.</p>
+                </div>
+                <a href="https://github.com/Harshith1702/nptel-iot" target="_blank" rel="noopener" class="pill-btn">
+                  <span>Source Code</span>
+                  <span class="pill-arrow">&nearr;</span>
+                </a>
+              </div>
+
+              <!-- Social Follower Graph -->
+              <div class="other-project-item">
+                <div class="other-project-main">
+                  <div class="other-project-heading">
+                    <h4 class="other-project-name">Social Follower Graph (C)</h4>
+                    <span class="other-project-tech mono">C &bull; Data Structures</span>
+                  </div>
+                  <p class="other-project-desc">Low-level C simulation of a directed follower network with dynamic user creation, mutual follow tracking, and heap-allocated adjacency lists.</p>
+                </div>
+                <a href="https://github.com/Harshith1702/Social_Media_Follower_System_C" target="_blank" rel="noopener" class="pill-btn">
+                  <span>Source Code</span>
+                  <span class="pill-arrow">&nearr;</span>
+                </a>
+              </div>
+
+              <!-- Dead Packet Detective -->
+              <div class="other-project-item">
+                <div class="other-project-main">
+                  <div class="other-project-heading">
+                    <h4 class="other-project-name">Dead Packet Detective</h4>
+                    <span class="other-project-tech mono">Python &bull; Networking</span>
+                  </div>
+                  <p class="other-project-desc">Python network utility that captures and parses network protocol headers, inspects TCP/UDP flags, and logs flow anomalies.</p>
+                </div>
+                <a href="https://github.com/Harshith1702/dead-packet-detective" target="_blank" rel="noopener" class="pill-btn">
+                  <span>Source Code</span>
+                  <span class="pill-arrow">&nearr;</span>
+                </a>
+              </div>
+            </div>
           </div>
-
-          <p class="project-clean-desc">
-            Interactive examination and study dashboard for IIT Kharagpur's Introduction to IoT course, indexing 724 verified questions with searchable explanations, category filters, and practice modes.
-          </p>
-
-          <div class="project-clean-tags">
-            <span class="project-clean-tag">JavaScript</span>
-            <span class="project-clean-tag">HTML5</span>
-            <span class="project-clean-tag">CSS3</span>
-            <span class="project-clean-tag">IIT Kharagpur</span>
-          </div>
-
-          <div class="project-clean-actions">
-            <a href="https://github.com/Harshith1702/nptel-iot" target="_blank" rel="noopener" class="pill-btn">
-              <span>Source Code</span>
-              <span class="pill-arrow">&nearr;</span>
-            </a>
-          </div>
-        </article>
-
-        <!-- 06: Social Media Follower System -->
-        <article class="project-clean-card reveal">
-          <div class="project-clean-header">
-            <h3 class="project-clean-title">Social Follower Graph (C)</h3>
-            <span class="project-status-pill project-status-pill--oss">
-              <span class="status-dot"></span>Open Source
-            </span>
-          </div>
-
-          <p class="project-clean-desc">
-            Low-level systems simulation in C modeling a directed social follower graph. Implements dynamic user creation, mutual follow tracking, search functionality, and heap-allocated adjacency lists.
-          </p>
-
-          <div class="project-clean-tags">
-            <span class="project-clean-tag">C</span>
-            <span class="project-clean-tag">Data Structures</span>
-            <span class="project-clean-tag">Pointers</span>
-            <span class="project-clean-tag">Graphs</span>
-          </div>
-
-          <div class="project-clean-actions">
-            <a href="https://github.com/Harshith1702/Social_Media_Follower_System_C" target="_blank" rel="noopener" class="pill-btn">
-              <span>Source Code</span>
-              <span class="pill-arrow">&nearr;</span>
-            </a>
-          </div>
-        </article>
-
-        <!-- 07: Dead Packet Detective -->
-        <article class="project-clean-card reveal">
-          <div class="project-clean-header">
-            <h3 class="project-clean-title">Dead Packet Detective</h3>
-            <span class="project-status-pill project-status-pill--oss">
-              <span class="status-dot"></span>Open Source
-            </span>
-          </div>
-
-          <p class="project-clean-desc">
-            Network packet inspection utility in Python that captures and parses network protocol headers, inspects TCP/UDP flags, and logs flow anomalies.
-          </p>
-
-          <div class="project-clean-tags">
-            <span class="project-clean-tag">Python</span>
-            <span class="project-clean-tag">Networking</span>
-            <span class="project-clean-tag">Packet Analysis</span>
-            <span class="project-clean-tag">TCP / IP</span>
-          </div>
-
-          <div class="project-clean-actions">
-            <a href="https://github.com/Harshith1702/dead-packet-detective" target="_blank" rel="noopener" class="pill-btn">
-              <span>Source Code</span>
-              <span class="pill-arrow">&nearr;</span>
-            </a>
-          </div>
-        </article>
+        </div>
 
       </div>
     </section>
@@ -894,6 +856,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
