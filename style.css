@@ -232,14 +232,12 @@ a, button, [role="button"], .dock-item, .gate-btn, .nkc-metal-btn, .featured-ima
 
 .chapter-eyebrow {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
   font-size: 0.78rem;
   letter-spacing: 0.1em;
   color: var(--muted);
   text-transform: uppercase;
   margin-bottom: 0.5rem;
-  flex-wrap: wrap;
 }
 
 .chapter-title {
@@ -983,13 +981,11 @@ a, button, [role="button"], .dock-item, .gate-btn, .nkc-metal-btn, .featured-ima
 
 .fragments-header {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
   font-size: 0.74rem;
   color: var(--muted);
   letter-spacing: 0.08em;
   margin-bottom: 1.2rem;
-  flex-wrap: wrap;
 }
 
 .fragment-quote {
