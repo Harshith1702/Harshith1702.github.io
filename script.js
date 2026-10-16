@@ -200,6 +200,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const dockContact = document.querySelector('.dock-contact-link');
+  if (dockContact) {
+    dockContact.addEventListener('click', (e) => {
+      e.preventDefault();
+      navigateToChapter('ch8', { pushHistory: true });
+    });
+  }
+
   // B. Keyboard Number Shortcuts (Keys '0' through '8')
   window.addEventListener('keydown', (e) => {
     if (e.target.matches('input, textarea, [contenteditable="true"]')) return;

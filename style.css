@@ -1467,22 +1467,52 @@ a, button, [role="button"], .dock-item, .gate-btn, .nkc-metal-btn, .featured-ima
 }
 
 /* ---------------- FILMSTRIP DOCK CONTROLLER (RESTRAINED ARCHIVE INDEX) ---------------- */
+/* Ambient Bottom Blur Scrim: keeps content flowing under the dock blurred & hidden */
+.dock-blur-scrim {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 96px;
+  pointer-events: none;
+  z-index: 990;
+  background: linear-gradient(
+    to top,
+    rgba(7, 9, 13, 0.98) 0%,
+    rgba(7, 9, 13, 0.88) 35%,
+    rgba(7, 9, 13, 0.5) 65%,
+    rgba(7, 9, 13, 0) 100%
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 40%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 40%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+body.archive-entered .dock-blur-scrim {
+  opacity: 1;
+  visibility: visible;
+}
+
 .filmstrip-dock {
   position: fixed;
   bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-  background: rgba(7, 9, 13, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 12, 16, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   padding: 5px 12px;
   display: flex;
   align-items: center;
   gap: 4px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.65);
   max-width: 96vw;
 }
 
@@ -1562,6 +1592,20 @@ a, button, [role="button"], .dock-item, .gate-btn, .nkc-metal-btn, .featured-ima
 .dock-ext-link:hover {
   color: var(--text);
   background: rgba(255, 255, 255, 0.06);
+}
+
+.dock-contact-link {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  color: #8a94a6;
+}
+
+.dock-contact-link:hover {
+  color: var(--accent);
+  background: rgba(201, 150, 168, 0.1);
 }
 
 .site-presence-note {
