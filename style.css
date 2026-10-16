@@ -171,51 +171,89 @@ a, button, [role="button"], .dock-item, .gate-btn, .nkc-metal-btn, .featured-ima
   margin-right: 8px;
 }
 
-/* ---------------- NKC METAL RIM BUTTON ---------------- */
-.nkc-metal-btn {
-  --nkc-metal-bg: #0c0f17;
-  --nkc-metal-fg: #e9e5dc;
-  --nkc-metal-border: #1e2433;
-  --nkc-metal-hover: #141824;
+/* ---------------- MINIMALIST PILL & LINK SYSTEM ---------------- */
+.social-pills-wrap,
+.link-cluster,
+.rigor-profile-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.social-pill,
+.nkc-metal-btn,
+.pill-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  padding: 0.55rem 1.15rem;
-  border: 1px solid var(--nkc-metal-border);
-  border-radius: 7px;
-  background: var(--nkc-metal-bg);
-  color: var(--nkc-metal-fg);
+  padding: 0.38rem 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted-bright);
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.82rem;
-  letter-spacing: 0.03em;
+  font-size: 0.80rem;
+  letter-spacing: 0.02em;
   text-decoration: none;
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
   white-space: nowrap;
 }
 
-.nkc-metal-btn:hover {
-  background: var(--nkc-metal-hover);
-  border-color: rgba(255, 255, 255, 0.28);
+.social-pill:hover,
+.nkc-metal-btn:hover,
+.pill-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 
-.nkc-metal-btn--accent {
-  background: var(--accent);
-  color: #07090d;
-  border-color: var(--accent);
-  font-weight: 600;
-  box-shadow: 0 0 16px rgba(201, 150, 168, 0.3);
+.social-pill svg,
+.pill-btn svg {
+  flex-shrink: 0;
+  opacity: 0.75;
+  transition: opacity 0.18s ease;
 }
 
-.nkc-metal-btn--accent:hover {
-  background: #ffffff;
-  color: #07090d;
-  border-color: #ffffff;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+.social-pill:hover svg,
+.pill-btn:hover svg {
+  opacity: 1;
 }
+
+.pill-arrow {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.social-pill:hover .pill-arrow,
+.pill-btn:hover .pill-arrow {
+  opacity: 1;
+  transform: translate(1px, -1px);
+}
+
+.social-pill--accent,
+.nkc-metal-btn--accent,
+.pill-btn--accent {
+  background: rgba(201, 150, 168, 0.12);
+  color: #f7d6e0;
+  border-color: rgba(201, 150, 168, 0.35);
+  font-weight: 600;
+}
+
+.social-pill--accent:hover,
+.nkc-metal-btn--accent:hover,
+.pill-btn--accent:hover {
+  background: rgba(201, 150, 168, 0.22);
+  color: #ffffff;
+  border-color: rgba(201, 150, 168, 0.6);
+  transform: translateY(-1px);
+}
+
 
 /* ---------------- CHAPTER SECTIONS ---------------- */
 .chapter-section,
@@ -614,116 +652,149 @@ a, button, [role="button"], .dock-item, .gate-btn, .nkc-metal-btn, .featured-ima
   margin-top: 1.3rem;
 }
 
-/* ---------------- CHAPTER 02: CONNECTED NARRATIVE FLOW ---------------- */
-.projects-narrative-flow {
-  display: flex;
-  flex-direction: column;
-  gap: 3.2rem;
+/* ---------------- CHAPTER 02: CLEAN PROJECTS GRID ---------------- */
+.projects-clean-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
   margin-top: 1.6rem;
 }
 
-.narrative-project-block {
+@media (min-width: 768px) {
+  .projects-clean-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.project-clean-card {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
-}
-
-.project-story-lead {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.story-chapter-tag {
-  font-size: 0.74rem;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-}
-
-.narrative-project-title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
-
-.narrative-project-desc {
-  font-size: 0.98rem;
-  line-height: 1.65;
-  color: var(--muted-bright);
-  max-width: 780px;
-}
-
-.narrative-project-note {
-  font-size: 0.8rem;
-  color: var(--accent);
-  margin-top: 0.3rem;
-}
-
-.project-tech-notes {
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 0.76rem;
-  color: var(--muted);
-  padding: 0.5rem 0;
-}
-
-.technical-proof-box {
-  background: #04060a;
-  border: 1px solid var(--line);
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 1.35rem 1.4rem;
   border-radius: 8px;
-  padding: 1.1rem 1.3rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.project-clean-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.038);
+  transform: translateY(-2px);
+}
+
+.project-clean-card--featured {
+  grid-column: 1 / -1;
+  background: linear-gradient(180deg, rgba(201, 150, 168, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: rgba(201, 150, 168, 0.22);
+}
+
+.project-clean-header {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-size: 0.78rem;
-  line-height: 1.6;
-}
-
-.proof-line {
-  color: #c4cbd8;
-}
-
-.proof-tag {
-  color: var(--accent);
-  font-weight: 600;
-  margin-right: 0.4rem;
-}
-
-.narrative-project-actions {
-  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 0.75rem;
-  flex-wrap: wrap;
 }
 
-/* Visual Interruption Plate (Unexplained cinematic interlude) */
-.visual-interruption-plate {
-  margin: 1rem 0;
-  border-radius: 12px;
+.project-clean-title {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0;
+}
+
+.project-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.project-status-pill--live {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.project-status-pill--live .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.project-status-pill--oss {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.project-status-pill--oss .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.project-clean-thumb {
+  border-radius: 6px;
   overflow: hidden;
-  border: 1px solid var(--line-strong);
-  background: var(--bg-surface);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #020305;
+  margin: 0.1rem 0 0.3rem;
 }
 
-.interruption-img {
+.project-clean-thumb img {
   width: 100%;
-  aspect-ratio: 21 / 9;
-  max-height: 380px;
+  height: auto;
+  max-height: 200px;
   object-fit: cover;
   display: block;
 }
 
-.interruption-caption {
-  padding: 0.55rem 1rem;
-  background: #05070c;
-  border-top: 1px solid var(--line);
-  font-size: 0.74rem;
-  color: var(--muted);
+.project-clean-desc {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--muted-bright);
+  margin: 0;
 }
+
+.project-clean-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.3rem;
+}
+
+.project-clean-tag {
+  font-family: var(--font-mono);
+  font-size: 0.70rem;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.18rem 0.5rem;
+  border-radius: 4px;
+}
+
+.project-clean-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+}
+
 
 /* ---------------- OPEN SOURCE (CHAPTER 03) ---------------- */
 .oss-grid {
