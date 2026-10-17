@@ -170,23 +170,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Smooth damp hop offset back to 0
-      hopOffset += (0 - hopOffset) * 0.15;
+      hopOffset += (0 - hopOffset) * 0.12;
 
       const dx = targetX - currentX;
       const dy = targetY - currentY;
       const dist = Math.hypot(dx, dy);
 
-      if (dist > 28) {
-        // Crawling toward cursor
+      // Standoff distance of 55px so hand creeps up politely rather than rushing directly onto pointer
+      if (dist > 55) {
+        // Calm, deliberate crawling toward cursor
         isMoving = true;
         idleTicks = 0;
-        const speed = Math.min(Math.max(dist * 0.08, 3.5), 9);
+        // Tuned crawl speed: between 1.0 and 2.6 px per frame (slow, deliberate hand scuttle)
+        const speed = Math.min(Math.max(dist * 0.022, 1.0), 2.6);
         currentX += (dx / dist) * speed;
         currentY += (dy / dist) * speed;
 
-        crawlCycle += speed * 0.22;
-        const wiggle = Math.sin(crawlCycle) * 14;
-        const bob = Math.abs(Math.sin(crawlCycle * 2)) * -6;
+        crawlCycle += speed * 0.14;
+        const wiggle = Math.sin(crawlCycle) * 8;
+        const bob = Math.abs(Math.sin(crawlCycle * 2)) * -3.5;
 
         if (dx < -3) facing = -1;
         else if (dx > 3) facing = 1;
@@ -196,18 +198,18 @@ document.addEventListener('DOMContentLoaded', () => {
           thingSprite.style.transform = `scaleX(${facing}) rotate(${wiggle}deg) translateY(${bob}px)`;
         }
         if (thingShadow) {
-          thingShadow.style.transform = `scale(${1 - bob * 0.06})`;
+          thingShadow.style.transform = `scale(${1 - bob * 0.04})`;
         }
       } else {
         // Stationary / Idle
         isMoving = false;
         idleTicks++;
 
-        // Fingertip tapping every ~3.5 seconds of idle
-        if (idleTicks > 120 && idleTicks % 200 < 50) {
-          tapCycle += 0.4;
-          const tapWiggle = Math.sin(tapCycle * 6) * 8;
-          const tapBob = Math.abs(Math.sin(tapCycle * 6)) * -3;
+        // Fingertip tapping every ~4 seconds of idle
+        if (idleTicks > 120 && idleTicks % 220 < 45) {
+          tapCycle += 0.25;
+          const tapWiggle = Math.sin(tapCycle * 4) * 6;
+          const tapBob = Math.abs(Math.sin(tapCycle * 4)) * -2;
           if (thingSprite) {
             thingSprite.style.transform = `scaleX(${facing}) rotate(${tapWiggle}deg) translateY(${tapBob}px)`;
           }
