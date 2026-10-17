@@ -1,454 +1,631 @@
-/* ============================================================
-   ARCHIVE SCRIPTS
-   1. Reveal Observer
-   2. Entrance Gate Controls
-   3. Canonical Chapter Navigation System (00 to 08)
-   4. Wednesday's Thing Easter Egg Interaction
-   5. Secret Chapter Reveal
-   6. Real Unique Visitor Counter
-   Zero em dashes.
-   ============================================================ */
+// ============================================================
+// HARSHITH PADAKANTI - INTERACTION ENGINE V2
+// Portfolio interactions
+// Zero em/en dashes. Only standard hyphens.
+// ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Preferences remain usable when browser storage is blocked.
+  const preferences = {
+    get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+    set(key, value) { try { localStorage.setItem(key, value); } catch {} }
+  };
 
-  // 0. RESET SCROLL RESTORATION & INITIAL ENTRY STATE
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
+  // ----------------------------------------------------------
+  // 0. HERO BANNER VIDEO AUTOPLAY ASSURANCE
+  // ----------------------------------------------------------
+  const heroVideo = document.getElementById('hero-banner-video');
+  if (heroVideo) {
+    heroVideo.play().catch(() => {});
   }
-  window.scrollTo(0, 0);
 
-  // Clear any residual hash so browser refresh always returns to the main landing experience
-  if (window.location.hash) {
-    try {
-      history.replaceState(null, '', window.location.href.split('#')[0]);
-    } catch (e) {}
-  }
+  // ----------------------------------------------------------
+  // 3. EXTRA PROJECTS TOGGLE
+  // ----------------------------------------------------------
+  const toggleExtraBtn = document.getElementById('toggle-extra-projects-btn');
+  const extraProjectsWrapper = document.getElementById('extra-projects-wrapper');
+  const extraBtnText = document.getElementById('extra-projects-btn-text');
 
-  // -----------------------------------------------------------
-  // 1. REVEAL OBSERVER
-  // -----------------------------------------------------------
-  const revealElements = document.querySelectorAll('.reveal');
-  revealElements.forEach(el => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 120) {
-      el.classList.add('in');
-    }
-  });
-
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
+  if (toggleExtraBtn && extraProjectsWrapper) {
+    toggleExtraBtn.addEventListener('click', () => {
+      const isHidden = extraProjectsWrapper.classList.contains('hidden');
+      toggleExtraBtn.setAttribute('aria-expanded', String(isHidden));
+      if (isHidden) {
+        extraProjectsWrapper.classList.remove('hidden');
+        if (extraBtnText) extraBtnText.textContent = 'Fewer projects';
+        toggleExtraBtn.querySelector('svg').style.transform = 'rotate(180deg)';
+      } else {
+        extraProjectsWrapper.classList.add('hidden');
+        if (extraBtnText) extraBtnText.textContent = '3 more projects';
+        toggleExtraBtn.querySelector('svg').style.transform = 'rotate(0deg)';
       }
     });
-  }, {
-    threshold: 0.05,
-    rootMargin: '0px 0px 60px 0px'
-  });
-  revealElements.forEach(el => revealObserver.observe(el));
-
-
-  // -----------------------------------------------------------
-  // 2. ENTRANCE GATE CONTROLS (CINEMATIC INTRO vs DIRECT VIEW)
-  // -----------------------------------------------------------
-  const gateOverlay = document.getElementById('gateOverlay');
-  const gateEnterBtn = document.getElementById('gateEnterBtn');
-  const gateSkipBtn = document.getElementById('gateSkipBtn');
-
-  function enterWithIntro() {
-    if (!gateOverlay || gateOverlay.style.display === 'none') return;
-    gateOverlay.classList.add('gate-transitioning');
-    document.documentElement.classList.add('archive-entered');
-    document.body.classList.add('archive-entered');
-    window.scrollTo(0, 0);
-    setActiveDockChapter('ch0');
-
-    setTimeout(() => {
-      gateOverlay.style.display = 'none';
-    }, 820);
   }
 
-  function enterDirectly() {
-    if (!gateOverlay || gateOverlay.style.display === 'none') return;
-    gateOverlay.style.transition = 'none';
-    gateOverlay.style.display = 'none';
-    document.documentElement.classList.add('archive-entered');
-    document.body.classList.add('archive-entered');
-    window.scrollTo(0, 0);
-    setActiveDockChapter('ch0');
-  }
+  // ----------------------------------------------------------
+  // 4. THEME TOGGLER (LIGHT DEFAULT / DARK TOGGLE)
+  // ----------------------------------------------------------
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+  const html = document.documentElement;
 
-  if (gateEnterBtn) {
-    gateEnterBtn.addEventListener('click', enterWithIntro);
-  }
-  if (gateSkipBtn) {
-    gateSkipBtn.addEventListener('click', enterDirectly);
-  }
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && gateOverlay && gateOverlay.style.display !== 'none') {
-      enterDirectly();
-    }
-  });
-
-
-  // -----------------------------------------------------------
-  // 3. CANONICAL CHAPTER NAVIGATION ARCHITECTURE (00 to 08)
-  // -----------------------------------------------------------
-  const CANONICAL_CHAPTERS = [
-    { index: 0, key: '0', numStr: '00', id: 'ch0', name: 'ROOM', title: '00 / ROOM' },
-    { index: 1, key: '1', numStr: '01', id: 'ch1', name: 'GrindLens', title: '01 / GrindLens' },
-    { index: 2, key: '2', numStr: '02', id: 'ch2', name: 'BUILDS', title: '02 / BUILDS' },
-    { index: 3, key: '3', numStr: '03', id: 'ch3', name: 'OSS', title: '03 / OSS' },
-    { index: 4, key: '4', numStr: '04', id: 'ch4', name: 'SKILLS', title: '04 / SKILLS' },
-    { index: 5, key: '5', numStr: '05', id: 'ch5', name: 'RIGOR', title: '05 / RIGOR' },
-    { index: 6, key: '6', numStr: '06', id: 'ch6', name: 'PUBLIC', title: '06 / PUBLIC' },
-    { index: 7, key: '7', numStr: '07', id: 'ch7', name: 'INTERIOR', title: '07 / INTERIOR' },
-    { index: 8, key: '8', numStr: '08', id: 'ch8', name: 'ABOUT', title: '08 / ABOUT' }
-  ];
-
-  const dockItems = document.querySelectorAll('.dock-item');
-
-  function setActiveDockChapter(activeId) {
-    dockItems.forEach(item => {
-      const match = item.getAttribute('data-target') === activeId;
-      item.classList.toggle('active', match);
-    });
-  }
-
-  function resolveCanonicalChapter(input) {
-    if (typeof input === 'number') {
-      return CANONICAL_CHAPTERS.find(c => c.index === input) || null;
-    }
-    if (typeof input === 'string') {
-      const clean = input.replace(/^#/, '').toLowerCase().trim();
-      return CANONICAL_CHAPTERS.find(c =>
-        c.id.toLowerCase() === clean ||
-        c.key === clean ||
-        c.numStr === clean ||
-        c.name.toLowerCase() === clean ||
-        (clean === 'skills' && c.id === 'ch4') ||
-        (clean === 'oss' && c.id === 'ch3') ||
-        (clean === 'builds' && c.id === 'ch2') ||
-        (clean === 'grindlens' && c.id === 'ch1') ||
-        (clean === 'room' && c.id === 'ch0') ||
-        (clean === 'rigor' && c.id === 'ch5') ||
-        (clean === 'public' && c.id === 'ch6') ||
-        (clean === 'interior' && c.id === 'ch7') ||
-        (clean === 'about' && c.id === 'ch8')
-      ) || null;
-    }
-    return null;
-  }
-
-  let isProgrammaticNav = false;
-  let navLockTimer = null;
-
-  function navigateToChapter(target, options = {}) {
-    const ch = resolveCanonicalChapter(target);
-    if (!ch) return false;
-
-    const el = document.getElementById(ch.id);
-    if (!el) return false;
-
-    // If gate overlay is up, dismiss it
-    if (gateOverlay && gateOverlay.style.display !== 'none') {
-      gateOverlay.style.display = 'none';
-      document.documentElement.classList.add('archive-entered');
-      document.body.classList.add('archive-entered');
-    }
-
-    isProgrammaticNav = true;
-    clearTimeout(navLockTimer);
-    navLockTimer = setTimeout(() => {
-      isProgrammaticNav = false;
-    }, 1000);
-
-    setActiveDockChapter(ch.id);
-
-    // Update URL hash
-    const expectedHash = '#' + ch.id;
-    if (options.pushHistory) {
-      if (window.location.hash !== expectedHash) {
-        try {
-          history.pushState(null, '', expectedHash);
-        } catch (e) {}
-      }
-    } else if (options.updateHash !== false) {
-      if (window.location.hash !== expectedHash) {
-        try {
-          history.replaceState(null, '', expectedHash);
-        } catch (e) {}
-      }
-    }
-
-    if (options.immediate) {
-      el.scrollIntoView({ behavior: 'instant', block: 'start' });
+  function setTheme(theme) {
+    if (theme === 'dark') {
+      html.classList.remove('light');
+      html.classList.add('dark');
+      html.style.colorScheme = 'dark';
+      preferences.set('theme', 'dark');
     } else {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      html.classList.remove('dark');
+      html.classList.add('light');
+      html.style.colorScheme = 'light';
+      preferences.set('theme', 'light');
     }
-
-    return true;
   }
 
-  // A. Bottom Dock Clicks
-  dockItems.forEach(item => {
-    item.addEventListener('click', (e) => {
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const current = html.classList.contains('dark') ? 'dark' : 'light';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+  }
+
+  // ----------------------------------------------------------
+  // 5. IN-PLACE INTERACTIVE PROJECT DETAIL MODAL
+  // ----------------------------------------------------------
+  const projectsData = {
+    grindlens: {
+      title: 'GrindLens',
+      category: 'Algorithmic Revision Engine',
+      status: 'Live Production • 422 Users',
+      statusType: 'live',
+      img: 'img/grindlens_banner.png',
+      desc: "I was solving problems every day and still didn't know what to solve next, or which patterns I was completely avoiding. So I built GrindLens to map practiced problems against avoided patterns and automate revision queueing.",
+      highlights: [
+        'Automated LeetCode GraphQL polling to detect accepted solutions and pattern gaps.',
+        'Spaced repetition algorithm prioritizing forgotten problem patterns before interviews.',
+        'Over 422 registered users and 4,180 unique visitors in production.'
+      ],
+      tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS', 'GraphQL'],
+      live: 'https://grindlens.dev',
+      github: 'https://github.com/Harshith1702/GrindLens'
+    },
+    openchat: {
+      title: 'RTRP Chat Rooms (Open Chat)',
+      category: 'Real-Time Ephemeral Chat',
+      status: 'Live Demo',
+      statusType: 'live',
+      img: 'img/rtrp_chat_rooms.png',
+      desc: 'I wanted somewhere to talk without anyone else keeping the conversation. So I built a chat app with no database. There are no accounts or message logs. Messages only exist in memory while the room is open, and disappear completely as soon as the session ends.',
+      highlights: [
+        'Zero-database ephemeral architecture with memory-only room state.',
+        'Room presence isolation with 100-user cap per room and debounced broadcasts.',
+        'Instant media exchange and automatic room cleanup upon client disconnect.'
+      ],
+      tech: ['Node.js', 'Express', 'Socket.io', 'WebSockets'],
+      live: 'https://open-chat-application-ubti.onrender.com',
+      github: 'https://github.com/Harshith1702/Open_Chat_Application'
+    },
+    tracker: {
+      title: 'LeetCode Grind Tracker',
+      category: 'Analytical Dashboard',
+      status: 'Open Source',
+      statusType: 'oss',
+      img: 'img/tracker_ui.png',
+      desc: 'Before GrindLens became a product, it was this. A Python script fetching my LeetCode submissions, a MySQL database, a small PHP API, and a JavaScript dashboard to track streaks and weak topics. That script ran for months before I decided to turn it into a real product.',
+      highlights: [
+        'Python automation fetching daily submissions via LeetCode GraphQL endpoint.',
+        'Relational MySQL schema tracking problem tags, difficulties, and timestamps.',
+        'PHP API serving analytical stats to interactive JavaScript dashboard.'
+      ],
+      tech: ['Python', 'MySQL', 'PHP', 'JavaScript'],
+      live: null,
+      github: 'https://github.com/Harshith1702/leetcode-grind-tracker'
+    },
+    discord: {
+      title: 'LeetCode Discord Reporter',
+      category: 'Discord Automation Bot',
+      status: 'Open Source',
+      statusType: 'oss',
+      img: 'img/discord_reporter.png',
+      desc: 'I was copying my solved problem links into our daily training group every day. I got tired of doing it, so I made a bot do it. A bot that checks the LeetCode GraphQL endpoint every night at 10:15 PM IST for accepted submissions and posts them directly to our Discord server.',
+      highlights: [
+        'Scheduled nightly execution via GitHub Actions workflow.',
+        'Queries recentAcSubmissionList from LeetCode GraphQL endpoint with IST window validation.',
+        'Formats difficulty stats and fires formatted Discord webhook payloads.'
+      ],
+      tech: ['Python', 'GitHub Actions', 'Discord Webhooks', 'GraphQL'],
+      live: null,
+      github: 'https://github.com/Harshith1702/leetcode-discord-reporter'
+    },
+    nptel: {
+      title: 'NPTEL IoT Study Dashboard',
+      category: 'Interactive Study Engine',
+      status: 'Open Source',
+      statusType: 'oss',
+      img: 'img/cathedral_submerged.jpg',
+      desc: "Interactive exam and study dashboard for IIT Kharagpur's Introduction to IoT course with 724 verified questions and searchable solutions. Built to help students navigate massive question banks with instant search and self-assessment modes.",
+      highlights: [
+        'Fast client-side indexed search across 724 verified course questions and diagrams.',
+        'Self-assessment mode with instant scoring and explanation review.',
+        'Zero-dependency vanilla JavaScript, HTML5, and CSS3 architecture.'
+      ],
+      tech: ['JavaScript', 'HTML5', 'CSS3', 'LocalStorage'],
+      live: null,
+      github: 'https://github.com/Harshith1702/nptel-iot'
+    },
+    socialgraph: {
+      title: 'Social Follower Graph (C)',
+      category: 'Systems & Data Structures',
+      status: 'Open Source',
+      statusType: 'oss',
+      img: 'img/city_inverted.jpg',
+      desc: 'Low-level C simulation of a directed follower network with dynamic user creation, mutual follow tracking, and heap-allocated adjacency lists. Built to explore graph algorithms and manual memory management in systems programming.',
+      highlights: [
+        'Heap-allocated adjacency list representation with custom memory allocation guards.',
+        'Directed graph traversal supporting mutual follower discovery and degree metrics.',
+        'Valgrind-verified zero memory leaks and proper recursive deallocation.'
+      ],
+      tech: ['C', 'Data Structures', 'Memory Management', 'Graph Algorithms'],
+      live: null,
+      github: 'https://github.com/Harshith1702/Social_Media_Follower_System_C'
+    },
+    deadpacket: {
+      title: 'Dead Packet Detective',
+      category: 'Network Protocol Utility',
+      status: 'Open Source',
+      statusType: 'oss',
+      img: 'img/bedside_3am.jpg',
+      desc: 'Python network utility that captures and parses network protocol headers, inspects TCP/UDP flags, and logs flow anomalies. Inspects packets at the raw socket level for diagnostic and monitoring workflows.',
+      highlights: [
+        'Raw socket packet sniffing and binary protocol header unpacking.',
+        'TCP flag analysis (SYN, ACK, FIN, RST) and port connection state tracking.',
+        'Real-time anomaly detection logging malformed packets and burst connections.'
+      ],
+      tech: ['Python', 'Networking', 'Raw Sockets', 'Packet Parsing'],
+      live: null,
+      github: 'https://github.com/Harshith1702/dead-packet-detective'
+    }
+  };
+
+  const projectModal = document.getElementById('project-detail-modal');
+  const modalCloseBtn = document.getElementById('modal-project-close-btn');
+  const modalImg = document.getElementById('modal-project-img');
+  const modalCat = document.getElementById('modal-project-category');
+  const modalTitle = document.getElementById('modal-project-title');
+  const modalDesc = document.getElementById('modal-project-desc');
+  const modalStatus = document.getElementById('modal-project-status');
+  const modalStatusText = document.getElementById('modal-status-text');
+  const modalExternalLink = document.getElementById('modal-external-link');
+  const modalGithubLink = document.getElementById('modal-github-link');
+  const modalHighlights = document.getElementById('modal-project-highlights');
+  const modalTech = document.getElementById('modal-project-tech');
+  const modalActionPrimary = document.getElementById('modal-action-primary');
+  const modalActionSecondary = document.getElementById('modal-action-secondary');
+
+  function openProjectModal(projectId) {
+    const data = projectsData[projectId];
+    if (!data || !projectModal) return;
+
+    if (modalImg) {
+      modalImg.src = data.img;
+      modalImg.alt = data.title;
+    }
+    if (modalCat) modalCat.textContent = data.category;
+    if (modalTitle) modalTitle.textContent = data.title;
+    if (modalDesc) modalDesc.textContent = data.desc;
+
+    if (modalStatus && modalStatusText) {
+      modalStatusText.textContent = data.status;
+      if (data.statusType === 'live') {
+        modalStatus.className = 'modal-status-pill modal-status-live';
+      } else {
+        modalStatus.className = 'modal-status-pill modal-status-oss';
+      }
+    }
+
+    if (modalExternalLink) {
+      if (data.live) {
+        modalExternalLink.href = data.live;
+        modalExternalLink.style.display = 'inline-flex';
+      } else {
+        modalExternalLink.style.display = 'none';
+      }
+    }
+
+    if (modalGithubLink) {
+      if (data.github) {
+        modalGithubLink.href = data.github;
+        modalGithubLink.style.display = 'inline-flex';
+      } else {
+        modalGithubLink.style.display = 'none';
+      }
+    }
+
+    if (modalHighlights) {
+      modalHighlights.innerHTML = data.highlights.map(h => '<li><span class="bullet" aria-hidden="true">•</span><span>' + h + '</span></li>').join('');
+    }
+
+    if (modalTech) {
+      modalTech.innerHTML = data.tech.map(t => '<span class="modal-tech-pill">' + t + '</span>').join('');
+    }
+
+    if (modalActionPrimary) {
+      if (data.live) {
+        modalActionPrimary.href = data.live;
+        modalActionPrimary.style.display = 'inline-flex';
+      } else {
+        modalActionPrimary.style.display = 'none';
+      }
+    }
+
+    if (modalActionSecondary) {
+      if (data.github) {
+        modalActionSecondary.href = data.github;
+        modalActionSecondary.style.display = 'inline-flex';
+      } else {
+        modalActionSecondary.style.display = 'none';
+      }
+    }
+
+    projectModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProjectModal() {
+    if (projectModal) {
+      projectModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  document.querySelectorAll('[data-project-id]').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
       e.preventDefault();
-      const targetId = item.getAttribute('data-target');
-      navigateToChapter(targetId, { pushHistory: true });
+      const id = card.getAttribute('data-project-id');
+      openProjectModal(id);
     });
   });
 
-  const dockContact = document.querySelector('.dock-contact-link');
-  if (dockContact) {
-    dockContact.addEventListener('click', (e) => {
-      e.preventDefault();
-      navigateToChapter('ch8', { pushHistory: true });
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', closeProjectModal);
+  }
+
+  if (projectModal) {
+    projectModal.addEventListener('click', (e) => {
+      if (e.target === projectModal) {
+        closeProjectModal();
+      }
     });
   }
 
-  // B. Keyboard Number Shortcuts (Keys '0' through '8')
-  window.addEventListener('keydown', (e) => {
-    if (e.target.matches('input, textarea, [contenteditable="true"]')) return;
-    if (e.metaKey || e.ctrlKey || e.altKey) return;
-    if (!document.body.classList.contains('archive-entered')) return;
+  // ----------------------------------------------------------
+  // 6. COMMAND PALETTE (CMD+K)
+  // ----------------------------------------------------------
+  const cmdkBtn = document.getElementById('cmdk-btn');
+  const cmdkModal = document.getElementById('cmdk-modal');
+  const cmdkInput = document.getElementById('cmdk-input');
+  const cmdkList = document.getElementById('cmdk-list');
 
-    const key = e.key;
-    if (['0', '1', '2', '3', '4', '5', '6', '7', '8'].includes(key)) {
+  function openCmdk() {
+    if (cmdkModal) {
+      cmdkModal.classList.add('open');
+      if (cmdkInput) {
+        cmdkInput.value = '';
+        cmdkInput.focus();
+        filterCmdk('');
+      }
+    }
+  }
+
+  function closeCmdk() {
+    if (cmdkModal) {
+      cmdkModal.classList.remove('open');
+    }
+  }
+
+  if (cmdkBtn) {
+    cmdkBtn.addEventListener('click', openCmdk);
+  }
+
+  if (cmdkModal) {
+    cmdkModal.addEventListener('click', (e) => {
+      if (e.target === cmdkModal) {
+        closeCmdk();
+      }
+    });
+  }
+
+  function filterCmdk(query) {
+    if (!cmdkList) return;
+    const items = cmdkList.querySelectorAll('.cmdk-item');
+    const q = query.toLowerCase().trim();
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      if (!q || text.includes(q)) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  if (cmdkInput) {
+    cmdkInput.addEventListener('input', (e) => {
+      filterCmdk(e.target.value);
+    });
+  }
+
+  if (cmdkList) {
+    cmdkList.addEventListener('click', (e) => {
+      const item = e.target.closest('.cmdk-item');
+      if (!item) return;
+      const action = item.getAttribute('data-action');
+      if (action === 'email') {
+        navigator.clipboard.writeText('harshith.dev.work@gmail.com');
+        item.querySelector('span').textContent = 'Email copied to clipboard!';
+        setTimeout(() => {
+          closeCmdk();
+          item.querySelector('span').textContent = 'Copy Email Address (harshith.dev.work@gmail.com)';
+        }, 800);
+      } else if (action === 'theme') {
+        const current = html.classList.contains('dark') ? 'dark' : 'light';
+        setTheme(current === 'dark' ? 'light' : 'dark');
+        closeCmdk();
+      } else if (action === 'github') {
+        window.open('https://github.com/Harshith1702', '_blank', 'noopener,noreferrer');
+        closeCmdk();
+      } else if (action === 'twitter') {
+        window.open('https://x.com/harshith_irl', '_blank', 'noopener,noreferrer');
+        closeCmdk();
+      } else if (action === 'leetcode') {
+        window.open('https://leetcode.com/u/Harshith-2007/', '_blank', 'noopener,noreferrer');
+        closeCmdk();
+      } else if (action === 'grindlens') {
+        window.open('https://grindlens.dev', '_blank', 'noopener,noreferrer');
+        closeCmdk();
+      }
+    });
+  }
+
+  // Keyboard Navigation: Escape and CMD+K
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
-      const num = parseInt(key, 10);
-      navigateToChapter(num, { pushHistory: true });
+      if (cmdkModal && cmdkModal.classList.contains('open')) {
+        closeCmdk();
+      } else {
+        openCmdk();
+      }
+    } else if (e.key === 'Escape') {
+      if (projectModal && projectModal.classList.contains('open')) {
+        closeProjectModal();
+      }
+      closeCmdk();
     }
   });
 
-  // C. Hero Scroll Cue in Chapter 00
-  const heroScrollBtn = document.querySelector('.hero-scroll-action');
-  if (heroScrollBtn) {
-    heroScrollBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      navigateToChapter('ch1', { pushHistory: true });
-    });
+  // ----------------------------------------------------------
+  // 7. VISITOR COUNTER
+  // ----------------------------------------------------------
+  const visitorCountEl = document.getElementById('visitor-count');
+  if (visitorCountEl) {
+    fetch('/api/visit', { method: 'POST', credentials: 'same-origin', signal: AbortSignal.timeout(8000) })
+      .then(response => {
+        if (!response.ok) throw new Error('Counter unavailable');
+        return response.json();
+      })
+      .then(data => {
+        if (!data.success || !Number.isSafeInteger(data.count) || data.count < 0) throw new Error('Invalid count');
+        visitorCountEl.textContent = data.count.toLocaleString();
+      })
+      .catch(() => { visitorCountEl.textContent = 'Unavailable'; });
   }
 
-  // D. Scroll Spy & Dynamic Hash Sync
-  function performScrollSpy() {
-    if (isProgrammaticNav || !document.body.classList.contains('archive-entered')) return;
+  // ----------------------------------------------------------
+  // 11. LIVE DOTO DIGITAL CLOCK
+  // ----------------------------------------------------------
+  function updateDigitalClock() {
+    const clockEl = document.getElementById('live-clock');
+    if (!clockEl) return;
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    clockEl.textContent = `${pad(now.getHours())}.${pad(now.getMinutes())}.${pad(now.getSeconds())}`;
+  }
+  setInterval(updateDigitalClock, 1000);
+  updateDigitalClock();
 
-    const scrollY = window.scrollY || window.pageYOffset;
-    const probeY = scrollY + window.innerHeight * 0.35;
-
-    let currentCh = CANONICAL_CHAPTERS[0];
-
-    for (let i = 0; i < CANONICAL_CHAPTERS.length; i++) {
-      const ch = CANONICAL_CHAPTERS[i];
-      const el = document.getElementById(ch.id);
-      if (el) {
-        const top = el.getBoundingClientRect().top + scrollY;
-        if (top <= probeY) {
-          currentCh = ch;
+  // ----------------------------------------------------------
+  // 12. EXPERIENCE ACCORDION INTERACTION
+  // ----------------------------------------------------------
+  const expItems = document.querySelectorAll('.exp-accordion-item');
+  expItems.forEach(item => {
+    const header = item.querySelector('.exp-item-header');
+    const body = item.querySelector('.exp-item-body');
+    const chevron = item.querySelector('.exp-chevron');
+    if (header && body) {
+      header.addEventListener('click', () => {
+        const isOpen = header.getAttribute('aria-expanded') === 'true';
+        header.setAttribute('aria-expanded', String(!isOpen));
+        if (!isOpen) {
+          body.classList.remove('grid-rows-[0fr]');
+          body.classList.add('grid-rows-[1fr]');
+          if (chevron) chevron.style.transform = 'translateY(-50%) rotate(180deg)';
         } else {
-          break;
+          body.classList.remove('grid-rows-[1fr]');
+          body.classList.add('grid-rows-[0fr]');
+          if (chevron) chevron.style.transform = 'translateY(-50%) rotate(0deg)';
         }
-      }
-    }
-
-    if (currentCh) {
-      setActiveDockChapter(currentCh.id);
-      const expectedHash = '#' + currentCh.id;
-      if (window.location.hash !== expectedHash) {
-        try {
-          history.replaceState(null, '', expectedHash);
-        } catch (e) {}
-      }
-    }
-  }
-
-  let scrollSpyTicking = false;
-  window.addEventListener('scroll', () => {
-    if (!scrollSpyTicking) {
-      window.requestAnimationFrame(() => {
-        performScrollSpy();
-        scrollSpyTicking = false;
       });
-      scrollSpyTicking = true;
-    }
-  }, { passive: true });
-
-  // E. Browser Back / Forward History Navigation
-  window.addEventListener('hashchange', () => {
-    if (!document.body.classList.contains('archive-entered')) return;
-    if (window.location.hash) {
-      navigateToChapter(window.location.hash, { immediate: false, updateHash: false });
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
+      });
     }
   });
 
-  // Reset scroll & strip hash on page unload/refresh
-  window.addEventListener('beforeunload', () => {
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
-    if (window.location.hash) {
-      try {
-        history.replaceState(null, '', window.location.href.split('#')[0]);
-      } catch (e) {}
-    }
-    window.scrollTo(0, 0);
-  });
-
-
-  // -----------------------------------------------------------
-  // 4. WEDNESDAY'S THING EASTER EGG INTERACTION
-  // -----------------------------------------------------------
-  const thingEasterEgg = document.getElementById('thingEasterEgg');
-  const thingWhisper = document.getElementById('thingWhisper');
-  const whispers = [
-    "Thing approves.",
-    "Watching from the shadows.",
-    "Never let them see you blink.",
-    "Two taps for yes.",
-    "The dark suits you."
-  ];
-  let whisperIdx = 0;
-
-  if (thingEasterEgg && thingWhisper) {
-    thingEasterEgg.addEventListener('click', () => {
-      whisperIdx = (whisperIdx + 1) % whispers.length;
-      thingWhisper.textContent = whispers[whisperIdx];
-      thingEasterEgg.classList.add('thing-active');
-      
-      // Tap vibration on supported mobile devices
-      if (navigator.vibrate) {
-        navigator.vibrate([30, 50, 30]);
+  // ----------------------------------------------------------
+  // 13. OPEN SOURCE CONTRIBUTIONS TABS
+  // ----------------------------------------------------------
+  const osPrData = {
+    merged: [
+      {
+        repo: 'RocketChat/Rocket.Chat',
+        title: 'Batch merge: timestamp parsing, isNodeOfType guard tests, emoji fixes',
+        pr: '#39853',
+        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39853',
+        date: 'Apr 2026',
+        status: 'merged'
+      },
+      {
+        repo: 'RocketChat/Rocket.Chat',
+        title: 'Fix timestamp parsing in markdown formatted messages',
+        pr: '#39455',
+        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39455',
+        date: 'Mar 2026',
+        status: 'merged'
+      },
+      {
+        repo: 'RocketChat/Rocket.Chat',
+        title: 'Add defensive unit tests for isNodeOfType discriminators',
+        pr: '#39737',
+        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39737',
+        date: 'Apr 2026',
+        status: 'merged'
+      },
+      {
+        repo: 'RocketChat/Rocket.Chat',
+        title: 'Fix emoji coverage in plain text reduction pipeline',
+        pr: '#39733',
+        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39733',
+        date: 'Apr 2026',
+        status: 'merged'
+      },
+      {
+        repo: 'NSoC 2026 Nationwide',
+        title: '30+ Merged Pull Requests across open source repositories (Rank 70 / 988)',
+        pr: 'NSoC',
+        url: 'https://github.com/Harshith1702',
+        date: '2026',
+        status: 'merged'
       }
+    ],
+    open: [
+      {
+        repo: 'Harshith1702/GrindLens',
+        title: 'Spaced repetition queueing engine optimization for GraphQL polling',
+        pr: '#12',
+        url: 'https://github.com/Harshith1702/GrindLens',
+        date: 'Active',
+        status: 'open'
+      },
+      {
+        repo: 'Harshith1702/Open_Chat_Application',
+        title: 'Debounced room broadcast cleanup and socket heartbeat telemetry',
+        pr: '#4',
+        url: 'https://github.com/Harshith1702/Open_Chat_Application',
+        date: 'Active',
+        status: 'open'
+      }
+    ],
+    closed: [
+      {
+        repo: 'RocketChat/Rocket.Chat',
+        title: 'Exploratory parser benchmark across nested markdown trees',
+        pr: '#39210',
+        url: 'https://github.com/RocketChat/Rocket.Chat',
+        date: 'Mar 2026',
+        status: 'closed'
+      }
+    ]
+  };
 
-      setTimeout(() => {
-        thingEasterEgg.classList.remove('thing-active');
-      }, 3500);
-    });
+  const osContainer = document.getElementById('os-pr-container');
+  const osTabs = document.querySelectorAll('.os-tab-btn');
+  const osGlider = document.getElementById('os-tab-glider');
+
+  function renderOsPrs(tabKey) {
+    if (!osContainer) return;
+    const items = osPrData[tabKey] || [];
+    if (items.length === 0) {
+      osContainer.innerHTML = '<p class="py-4 text-[13px] text-zinc-500">No pull requests in this category.</p>';
+      return;
+    }
+    osContainer.innerHTML = items.map(item => `
+      <a class="os-pr-item group" href="${item.url}" target="_blank" rel="noopener noreferrer">
+        <div class="flex items-start gap-3 min-w-0">
+          <span class="os-status-dot-${item.status}"></span>
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[12px] font-mono text-zinc-400 dark:text-zinc-500">${item.repo}</span>
+              <span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">${item.pr}</span>
+            </div>
+            <p class="text-[13.5px] font-medium text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors mt-0.5 leading-snug">${item.title}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0 font-mono text-[11px] text-zinc-400">
+          <span>${item.date}</span>
+          <span class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+        </div>
+      </a>
+    `).join('');
   }
 
-
-
-  // -----------------------------------------------------------
-  // 5. OTHER PROJECTS DRAWER (OPENS WHEN PRESSED ONLY)
-  // -----------------------------------------------------------
-  const otherProjectsTrigger = document.getElementById('otherProjectsTrigger');
-  const otherProjectsPanel = document.getElementById('otherProjectsPanel');
-  if (otherProjectsTrigger && otherProjectsPanel) {
-    otherProjectsTrigger.addEventListener('click', () => {
-      const isExpanded = otherProjectsTrigger.getAttribute('aria-expanded') === 'true';
-      const willExpand = !isExpanded;
-      otherProjectsTrigger.setAttribute('aria-expanded', String(willExpand));
-      otherProjectsPanel.hidden = !willExpand;
-      const numSpan = otherProjectsTrigger.querySelector('.trigger-num');
-      if (numSpan) {
-        numSpan.textContent = willExpand ? '[-]' : '[+]';
-      }
-    });
-  }
-
-  // -----------------------------------------------------------
-  async function initVisitorCounter() {
-    const noteEl = document.getElementById('visitorPresenceNote');
-    const countEl = document.getElementById('visitorCountVal');
-    if (!noteEl || !countEl) return;
-
-    try {
-      const cachedCount = localStorage.getItem('archive_last_count');
-      if (cachedCount && !countEl.textContent.trim()) {
-        countEl.textContent = Number(cachedCount).toLocaleString();
-      }
-    } catch (e) {}
-
-    function resolveApiUrl(path) {
-      if (typeof window.__PORTFOLIO_API_URL__ === 'string' && window.__PORTFOLIO_API_URL__) {
-        return window.__PORTFOLIO_API_URL__.replace(/\/$/, '') + path;
-      }
-      if (window.location.protocol === 'file:') {
-        return 'http://localhost:3000' + path;
-      }
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        if (window.location.port && window.location.port !== '3000') {
-          return 'http://localhost:3000' + path;
+  if (osTabs && osTabs.length > 0) {
+    const gliderOffsets = {
+      merged: '0px',
+      open: '74px',
+      closed: '148px'
+    };
+    osTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const key = tab.getAttribute('data-tab');
+        osTabs.forEach(t => {
+          t.classList.remove('active', 'text-zinc-900', 'dark:text-zinc-100');
+          t.classList.add('text-zinc-500', 'dark:text-zinc-400');
+        });
+        tab.classList.add('active', 'text-zinc-900', 'dark:text-zinc-100');
+        tab.classList.remove('text-zinc-500', 'dark:text-zinc-400');
+        if (osGlider && gliderOffsets[key]) {
+          osGlider.style.transform = `translateX(${gliderOffsets[key]})`;
         }
-      }
-      return path;
-    }
-
-    let anonVid = null;
-    try {
-      anonVid = localStorage.getItem('archive_anon_vid');
-    } catch (e) {}
-
-    const headers = { 'Content-Type': 'application/json' };
-    if (anonVid) {
-      headers['X-Visitor-Id'] = anonVid;
-    }
-
-    const targetUrl = resolveApiUrl('/api/visit');
-
-    try {
-      const response = await fetch(targetUrl, {
-        method: 'POST',
-        headers: headers,
-        credentials: 'include'
+        renderOsPrs(key);
       });
-
-      if (!response.ok) {
-        throw new Error(`Visitor API status ${response.status}`);
-      }
-
-      const data = await response.json();
-      if (data && typeof data.count === 'number') {
-        countEl.textContent = Number(data.count).toLocaleString();
-        try {
-          localStorage.setItem('archive_last_count', data.count);
-          if (data.visitorId) {
-            localStorage.setItem('archive_anon_vid', data.visitorId);
-          }
-        } catch (e) {}
-      }
-    } catch (err) {
-      try {
-        const readUrl = resolveApiUrl('/api/visit/count');
-        const readResponse = await fetch(readUrl, { credentials: 'include' });
-        if (readResponse.ok) {
-          const readData = await readResponse.json();
-          if (readData && typeof readData.count === 'number') {
-            countEl.textContent = Number(readData.count).toLocaleString();
-            try {
-              localStorage.setItem('archive_last_count', readData.count);
-            } catch (e) {}
-            return;
-          }
-        }
-      } catch (readErr) {}
-
-      if (targetUrl !== 'http://localhost:3000/api/visit') {
-        try {
-          const localRes = await fetch('http://localhost:3000/api/visit', {
-            method: 'POST',
-            headers: headers,
-            credentials: 'include'
-          });
-          if (localRes.ok) {
-            const localData = await localRes.json();
-            if (localData && typeof localData.count === 'number') {
-              countEl.textContent = Number(localData.count).toLocaleString();
-              try {
-                localStorage.setItem('archive_last_count', localData.count);
-              } catch (e) {}
-              return;
-            }
-          }
-        } catch (localErr) {}
-      }
-
-      console.warn('[Visitor Counter] API currently unavailable:', err.message);
-    }
+    });
+    renderOsPrs('merged');
   }
 
-  initVisitorCounter();
+  // ----------------------------------------------------------
+  // 14. FLOATING RIGHT INDEX SCROLL SPY
+  // ----------------------------------------------------------
+  const indexLinks = document.querySelectorAll('.nav-index-link');
+  const floatingIndexTrackedSections = ['experience', 'projects', 'opensource', 'rigor', 'skills', 'highlights'];
+
+  function updateIndexActive() {
+    const scrollY = window.scrollY + 200;
+    let currentId = 'experience';
+    for (const id of floatingIndexTrackedSections) {
+      const el = document.getElementById(id);
+      if (el) {
+        const top = el.offsetTop;
+        if (scrollY >= top) {
+          currentId = id;
+        }
+      }
+    }
+    indexLinks.forEach(link => {
+      if (link.getAttribute('data-section') === currentId) {
+        link.classList.add('active-index');
+      } else {
+        link.classList.remove('active-index');
+      }
+    });
+  }
+  window.addEventListener('scroll', updateIndexActive, { passive: true });
+  updateIndexActive();
 
 });
+
