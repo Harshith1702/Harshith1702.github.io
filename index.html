@@ -81,41 +81,50 @@
         <div class="flex items-center gap-4 sm:gap-5">
           <div class="relative p-[3px] rounded-[6px] sm:rounded-[8px] border-[1.5px] border-black/30 dark:border-white/[0.15] shrink-0 bg-white dark:bg-zinc-950 shadow-sm">
             <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-[3px] sm:rounded-[5px] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
-              <img alt="Harshith Padakanti" class="h-full w-full object-cover" id="profile-avatar" src="img/about_harshith.jpg"/>
+              <img alt="Wenz" class="h-full w-full object-cover transition-opacity duration-300" id="profile-avatar" src="img/about_wednesday.jpg"/>
             </div>
           </div>
           <div class="flex flex-col">
             <h1 class="text-[20px] sm:text-[24px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight" id="profile-name">
-              Harshith Padakanti
+              Wenz
             </h1>
-            <p class="text-[13px] sm:text-[14px] text-zinc-500 dark:text-zinc-400 font-mono mt-0.5" id="profile-subtitle">19 • India</p>
+            <p class="text-[13px] sm:text-[14px] text-zinc-500 dark:text-zinc-400 font-mono mt-0.5" id="profile-subtitle">19 • Systems Builder &amp; Competitive Programmer</p>
           </div>
         </div>
-        <!-- Right Controls: Command Palette Trigger & Theme Toggle -->
-        <div class="flex items-start justify-end gap-2 sm:gap-3 h-20 sm:h-24 py-1">
-          <button aria-label="Open command palette" class="relative group cursor-pointer transition-all duration-300 active:scale-95" id="cmdk-btn" type="button">
-            <div class="absolute -inset-[4.5px] border border-black/5 dark:border-white/5 rounded-[9px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10"></div>
-            <div class="relative flex items-center gap-1.5 px-3 py-1 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[5px] text-[11px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm font-mono">
-              <span class="leading-none mt-[0.5px]">⌘</span>
-              <span class="leading-none mt-[0.5px]">K</span>
-            </div>
-          </button>
-          <button aria-label="Toggle theme" class="relative z-50 flex h-[28px] w-[28px] cursor-pointer items-center justify-center text-zinc-500 transition-all duration-300 hover:text-zinc-900 active:scale-95 dark:text-zinc-400 hover:dark:text-zinc-100" id="theme-toggle-btn" type="button">
-            <svg class="dark:hidden h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path>
-            </svg>
-            <svg class="hidden dark:block h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2"></path>
-              <path d="M12 20v2"></path>
-              <path d="m4.93 4.93 1.41 1.41"></path>
-              <path d="m17.66 17.66 1.41 1.41"></path>
-              <path d="M2 12h2"></path>
-              <path d="M20 12h2"></path>
-              <path d="m6.34 17.66-1.41 1.41"></path>
-              <path d="m19.07 4.93-1.41 1.41"></path>
-            </svg>
-          </button>
+        <!-- Right Controls: Utility Row (⌘K, Thing, Theme) + Persona Switcher Pill -->
+        <div class="flex flex-col items-end justify-center gap-1.5 h-20 sm:h-24 py-1">
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <button aria-label="Open command palette" class="relative group cursor-pointer transition-all duration-300 active:scale-95" id="cmdk-btn" type="button">
+              <div class="absolute -inset-[4.5px] border border-black/5 dark:border-white/5 rounded-[9px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10"></div>
+              <div class="relative flex items-center gap-1.5 px-2.5 py-1 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[5px] text-[11px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm font-mono">
+                <span class="leading-none mt-[0.5px]">⌘</span>
+                <span class="leading-none mt-[0.5px]">K</span>
+              </div>
+            </button>
+            <button id="thing-toggle-btn" aria-label="Toggle Thing companion" title="Toggle Thing Companion (Wednesday Addams Hand)" class="relative flex h-[28px] w-[28px] cursor-pointer items-center justify-center text-zinc-500 transition-all duration-300 hover:text-zinc-900 active:scale-95 dark:text-zinc-400 hover:dark:text-zinc-100 thing-toggle-active" type="button">
+              <span class="text-sm select-none">✋</span>
+            </button>
+            <button aria-label="Toggle theme" class="relative z-50 flex h-[28px] w-[28px] cursor-pointer items-center justify-center text-zinc-500 transition-all duration-300 hover:text-zinc-900 active:scale-95 dark:text-zinc-400 hover:dark:text-zinc-100" id="theme-toggle-btn" type="button">
+              <svg class="dark:hidden h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path>
+              </svg>
+              <svg class="hidden dark:block h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+            </button>
+          </div>
+          <div id="persona-toggle-btn" class="persona-switch-btn" role="tablist" aria-label="Persona switch">
+            <button type="button" id="tab-wenz" class="persona-pill-tab active" role="tab" aria-selected="true">Wenz</button>
+            <button type="button" id="tab-harshith" class="persona-pill-tab" role="tab" aria-selected="false">Harshith</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1092,6 +1101,14 @@
           <span class="text-amber-500 font-bold text-xs">LC</span>
           <span>Open LeetCode Profile</span>
         </div>
+        <div class="cmdk-item" data-action="thing">
+          <span class="text-sm select-none">✋</span>
+          <span>Toggle Thing Companion (Wednesday Addams Hand)</span>
+        </div>
+        <div class="cmdk-item" data-action="persona">
+          <span class="text-sm select-none">🔄</span>
+          <span>Switch Persona (Wenz / Harshith)</span>
+        </div>
         <div class="cmdk-item" data-action="grindlens">
           <span class="font-bold text-xs">GL</span>
           <span>Launch GrindLens Web App</span>
@@ -1100,6 +1117,13 @@
     </div>
   </div>
 
-  <script src="script.js?v=53"></script>
+  <!-- Interactive Thing (Wednesday Addams Hand) Crawler -->
+  <div id="thing-companion" class="thing-companion" role="img" aria-label="Thing from Wednesday Addams crawling companion">
+    <div class="thing-shadow" id="thing-shadow"></div>
+    <img src="img/thing.png" alt="Thing" class="thing-sprite" id="thing-sprite" draggable="false" />
+    <div class="thing-speech-bubble" id="thing-bubble">*tap tap*</div>
+  </div>
+
+  <script src="script.js?v=54"></script>
 </body>
 </html>

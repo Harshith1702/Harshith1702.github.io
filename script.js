@@ -71,6 +71,254 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ----------------------------------------------------------
+  // 4.1. INTERACTIVE THING COMPANION (WEDNESDAY ADDAMS HAND CRAWLER)
+  // Crawls toward mouse cursor, fingertip scuttle, idle tapping, and click interaction.
+  // ----------------------------------------------------------
+  const thingCompanion = document.getElementById('thing-companion');
+  const thingSprite = document.getElementById('thing-sprite');
+  const thingShadow = document.getElementById('thing-shadow');
+  const thingBubble = document.getElementById('thing-bubble');
+  const thingToggleBtn = document.getElementById('thing-toggle-btn');
+
+  let thingEnabled = preferences.get('thing_enabled') !== 'false';
+
+  function updateThingVisibility() {
+    if (!thingCompanion) return;
+    if (thingEnabled) {
+      thingCompanion.style.display = 'block';
+      if (thingToggleBtn) thingToggleBtn.classList.add('thing-toggle-active');
+    } else {
+      thingCompanion.style.display = 'none';
+      if (thingToggleBtn) thingToggleBtn.classList.remove('thing-toggle-active');
+    }
+  }
+
+  let bubbleTimer = null;
+  function showThingBubble(text, duration = 1600) {
+    if (!thingBubble) return;
+    thingBubble.textContent = text;
+    thingBubble.classList.add('visible');
+    clearTimeout(bubbleTimer);
+    bubbleTimer = setTimeout(() => {
+      thingBubble.classList.remove('visible');
+    }, duration);
+  }
+
+  function toggleThingCompanion() {
+    thingEnabled = !thingEnabled;
+    preferences.set('thing_enabled', thingEnabled.toString());
+    updateThingVisibility();
+    if (thingBubble && thingEnabled) {
+      showThingBubble('*crawling back* 🖐', 1600);
+    }
+  }
+
+  if (thingToggleBtn) {
+    thingToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleThingCompanion();
+    });
+  }
+
+  if (thingCompanion) {
+    updateThingVisibility();
+
+    // Initial position on screen
+    let currentX = window.innerWidth * 0.75;
+    let currentY = window.innerHeight * 0.65;
+    let targetX = currentX;
+    let targetY = currentY;
+    let facing = 1;
+    let crawlCycle = 0;
+    let isMoving = false;
+    let idleTicks = 0;
+    let tapCycle = 0;
+    let hopOffset = 0;
+
+    // Track mouse
+    window.addEventListener('mousemove', (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      idleTicks = 0;
+      isMoving = true;
+    }, { passive: true });
+
+    // Touch support for mobile/tablet
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        targetX = e.touches[0].clientX;
+        targetY = e.touches[0].clientY;
+        idleTicks = 0;
+        isMoving = true;
+      }
+    }, { passive: true });
+
+    // Click reaction: hop & tap
+    thingCompanion.addEventListener('click', (e) => {
+      e.stopPropagation();
+      hopOffset = -22;
+      const phrases = ['*tap tap tap*', '*scuttles*', '*handshake?*', '*scampering*', '🖐', 'Thing approves.'];
+      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+      showThingBubble(randomPhrase, 1400);
+    });
+
+    // Animation crawl loop
+    function animateThing() {
+      if (!thingEnabled || !thingCompanion) {
+        requestAnimationFrame(animateThing);
+        return;
+      }
+
+      // Smooth damp hop offset back to 0
+      hopOffset += (0 - hopOffset) * 0.15;
+
+      const dx = targetX - currentX;
+      const dy = targetY - currentY;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist > 28) {
+        // Crawling toward cursor
+        isMoving = true;
+        idleTicks = 0;
+        const speed = Math.min(Math.max(dist * 0.08, 3.5), 9);
+        currentX += (dx / dist) * speed;
+        currentY += (dy / dist) * speed;
+
+        crawlCycle += speed * 0.22;
+        const wiggle = Math.sin(crawlCycle) * 14;
+        const bob = Math.abs(Math.sin(crawlCycle * 2)) * -6;
+
+        if (dx < -3) facing = -1;
+        else if (dx > 3) facing = 1;
+
+        thingCompanion.style.transform = `translate3d(${currentX - 22}px, ${currentY - 38 + hopOffset}px, 0)`;
+        if (thingSprite) {
+          thingSprite.style.transform = `scaleX(${facing}) rotate(${wiggle}deg) translateY(${bob}px)`;
+        }
+        if (thingShadow) {
+          thingShadow.style.transform = `scale(${1 - bob * 0.06})`;
+        }
+      } else {
+        // Stationary / Idle
+        isMoving = false;
+        idleTicks++;
+
+        // Fingertip tapping every ~3.5 seconds of idle
+        if (idleTicks > 120 && idleTicks % 200 < 50) {
+          tapCycle += 0.4;
+          const tapWiggle = Math.sin(tapCycle * 6) * 8;
+          const tapBob = Math.abs(Math.sin(tapCycle * 6)) * -3;
+          if (thingSprite) {
+            thingSprite.style.transform = `scaleX(${facing}) rotate(${tapWiggle}deg) translateY(${tapBob}px)`;
+          }
+        } else {
+          // Resting flat
+          if (thingSprite) {
+            thingSprite.style.transform = `scaleX(${facing}) rotate(0deg) translateY(0px)`;
+          }
+          if (thingShadow) {
+            thingShadow.style.transform = 'scale(1)';
+          }
+        }
+
+        thingCompanion.style.transform = `translate3d(${currentX - 22}px, ${currentY - 38 + hopOffset}px, 0)`;
+      }
+
+      requestAnimationFrame(animateThing);
+    }
+
+    animateThing();
+  }
+
+  // ----------------------------------------------------------
+  // 4.2. PERSONA SWITCHER (WENZ / HARSHITH)
+  // ----------------------------------------------------------
+  const personas = {
+    wenz: {
+      name: 'Wenz',
+      subtitle: '19 • Systems Builder & Competitive Programmer',
+      avatar: 'img/about_wednesday.jpg',
+      alt: 'Wednesday Addams',
+      greeting: '*Wednesday approves* 🖤'
+    },
+    harshith: {
+      name: 'Harshith Padakanti',
+      subtitle: '19 • India',
+      avatar: 'img/about_harshith.jpg',
+      alt: 'Harshith Padakanti',
+      greeting: '*Harshith!* 🖐'
+    }
+  };
+
+  const profileName = document.getElementById('profile-name');
+  const profileSubtitle = document.getElementById('profile-subtitle');
+  const profileAvatar = document.getElementById('profile-avatar');
+  const personaToggleBtn = document.getElementById('persona-toggle-btn');
+  const tabWenz = document.getElementById('tab-wenz');
+  const tabHarshith = document.getElementById('tab-harshith');
+
+  let currentPersona = preferences.get('persona') || 'wenz';
+
+  function applyPersona(personaKey, showBubble = false) {
+    const p = personas[personaKey] || personas.wenz;
+    currentPersona = personaKey;
+    preferences.set('persona', personaKey);
+
+    if (profileName) profileName.textContent = p.name;
+    if (profileSubtitle) profileSubtitle.textContent = p.subtitle;
+    if (profileAvatar) {
+      profileAvatar.src = p.avatar;
+      profileAvatar.alt = p.alt;
+    }
+
+    if (tabWenz && tabHarshith) {
+      if (personaKey === 'wenz') {
+        tabWenz.classList.add('active');
+        tabWenz.setAttribute('aria-selected', 'true');
+        tabHarshith.classList.remove('active');
+        tabHarshith.setAttribute('aria-selected', 'false');
+      } else {
+        tabHarshith.classList.add('active');
+        tabHarshith.setAttribute('aria-selected', 'true');
+        tabWenz.classList.remove('active');
+        tabWenz.setAttribute('aria-selected', 'false');
+      }
+    }
+
+    if (showBubble && typeof showThingBubble === 'function') {
+      showThingBubble(p.greeting, 1800);
+    }
+  }
+
+  function togglePersona(showBubble = true) {
+    const next = currentPersona === 'wenz' ? 'harshith' : 'wenz';
+    applyPersona(next, showBubble);
+  }
+
+  if (tabWenz) {
+    tabWenz.addEventListener('click', (e) => {
+      e.stopPropagation();
+      applyPersona('wenz', true);
+    });
+  }
+  if (tabHarshith) {
+    tabHarshith.addEventListener('click', (e) => {
+      e.stopPropagation();
+      applyPersona('harshith', true);
+    });
+  }
+  if (personaToggleBtn) {
+    personaToggleBtn.addEventListener('click', (e) => {
+      if (e.target === personaToggleBtn) {
+        togglePersona(true);
+      }
+    });
+  }
+
+  // Initialize persona on load
+  applyPersona(currentPersona, false);
+
+  // ----------------------------------------------------------
   // 5. IN-PLACE INTERACTIVE PROJECT DETAIL MODAL
   // ----------------------------------------------------------
   const projectsData = {
@@ -381,6 +629,12 @@ document.addEventListener('DOMContentLoaded', () => {
         closeCmdk();
       } else if (action === 'leetcode') {
         window.open('https://leetcode.com/u/Harshith-2007/', '_blank', 'noopener,noreferrer');
+        closeCmdk();
+      } else if (action === 'thing') {
+        toggleThingCompanion();
+        closeCmdk();
+      } else if (action === 'persona') {
+        togglePersona(true);
         closeCmdk();
       } else if (action === 'grindlens') {
         window.open('https://grindlens.dev', '_blank', 'noopener,noreferrer');
