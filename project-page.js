@@ -34,25 +34,6 @@ if (window.location.protocol.startsWith('http') && navigator.doNotTrack !== '1')
     } catch (e) {}
   }
 
-  const ravenPortrait = document.getElementById('raven-portrait');
-  const ravenQuip = document.getElementById('raven-quip');
-  if (ravenPortrait && ravenQuip) {
-    const quips = [
-      "*caw* wrong turn, kid.",
-      "404 error, not found kid",
-      "not found kid, check other",
-      "The ravens checked /dev/null.",
-      "Outcast quad: 404 unmapped.",
-      "Thing tapped out on this route.",
-      "Packet dropped. Try index [1]-[5]."
-    ];
-    let quipIdx = 0;
-    ravenPortrait.addEventListener('click', () => {
-      quipIdx = (quipIdx + 1) % quips.length;
-      ravenQuip.textContent = quips[quipIdx];
-    });
-  }
-
   if (document.querySelector('.diagnostic-panel')) {
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
