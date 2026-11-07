@@ -1,346 +1,163 @@
-// ============================================================
-// NOCTURNAL ARCHIVE SERVER & UNIQUE VISITOR COUNTER API
-// Zero external dependencies - uses Node.js standard modules only
-// Production ready for Render, Railway, Vercel, and local Node.js
-// ============================================================
-
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
-
-const PORT = process.env.PORT || 3000;
-const PUBLIC_DIR = __dirname;
-const DATA_DIR = path.join(__dirname, 'data');
-
-// Configurable database path (supports test isolation and serverless environments)
-function resolveDbPath(forWrite = false) {
-  if (process.env.VISITORS_DB_PATH) {
-    return path.resolve(process.env.VISITORS_DB_PATH);
-  }
-  // In Vercel serverless environment, filesystem is read-only except /tmp
-  if (process.env.VERCEL) {
-    const tmpDir = process.env.TMPDIR || process.env.TEMP || '/tmp';
-    const tmpFile = path.join(tmpDir, 'visitors.json');
-    if (forWrite) return tmpFile;
-    if (fs.existsSync(tmpFile)) return tmpFile;
-    return path.join(DATA_DIR, 'visitors.json');
-  }
-  // Standard persistent server (Render, Railway, local Node.js)
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    return path.join(DATA_DIR, 'visitors.json');
-  } catch (err) {
-    const tmpDir = process.env.TMPDIR || process.env.TEMP || '/tmp';
-    return path.join(tmpDir, 'visitors.json');
-  }
-}
-
-let DB_FILE = resolveDbPath(false);
-
-// In-memory cache for fast O(1) lookups
-let visitorStore = {
-  totalUnique: 0,
-  visitors: {}
-};
-
-// Load existing records from disk
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+const { securityHeaders } = require('./security');
+const ROOT = __dirname;
+const DB_FILE = path.resolve(process.env.VISITORS_DB_PATH || path.join(ROOT, 'data', 'visitors.json'));
+const visitorStore = { totalUnique: 0, visitors: {} };
+let storeAvailable = !process.env.VERCEL;
 function loadStore() {
   try {
-    DB_FILE = resolveDbPath(false);
-    if (fs.existsSync(DB_FILE)) {
-      const raw = fs.readFileSync(DB_FILE, 'utf8');
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed.totalUnique === 'number' && typeof parsed.visitors === 'object') {
-        visitorStore = parsed;
-        return;
-      }
-    }
-    // Fallback: load committed repository seed data if available
-    const seedFile = path.join(DATA_DIR, 'visitors.json');
-    if (fs.existsSync(seedFile)) {
-      const raw = fs.readFileSync(seedFile, 'utf8');
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed.totalUnique === 'number' && typeof parsed.visitors === 'object') {
-        visitorStore = parsed;
-      }
-    }
+    if (!fs.existsSync(DB_FILE)) return;
+    const parsed = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    if (!Number.isSafeInteger(parsed.totalUnique) || parsed.totalUnique < 0 ||
+        !parsed.visitors || Array.isArray(parsed.visitors) || typeof parsed.visitors !== 'object' ||
+        Object.keys(parsed.visitors).some(key => !/^[a-f0-9]{64}$/.test(key))) throw new Error('Invalid visitor store');
+    Object.assign(visitorStore, parsed);
   } catch (err) {
-    console.warn('[Store] Initial read note:', err.message);
+    storeAvailable = false;
+    console.error('[Visitors] Store unavailable:', err.message);
   }
 }
-
-// Atomic write to disk with silent in-memory fallback
 function saveStore() {
-  try {
-    DB_FILE = resolveDbPath(true);
-    const dir = path.dirname(DB_FILE);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    const tempFile = DB_FILE + '.tmp';
-    fs.writeFileSync(tempFile, JSON.stringify(visitorStore, null, 2), 'utf8');
-    fs.renameSync(tempFile, DB_FILE);
-  } catch (err) {
-    // If standard write fails (e.g. read-only filesystem), attempt /tmp fallback
-    try {
-      const tmpDir = process.env.TMPDIR || process.env.TEMP || '/tmp';
-      const fallbackFile = path.join(tmpDir, 'visitors.json');
-      fs.writeFileSync(fallbackFile, JSON.stringify(visitorStore, null, 2), 'utf8');
-      DB_FILE = fallbackFile;
-    } catch (fallbackErr) {
-      // In read-only or serverless container recycles, in-memory counter continues smoothly
-    }
-  }
+  fs.mkdirSync(path.dirname(DB_FILE), { recursive: true });
+  const temporary = `${DB_FILE}.${process.pid}.tmp`;
+  fs.writeFileSync(temporary, JSON.stringify(visitorStore, null, 2), { mode: 0o600 });
+  fs.renameSync(temporary, DB_FILE);
 }
-
 loadStore();
-
-// MIME Types mapping
-const MIME_TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.svg': 'image/svg+xml',
-  '.mp4': 'video/mp4',
-  '.woff2': 'font/woff2',
-  '.woff': 'font/woff',
-  '.ttf': 'font/ttf',
-  '.otf': 'font/otf',
-  '.ico': 'image/x-icon'
-};
-
-// Helper to parse cookies from request header
+function json(res, status, body) {
+  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+  res.end(JSON.stringify(body));
+}
 function parseCookies(req) {
-  const list = {};
-  const rc = req.headers.cookie;
-  if (!rc) return list;
-
-  rc.split(';').forEach(cookie => {
-    const parts = cookie.split('=');
-    const name = parts.shift().trim();
-    if (name) {
-      const value = decodeURIComponent(parts.join('='));
-      list[name] = value;
-    }
-  });
-
-  return list;
+  const cookies = Object.create(null);
+  for (const item of (req.headers.cookie || '').split(';')) {
+    const equals = item.indexOf('=');
+    if (equals < 1) continue;
+    try { cookies[item.slice(0, equals).trim()] = decodeURIComponent(item.slice(equals + 1).trim()); }
+    catch { /* Ignore malformed cookies. */ }
+  }
+  return cookies;
 }
-
-// Validate anonymous visitor token format (UUID or 16-64 hex chars)
-function isValidToken(token) {
-  if (typeof token !== 'string') return false;
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(token) ||
-         /^[0-9a-f]{16,64}$/i.test(token);
+const isValidToken = token => typeof token === 'string' &&
+  (/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(token) || /^[0-9a-f]{16,64}$/i.test(token));
+// Forwarded IPs require explicit trust in the operator's reverse proxy.
+const rateLimits = new Map();
+function rateLimited(req) {
+  const address = process.env.TRUST_PROXY === '1'
+    ? String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim()
+    : req.socket?.remoteAddress || 'unknown';
+  const key = crypto.createHash('sha256').update(address).digest('hex');
+  const now = Date.now();
+  for (const [id, record] of rateLimits) if (record.until <= now) rateLimits.delete(id);
+  let record = rateLimits.get(key);
+  if (!record) {
+    if (rateLimits.size >= 10000) return true;
+    record = { count: 0, until: now + 60000 };
+    rateLimits.set(key, record);
+  }
+  return ++record.count > 30;
 }
-
-// Apply CORS headers for cross-origin or local dev requests
-function setCorsHeaders(req, res) {
-  const origin = req.headers.origin || '*';
-  res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Visitor-Id');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-}
-
-// Handler for visitor API (can be invoked by HTTP server or Vercel serverless function)
 function handleVisitRequest(req, res) {
-  try {
-    setCorsHeaders(req, res);
-
-    if (req.method === 'OPTIONS') {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
-
-    const cookies = parseCookies(req);
-    let token = cookies['anon_vid'] || req.headers['x-visitor-id'];
-
-    if (!isValidToken(token)) {
-      token = crypto.randomUUID();
-    }
-
-    // Privacy-conscious SHA-256 hash of token (no raw IDs or personal info stored)
-    const hashedId = crypto.createHash('sha256').update(token).digest('hex');
-    const now = new Date().toISOString();
-
-    let isNewVisitor = false;
-    if (!visitorStore.visitors[hashedId]) {
-      // First time seeing this visitor
-      visitorStore.visitors[hashedId] = {
-        firstSeen: now,
-        lastSeen: now,
-        visits: 1
-      };
-      visitorStore.totalUnique += 1;
-      isNewVisitor = true;
-      saveStore();
-    } else {
-      // Returning visitor: update last seen & visit counter, do NOT increment totalUnique
-      visitorStore.visitors[hashedId].lastSeen = now;
-      visitorStore.visitors[hashedId].visits = (visitorStore.visitors[hashedId].visits || 1) + 1;
-      saveStore();
-    }
-
-    // Set 2-year persistent HttpOnly cookie
+  for (const [name, value] of Object.entries(securityHeaders)) res.setHeader(name, value);
+  if (!['GET', 'POST'].includes(req.method)) {
+    res.setHeader('Allow', 'GET, POST');
+    return json(res, 405, { success: false, error: 'Method not allowed' });
+  }
+  // Serverless local files cannot provide an accurate shared count.
+  if (!storeAvailable) return json(res, 503, { success: false, error: 'Visitor count unavailable' });
+  if (req.method === 'GET') return json(res, 200, { success: true, count: visitorStore.totalUnique });
+  if (req.headers['sec-fetch-site'] === 'cross-site') return json(res, 403, { success: false });
+  if (req.headers.origin) {
     try {
-      res.setHeader(
-        'Set-Cookie',
-        `anon_vid=${encodeURIComponent(token)}; Path=/; Max-Age=63072000; SameSite=Lax; HttpOnly`
-      );
-    } catch (e) {}
-
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      success: true,
-      count: visitorStore.totalUnique,
-      isNew: isNewVisitor,
-      visitorId: token
-    }));
-  } catch (err) {
-    console.error('[Visitor API Crash Guard]', err);
-    try {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({
-        success: true,
-        count: visitorStore.totalUnique || 59,
-        notice: 'Graceful fallback'
-      }));
-    } catch (fallbackErr) {
-      try { res.end(); } catch (e) {}
+      const origin = new URL(req.headers.origin);
+      if (!['http:', 'https:'].includes(origin.protocol) || origin.host !== req.headers.host) throw new Error();
+    } catch { return json(res, 403, { success: false }); }
+  }
+  if (rateLimited(req)) {
+    res.setHeader('Retry-After', '60');
+    return json(res, 429, { success: false, error: 'Too many requests' });
+  }
+  let token = parseCookies(req).anon_vid || req.headers['x-visitor-id'];
+  if (!isValidToken(token)) token = crypto.randomUUID();
+  const id = crypto.createHash('sha256').update(token).digest('hex');
+  const isNew = !Object.hasOwn(visitorStore.visitors, id);
+  if (isNew) {
+    visitorStore.visitors[id] = { firstSeen: new Date().toISOString(), visits: 1 };
+    visitorStore.totalUnique++;
+    try { saveStore(); }
+    catch (err) {
+      delete visitorStore.visitors[id];
+      visitorStore.totalUnique--;
+      console.error('[Visitors] Could not save:', err.message);
+      return json(res, 503, { success: false, error: 'Visitor count unavailable' });
     }
   }
+  const secure = req.socket?.encrypted || process.env.NODE_ENV === 'production' || process.env.VERCEL;
+  res.setHeader('Set-Cookie', `anon_vid=${token}; Path=/; Max-Age=63072000; SameSite=Lax; HttpOnly${secure ? '; Secure' : ''}`);
+  return json(res, 200, { success: true, count: visitorStore.totalUnique, isNew });
 }
-
-// General HTTP request handler
+const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.ico': 'image/x-icon',
+  '.ttf': 'font/ttf', '.otf': 'font/otf', '.woff': 'font/woff', '.woff2': 'font/woff2',
+  '.txt': 'text/plain; charset=utf-8' };
+const PROJECT_IDS = ['grindlens', 'rocketchat', 'openchat', 'discord', 'midnight', 'deadpacket', 'nptel', 'socialgraph', 'tracker'];
+const PUBLIC_FILES = new Set(['index.html', '404.html', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'favicon.ico', 'llms.txt',
+  ...PROJECT_IDS.map(id => `projects/${id}.html`)]);
+// Unknown, private, and malformed paths all show the same designed 404 page.
+function notFound(req, res) {
+  fs.readFile(path.join(ROOT, '404.html'), (error, body) => {
+    if (error) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Not found'); }
+    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': body.length, 'Cache-Control': 'no-cache' });
+    res.end(req.method === 'HEAD' ? undefined : body);
+  });
+}
 function requestHandler(req, res) {
-  setCorsHeaders(req, res);
-
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204);
-    res.end();
-    return;
-  }
-
-  const host = req.headers.host || `localhost:${PORT}`;
-  const parsedUrl = new URL(req.url, `http://${host}`);
-  const pathname = parsedUrl.pathname;
-
-  // -----------------------------------------------------------
-  // API: Unique Visitor Registration & Counting
-  // POST /api/visit or GET /api/visit
-  // -----------------------------------------------------------
-  if (pathname === '/api/visit' && (req.method === 'POST' || req.method === 'GET')) {
+  for (const [name, value] of Object.entries(securityHeaders)) res.setHeader(name, value);
+  let pathname;
+  try { pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); }
+  catch { res.writeHead(400); return res.end('Bad request'); }
+  if (pathname === '/api/visit' || pathname === '/api/visit/count') {
+    if (pathname.endsWith('/count') && req.method !== 'GET') {
+      res.setHeader('Allow', 'GET');
+      return json(res, 405, { success: false });
+    }
     return handleVisitRequest(req, res);
   }
-
-  // -----------------------------------------------------------
-  // API: Read-Only Total Unique Visitor Count
-  // GET /api/visit/count
-  // -----------------------------------------------------------
-  if (pathname === '/api/visit/count' && req.method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      success: true,
-      count: visitorStore.totalUnique
-    }));
-    return;
+  if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { status: 'ok' });
+  if (!['GET', 'HEAD'].includes(req.method)) {
+    res.setHeader('Allow', 'GET, HEAD');
+    res.writeHead(405); return res.end('Method not allowed');
   }
-
-  // -----------------------------------------------------------
-  // API: Health Check
-  // GET /api/health
-  // -----------------------------------------------------------
-  if (pathname === '/api/health' && req.method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      status: 'ok',
-      totalUnique: visitorStore.totalUnique
-    }));
-    return;
+  let relative = pathname === '/' ? 'index.html' : pathname.slice(1);
+  if (PROJECT_IDS.some(id => relative === `projects/${id}`)) relative += '.html';
+  const ext = path.extname(relative).toLowerCase();
+  const allowed = PUBLIC_FILES.has(relative) ||
+    (/^(img|fonts|cursor|video)\/[a-zA-Z0-9_./-]+$/.test(relative) && Boolean(MIME[ext]) &&
+      !['.html', '.js', '.css'].includes(ext));
+  const file = path.resolve(ROOT, relative);
+  if (!allowed || relative.split(/[\\/]/).some(part => part.startsWith('.')) || !file.startsWith(ROOT + path.sep)) {
+    return notFound(req, res);
   }
-
-  // -----------------------------------------------------------
-  // Favicon Handler (Prevent 404 on browser icon queries)
-  // -----------------------------------------------------------
-  if (pathname === '/favicon.ico') {
-    const icoPath = path.join(PUBLIC_DIR, 'favicon.ico');
-    if (fs.existsSync(icoPath)) {
-      res.writeHead(200, { 'Content-Type': 'image/x-icon', 'Cache-Control': 'public, max-age=86400' });
-      fs.createReadStream(icoPath).pipe(res);
-    } else {
-      res.writeHead(204, { 'Content-Type': 'image/x-icon' });
-      res.end();
-    }
-    return;
-  }
-
-  // -----------------------------------------------------------
-  // Static File Serving
-  // -----------------------------------------------------------
-  let safePath = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');
-  if (safePath === '/' || safePath === '\\') {
-    safePath = 'index.html';
-  }
-
-  const filePath = path.join(PUBLIC_DIR, safePath);
-
-  // Security check: ensure path stays within PUBLIC_DIR
-  if (!filePath.startsWith(PUBLIC_DIR)) {
-    res.writeHead(403, { 'Content-Type': 'text/plain' });
-    res.end('403 Forbidden');
-    return;
-  }
-
-  fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
-      // 404 Fallback
-      const notFoundPath = path.join(PUBLIC_DIR, '404.html');
-      if (fs.existsSync(notFoundPath)) {
-        res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-        fs.createReadStream(notFoundPath).pipe(res);
-      } else {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 Not Found');
-      }
-      return;
-    }
-
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-    res.writeHead(200, {
-      'Content-Type': contentType,
-      'Cache-Control': ext === '.html' || ext === '.js' || ext === '.css' ? 'no-cache, no-store, must-revalidate' : 'public, max-age=86400'
+  fs.realpath(file, (error, real) => {
+    if (error || !real.startsWith(ROOT + path.sep)) return notFound(req, res);
+    fs.stat(real, (err, stat) => {
+      if (err || !stat.isFile()) return notFound(req, res);
+      res.writeHead(200, { 'Content-Type': MIME[ext], 'Content-Length': stat.size,
+        'Cache-Control': ['.html', '.js', '.css'].includes(ext) ? 'no-cache' : 'public, max-age=86400' });
+      if (req.method === 'HEAD') return res.end();
+      const stream = fs.createReadStream(real);
+      stream.on('error', () => res.destroy());
+      res.on('close', () => stream.destroy());
+      stream.pipe(res);
     });
-
-    fs.createReadStream(filePath).pipe(res);
   });
 }
-
-// HTTP Server
-const server = http.createServer(requestHandler);
-
-if (require.main === module) {
-  server.listen(PORT, () => {
-    console.log(`[Archive Server] Running at http://localhost:${PORT}`);
-    console.log(`[Archive Server] Current unique visitors: ${visitorStore.totalUnique}`);
-  });
-}
-
-module.exports = requestHandler;
-module.exports.server = server;
-module.exports.requestHandler = requestHandler;
-module.exports.handleVisitRequest = handleVisitRequest;
-module.exports.visitorStore = visitorStore;
-module.exports.loadStore = loadStore;
-module.exports.saveStore = saveStore;
-module.exports.resolveDbPath = resolveDbPath;
+const server = http.createServer({ maxHeaderSize: 16384 }, requestHandler);
+server.requestTimeout = 15000;
+server.headersTimeout = 10000;
+if (require.main === module) server.listen(process.env.PORT || 3000, () => console.log(`Archive: http://localhost:${process.env.PORT || 3000}`));
+module.exports = { server, requestHandler, handleVisitRequest, visitorStore, loadStore, saveStore };

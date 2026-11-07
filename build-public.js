@@ -9,11 +9,13 @@ if (path.dirname(destination) !== __dirname || path.basename(destination) !== 'p
 }
 fs.rmSync(destination, { recursive: true, force: true });
 fs.mkdirSync(destination, { recursive: true });
-for (const name of ['index.html', '404.html', 'style.css', 'portfolio.css', 'script.js', 'theme.js', 'project-page.js', 'projects', 'favicon.ico', 'img', 'fonts', 'cursor', 'video']) {
-  fs.cpSync(path.join(__dirname, name), path.join(destination, name), {
-    recursive: true,
-    filter: source => !fs.lstatSync(source).isSymbolicLink()
-  });
+for (const name of ['index.html', '404.html', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'projects', 'favicon.ico', 'img', 'fonts', 'cursor', 'video', 'llms.txt', 'CNAME']) {
+  if (fs.existsSync(path.join(__dirname, name))) {
+    fs.cpSync(path.join(__dirname, name), path.join(destination, name), {
+      recursive: true,
+      filter: source => !fs.lstatSync(source).isSymbolicLink()
+    });
+  }
 }
 // Keep host and local-server headers in sync without requiring a framework.
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'vercel.json'), 'utf8').replace(/^\uFEFF/, ''));

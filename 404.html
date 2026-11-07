@@ -1,78 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Harshith Padakanti / Wrong door</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .nf {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      align-items: center;
-      padding: 5rem var(--gutter) 2rem;
-      gap: 3rem;
-    }
-    .nf-text h1 {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      line-height: 1.1;
-      margin-bottom: 1.2rem;
-      color: #ffffff;
-    }
-    .nf-text p {
-      color: var(--text-muted);
-      max-width: 38ch;
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-      line-height: 1.7;
-    }
-    .nf-img {
-      height: 75vh;
-      overflow: hidden;
-      border: 1px solid var(--border-strong);
-      border-radius: 2px;
-      background: var(--bg-surface);
-    }
-    .nf-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: saturate(0.88) brightness(0.85);
-    }
-    @media (max-width: 900px) {
-      .nf {
-        grid-template-columns: 1fr;
-        padding-top: 6rem;
-      }
-      .nf-img {
-        height: 44vh;
-      }
-    }
-  </style>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>404: Not Found / Harshith Padakanti</title>
+  <meta content="Page not found. Return to Harshith Padakanti's portfolio." name="description"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+  <link href="/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+  <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+  <link href="/img/favicon-192x192.png" rel="apple-touch-icon" sizes="192x192"/>
+  <link href="/style.css?v=58" rel="stylesheet"/>
+  <script src="/theme.js"></script>
+  <script defer src="/project-page.js"></script>
+  <link href="/portfolio.css?v=58" rel="stylesheet"/>
 </head>
-<body class="archive-body">
-  <header class="nav-bar">
-    <a href="index.html" class="nav-brand">HARSHITH PADAKANTI / ARCHIVE</a>
-    <div class="nav-chapter">NOT A CHAPTER / 404</div>
+<body class="project-detail-body">
+  <header class="case-nav">
+    <a class="case-back" href="/"><span aria-hidden="true">←</span> Home</a>
+    <a class="case-signature" href="/">HARSHITH P.</a>
+    <button aria-label="Switch color theme" id="project-theme-toggle" type="button">
+      <svg aria-hidden="true" class="dark:hidden" fill="none" height="15" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="15">
+        <path d="M20.5 13a8.5 8.5 0 1 1-9.5-9.5 7 7 0 0 0 9.5 9.5Z"></path>
+      </svg>
+      <svg aria-hidden="true" class="hidden dark:block" fill="none" height="15" stroke="currentColor" stroke-linecap="round" stroke-width="1.5" viewBox="0 0 24 24" width="15">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+      </svg>
+    </button>
   </header>
 
-  <main class="nf container">
-    <div class="nf-text">
-      <div class="mono" style="margin-bottom: 1.4rem; color: var(--accent-gold);">ERROR : 404</div>
-      <h1>Wrong door.</h1>
-      <p>Every other path on this site leads to an archive entry or shipped project. This is the sole exception.</p>
-      <a href="index.html" class="action-btn primary">RETURN TO ARCHIVE ORIGIN &rarr;</a>
-    </div>
-    <div class="nf-img">
-      <img src="img/imagined_threshold.jpg" alt="A door standing alone in the desert opening onto a rainy city" />
-    </div>
+  <main class="case-page">
+    <header class="case-heading">
+      <p class="case-eyebrow">
+        <span>ERROR 404</span>
+        <span>UNKNOWN PATH</span>
+      </p>
+      <div class="case-title">
+        <h1>Page not found</h1>
+      </div>
+      <p class="case-intro">
+        This page does not exist. Return to the portfolio to browse projects and contributions.
+      </p>
+      <div class="case-actions">
+        <a class="case-live" href="/">Return to portfolio <span aria-hidden="true">→</span></a>
+      </div>
+    </header>
+
+    <figure class="case-figure">
+      <img alt="A door standing alone in the desert opening onto a rainy city" height="750" src="/img/imagined_threshold.jpg" width="1200"/>
+      <figcaption>
+        <span>404 / IMAGINED THRESHOLD</span>
+        <span>NOT AN ACTIVE ROUTE</span>
+      </figcaption>
+    </figure>
+
+    <footer class="case-footer">
+      <a class="case-all" href="/">← Back to home</a>
+      <span style="font-family: var(--font-geist-mono); font-size: 11px;">STATUS 404</span>
+    </footer>
   </main>
 </body>
 </html>

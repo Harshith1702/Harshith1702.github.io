@@ -1,0 +1,90 @@
+# Harshith Padakanti
+
+> 19, Full-stack and backend developer, OSS contributor, competitive programmer.
+> "I love solving problems I face and things I get curious about. Also solving others' code through open source and other projects."
+
+## Personal Summary
+Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science undergraduate and systems-focused engineer based in India. He builds high-throughput backend services, interactive web applications, real-time collaboration platforms, and developer tooling. He also actively practices competitive programming with over 1,000 algorithmic problems solved across LeetCode, Codeforces, and CodeChef.
+
+## Contacts and Verified Profiles
+- Location: India
+- Primary Email: harshith.dev.work@gmail.com
+- Portfolio Website: https://harshithp.me (also hosted at https://harshith1702.github.io)
+- GitHub: https://github.com/Harshith1702
+- LeetCode: https://leetcode.com/u/Harshith-2007/
+- Codeforces: https://codeforces.com/profile/harshaharshith31
+- CodeChef: https://www.codechef.com/users/harshith_2007
+- X (Twitter): https://x.com/harshith_irl
+- LinkedIn: https://www.linkedin.com/in/harshith-padakanti/
+- Discord Handle: harshith_2007
+
+## Education
+- Degree: Bachelor of Technology in Computer Science and Engineering
+- Institution: CMR Technical Campus, Hyderabad, India
+- Timeline: 2024 - 2028
+
+## Core Technical Skills
+- Programming Languages: TypeScript, JavaScript, Python, C, Go, SQL, HTML5, CSS3
+- Backend and Frameworks: Node.js, Express.js, Flask, Next.js, REST APIs, WebSockets (Socket.IO)
+- Databases and Data Storage: PostgreSQL, SQLite, Redis, Prisma ORM
+- DevOps, Systems, and Tooling: Docker, Linux, Git, GitHub Actions, Vercel, Render
+- Software Architecture: Clean Architecture, in-memory architectures, incident tracking systems, real-time sync
+- Competitive Programming: Algorithms, Data Structures, Graph Theory, Dynamic Programming, Number Theory
+
+## Key Projects
+
+### 1. GrindLens
+- Type: Full Stack Web Application
+- Public URL: https://grindlens.dev
+- Repository: Private repository per project owner
+- Technologies: Next.js, TypeScript, PostgreSQL, Tailwind CSS
+- Description: Technical preparation and interview tracking platform for software engineers.
+
+### 2. RTRP Chat Rooms (Open Chat)
+- Type: Real-time Communication Application
+- Repository: https://github.com/Harshith1702/Open_Chat_Application
+- Live Demo: https://open-chat-application-ubti.onrender.com
+- Technologies: Node.js, Express.js, Socket.IO, JavaScript
+- Description: In-memory real-time chat application supporting up to 100 users per room without a persistent database. Automatically cleans up rooms and disconnected user states.
+
+### 3. LeetCode Discord Reporter
+- Type: Automation Service / Discord Bot
+- Repository: https://github.com/Harshith1702/leetcode-discord-reporter
+- Technologies: Python, GitHub Actions, Discord Webhooks, LeetCode GraphQL API
+- Description: Automated bot running on GitHub Actions and cron scheduling. Automatically queries accepted LeetCode submissions and posts daily performance summaries to Discord every night at 10:15 PM IST.
+
+### 4. Social Follower Graph (C)
+- Type: Systems and Data Structures Application
+- Repository: https://github.com/Harshith1702/Social_Media_Follower_System_C
+- Technologies: C, Adjacency Matrix, File I/O
+- Description: High-performance console social network engine implemented in standard C. Models user follow/unfollow relationships and mutual-follow recommendations using adjacency matrices with persistent disk storage in users.txt and follows.txt.
+
+### 5. Midnight Network
+- Type: Distributed Service Monitor
+- Repository: https://github.com/Harshith1702/midnight-network
+- Live Demo: https://midnight-network-8m4w.onrender.com/
+- Technologies: Python, Flask, SQLite, Docker
+- Description: HTTP uptime and latency monitoring platform. Continuously tracks endpoint health, persists ping latency history in SQLite, opens incidents on failure, and auto-resolves on service recovery.
+
+### 6. NPTEL IoT Study Dashboard
+- Type: Interactive Educational Web Platform
+- Repository: https://github.com/Harshith1702/nptel-iot
+- Live Demo: https://nptel-iot.vercel.app
+- Technologies: React, JavaScript, Vite, Tailwind CSS
+- Description: Interactive study companion and assignment practice dashboard for the NPTEL Internet of Things curriculum with instant grading, scoring metrics, and bundled reference documents.
+
+### 7. LeetCode Grind Tracker
+- Type: Progress Tracking Dashboard
+- Repository: https://github.com/Harshith1702/leetcode-grind-tracker
+- Technologies: Python, MySQL, PHP, JavaScript
+- Description: The predecessor to GrindLens: a submission sync script querying alfa-leetcode-api, MySQL views for topic and streak breakdowns, a PHP JSON endpoint, and a four-tab dashboard.
+
+### 8. Dead Packet Detective
+- Type: Network Forensics Workbench
+- Repository: https://github.com/Harshith1702/dead-packet-detective
+- Technologies: Python, Sockets, HTTP
+- Description: Probe-based network-forensics workbench that collects DNS, ping, TCP handshake, and route evidence for a hostname or IP. Explicitly designed without packet capture or PCAP analysis.
+
+## Open Source Contributions
+- Rocket.Chat: Contributed TypeScript parser fixes and unit tests across PR #39455 (timestamp parsing), PR #39737 (defensive tests for isNodeOfType), and PR #39733 (emoji handling in reducePlainTexts), which maintainer ggazzo reviewed and consolidated into batch PR #39853 (https://github.com/RocketChat/Rocket.Chat/pull/39853).
+- Nexus Spring of Code (NSoC 2026): Selected contributor with 30+ merged pull requests across JavaScript and TypeScript open source repositories, ranked 70th out of 988 contributors nationwide.

@@ -1,0 +1,10 @@
+node_modules/
+public/
+.env
+.env.*
+!.env.example
+data/*.tmp
+data/*.json.*.tmp
+reference/
+_trash/
+scratch_*

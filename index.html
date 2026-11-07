@@ -8,7 +8,7 @@
   <meta content="Harshith Padakanti / Building GrindLens" property="og:title"/>
   <meta content="Computer science student based in India. Building GrindLens, backend systems, and solving problems." property="og:description"/>
   <meta content="website" property="og:type"/>
-  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="summary" name="twitter:card"/>
   <meta content="@harshith_irl" name="twitter:creator"/>
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -16,12 +16,13 @@
   <link href="img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
   <link href="favicon.ico" rel="icon" type="image/x-icon"/>
   <link href="img/favicon-192x192.png" rel="apple-touch-icon" sizes="192x192"/>
-  <link href="style.css?v=53" rel="stylesheet"/>
+  <link href="style.css?v=58" rel="stylesheet"/>
   <script src="theme.js"></script>
-  <link href="portfolio.css?v=53" rel="stylesheet"/>
+  <link href="portfolio.css?v=58" rel="stylesheet"/>
+  <link href="reveal-fx.css?v=3" rel="stylesheet"/>
 </head>
 <body class="min-h-full flex flex-col dark:bg-black dark:text-zinc-50 transition-colors duration-300">
-  <div class="min-h-screen w-full bg-white dark:bg-black relative overflow-x-hidden transition-colors duration-300">
+  <div class="ash-page-root">
     <!-- Floating Right Index Navigation (Desktop) -->
     <div class="fixed inset-0 z-50 pointer-events-none hidden lg:block">
       <nav class="nav-index-floating absolute top-[22vh] left-[calc(69%+32px)] pointer-events-auto flex flex-col gap-4 mt-2">
@@ -32,17 +33,19 @@
         <a class="nav-index-link" href="#projects" data-section="projects">
           <span class="nav-indicator-line"></span>Projects
         </a>
+        <a class="nav-index-link" href="#activity" data-section="activity">
+          <span class="nav-indicator-line"></span>GitHub Activity
+        </a>
+        <a class="nav-index-link" href="#competitive" data-section="competitive"><span class="nav-indicator-line"></span>Competitive Programming</a>
+        <a class="nav-index-link" href="#education" data-section="education"><span class="nav-indicator-line"></span>Education</a>
         <a class="nav-index-link" href="#opensource" data-section="opensource">
           <span class="nav-indicator-line"></span>Open Source
-        </a>
-        <a class="nav-index-link" href="#rigor" data-section="rigor">
-          <span class="nav-indicator-line"></span>Problem Solving
         </a>
         <a class="nav-index-link" href="#skills" data-section="skills">
           <span class="nav-indicator-line"></span>Skills
         </a>
-        <a class="nav-index-link" href="#highlights" data-section="highlights">
-          <span class="nav-indicator-line"></span>Highlights
+<a class="nav-index-link" href="#playlist" data-section="playlist">
+          <span class="nav-indicator-line"></span>Playlist
         </a>
       </nav>
     </div>
@@ -56,43 +59,37 @@
     <div class="absolute left-0 right-0 top-[calc(22vh+112px)] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
 
     <!-- Corner Crosshairs at Banner -->
-    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:22vh;left:30%;transform:translate(-50%, -50%)"></div>
-    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:22vh;right:30%;transform:translate(50%, -50%)"></div>
-    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:calc(22vh + 112px);left:30%;transform:translate(-50%, -50%)"></div>
-    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:calc(22vh + 112px);right:30%;transform:translate(50%, -50%)"></div>
+    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:22vh;left:var(--page-edge);transform:translate(-50%, -50%)"></div>
+    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:22vh;right:var(--page-edge);transform:translate(50%, -50%)"></div>
+    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:calc(22vh + 112px);left:var(--page-edge);transform:translate(-50%, -50%)"></div>
+    <div class="absolute w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] pointer-events-none z-10 hidden md:block" style="top:calc(22vh + 112px);right:var(--page-edge);transform:translate(50%, -50%)"></div>
 
-    <!-- Top Hero Banner (Autoplay MP4 Video Atmosphere + Digital Clock) -->
+    <!-- Top Hero Banner (Autoplay MP4 Video Atmosphere) -->
     <div class="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-0 h-[22vh] -z-0 pointer-events-auto overflow-hidden bg-white dark:bg-black select-none" id="hero-banner-container">
       <video autoplay class="w-full h-full object-cover object-[center_38%] pointer-events-none" id="hero-banner-video" loop muted playsinline poster="img/banner_ocean_moon.jpg" preload="auto">
         <source src="video/banner_ocean_moon.mp4" type="video/mp4"/>
       </video>
       <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 dark:from-black/45 dark:via-transparent dark:to-black/20 pointer-events-none"></div>
-      <!-- Doto Monospace Digital Clock Badge -->
-      <div class="absolute bottom-3 right-4 z-10 pointer-events-auto">
-        <div class="banner-clock-badge">
-          <div id="live-clock" class="text-[16px] sm:text-[18px] tracking-[0.15em] font-doto">00.00.00</div>
-        </div>
-      </div>
     </div>
 
     <!-- Avatar & Identity Band (h-[112px]) -->
-    <div class="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-[22vh] h-[112px] flex items-center px-4 z-50" id="about">
-      <div class="flex w-full items-center justify-between">
-        <div class="flex items-center gap-4 sm:gap-5">
-          <div class="relative p-[3px] rounded-[6px] sm:rounded-[8px] border-[1.5px] border-black/30 dark:border-white/[0.15] shrink-0 bg-white dark:bg-zinc-950 shadow-sm">
-            <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-[3px] sm:rounded-[5px] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
-              <img alt="Wenz" class="h-full w-full object-cover transition-opacity duration-300" id="profile-avatar" src="img/about_wednesday.jpg"/>
+    <div class="absolute left-0 right-0 md:left-[30%] md:right-[30%] top-[22vh] h-[112px] flex items-center px-4 z-40" id="about">
+      <div class="flex w-full items-center justify-between min-w-0">
+        <div class="flex items-center gap-2.5 sm:gap-5 min-w-0 flex-1 mr-2">
+          <div class="relative p-[2.5px] rounded-[8px] border-[1.5px] border-black/30 dark:border-white/[0.15] shrink-0 bg-white dark:bg-zinc-950 shadow-sm">
+            <div class="relative w-12 h-12 sm:w-20 sm:h-20 rounded-[5px] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
+              <img alt="Wednesday Addams" class="h-full w-full object-cover" id="profile-avatar" src="img/about_wednesday.jpg"/>
             </div>
           </div>
-          <div class="flex flex-col">
-            <h1 class="text-[20px] sm:text-[24px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight" id="profile-name">
+          <div class="flex flex-col min-w-0">
+            <h1 class="text-[19px] sm:text-[28px] font-bold text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight font-sans truncate" id="profile-name">
               Wenz
             </h1>
-            <p class="text-[13px] sm:text-[14px] text-zinc-500 dark:text-zinc-400 font-mono mt-0.5" id="profile-subtitle">19 • Systems Builder &amp; Competitive Programmer</p>
+            <p class="text-[11px] sm:text-[14px] text-zinc-500 dark:text-zinc-400 font-mono mt-0.5 truncate" id="profile-subtitle">19, Full-stack and backend developer, OSS</p>
           </div>
         </div>
         <!-- Right Controls: Utility Row (⌘K, Thing, Theme) + Persona Switcher Pill -->
-        <div class="flex flex-col items-end justify-center gap-1.5 h-20 sm:h-24 py-1">
+        <div class="flex flex-col items-end justify-center gap-1.5 h-auto py-1" id="profile-controls">
           <div class="flex items-center gap-1.5 sm:gap-2">
             <button aria-label="Open command palette" class="relative group cursor-pointer transition-all duration-300 active:scale-95" id="cmdk-btn" type="button">
               <div class="absolute -inset-[4.5px] border border-black/5 dark:border-white/5 rounded-[9px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10"></div>
@@ -121,101 +118,61 @@
               </svg>
             </button>
           </div>
-          <div id="persona-toggle-btn" class="persona-switch-btn" role="tablist" aria-label="Persona switch">
-            <button type="button" id="tab-wenz" class="persona-pill-tab active" role="tab" aria-selected="true">Wenz</button>
-            <button type="button" id="tab-harshith" class="persona-pill-tab" role="tab" aria-selected="false">Harshith</button>
-          </div>
+          <button type="button" id="persona-reveal-btn" class="persona-reveal-btn" aria-label="Reveal identity">Reveal</button>
         </div>
       </div>
     </div>
 
     <!-- Main Central Content Column (Centered bounded by 30% lines) -->
-    <div class="ml-0 mr-0 md:ml-[30%] md:mr-[30%] pt-[calc(22vh+112px)] pb-12 px-4 flex flex-col z-10 relative min-h-screen">
+    <div class="portfolio-content pt-[calc(22vh+112px)] pb-12 px-4 flex flex-col z-10 relative min-h-screen">
       <!-- Bio Summary -->
-      <p class="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4">
-        Engineer. I love building, breaking, and shipping things. Most of this happens at a desk. Currently building GrindLens and working on backend systems.
+      <p id="profile-bio" class="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4">
+        I love solving problems I face and things I get curious about. Also solving others' code through open source and other projects.
       </p>
       <!-- Bullet Points -->
-      <ul class="text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-300 leading-relaxed mt-4 pl-4 list-disc space-y-1">
-        <li>AI, open source, and developer tools excite me.</li>
-        <li>I believe actions speak louder than words, so I put my code where my mouth is.</li>
-        <li>Currently building <strong class="text-zinc-900 dark:text-zinc-100 font-semibold">GrindLens</strong> and contributing to open source.</li>
-      </ul>
 
-      <!-- Action Buttons Row (3D Flip Cover + Email) -->
+      <!-- Action Buttons Row (Editorial Tactile Action Button) -->
       <div class="flex flex-wrap items-center gap-2 mt-4">
-        <!-- 3D Flip Cover Button -->
-        <section class="flip-cover-button-module__b7eBLq__section">
-          <div class="group relative block rounded-[4px] text-center text-[12px] font-medium tracking-tight px-3 py-1.5 opacity-0 pointer-events-none aria-hidden">
-            <div class="flex items-center gap-1.5">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
-              <span>Book an intro call</span>
-            </div>
-          </div>
-          <div class="flip-cover-button-module__b7eBLq__button">
-            <a class="w-full h-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-black dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 rounded-[4px] text-[12px] font-semibold tracking-wide whitespace-nowrap shadow-sm border border-white/10 dark:border-black/10 transition-colors" href="mailto:harshith.dev.work@gmail.com">
-              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
-              <span>contact me</span>
-            </a>
-          </div>
-          <div aria-hidden="true" class="flip-cover-button-module__b7eBLq__cover">
-            <div class="flip-cover-button-module__b7eBLq__innie">
-              <div class="flex items-center gap-1.5 text-[12px] font-semibold text-white whitespace-nowrap">
-                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
-                <span>contact me</span>
-              </div>
-            </div>
-            <div class="flip-cover-button-module__b7eBLq__spine"></div>
-            <div class="flip-cover-button-module__b7eBLq__outie">
-              <div class="group relative rounded-[4px] text-center text-[12px] font-medium tracking-tight text-neutral-50 dark:text-neutral-950 w-full h-full flex items-center justify-center px-3 py-1.5 whitespace-nowrap pointer-events-none">
-                <span class="absolute inset-0 rounded-[4px] bg-[#18181b] group-hover:bg-[#27272a] dark:bg-white dark:group-hover:bg-neutral-100 border border-black/10 dark:border-white/10"></span>
-                <span class="relative flex items-center justify-center gap-1.5 whitespace-nowrap">
-                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
-                  <span>Book an intro call</span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div aria-hidden="true" class="flip-cover-button-module__b7eBLq__shadow"></div>
-        </section>
-
-        <!-- Send an Email Button -->
-        <a class="ash-pill-btn" href="mailto:harshith.dev.work@gmail.com">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          <span>Send an email</span>
+        <a class="ash-action-btn" href="mailto:harshith.dev.work@gmail.com">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+          <span>Get in touch</span>
+        </a>
+        <a class="ash-action-btn" href="llms.txt" target="_blank" rel="noopener noreferrer" title="View LLM-friendly documentation">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span>llms.txt</span>
         </a>
       </div>
 
       <!-- Socials Row -->
       <div class="mt-6 scroll-mt-24" id="contact">
-        <h2 class="text-[13px] text-zinc-500 dark:text-zinc-400 mb-2 font-medium">Here are my <strong class="text-zinc-900 dark:text-zinc-100 font-semibold">socials</strong></h2>
-        <div class="flex flex-wrap gap-2">
-          <a class="ash-pill-btn" href="https://github.com/Harshith1702" rel="noopener noreferrer" target="_blank">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        <h2 class="text-[13px] font-medium text-zinc-500 dark:text-zinc-400 mb-2.5">Socials</h2>
+        <div class="socials-strip">
+          <a class="social-link-btn" href="https://github.com/Harshith1702" rel="noopener noreferrer" target="_blank">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path></svg>
             <span>GitHub</span>
           </a>
-          <a class="ash-pill-btn" href="https://x.com/harshith_irl" rel="noopener noreferrer" target="_blank">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4l11.733 16h4.267l-11.733 -16zM4 20l6.768 -6.768M20 4l-6.768 6.768"></path></svg>
-            <span>Twitter</span>
+          <a class="social-link-btn" href="https://x.com/harshith_irl" rel="noopener noreferrer" target="_blank">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+            <span>X</span>
           </a>
-          <a class="ash-pill-btn" href="https://www.linkedin.com/in/harshith-padakanti/" rel="noopener noreferrer" target="_blank">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 2a2 2 0 1 1-2 2 2 2 0 0 1 2-2z"></path></svg>
+          <a class="social-link-btn" href="https://www.linkedin.com/in/harshith-padakanti/" rel="noopener noreferrer" target="_blank">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
             <span>LinkedIn</span>
           </a>
-          <span class="ash-pill-btn cursor-default" title="Discord: harshith_2007">
+          <button type="button" class="social-link-btn" id="discord-btn" title="Click to copy Discord handle: harshith_2007" onclick="navigator.clipboard?.writeText('harshith_2007'); const s=this.querySelector('span'); s.textContent='Copied!'; setTimeout(()=>s.textContent='Discord',1200);">
             <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.0777.0777 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"></path></svg>
             <span>Discord</span>
-          </span>
-          <a class="ash-pill-btn" href="https://leetcode.com/u/Harshith-2007/" rel="noopener noreferrer" target="_blank">
-            <img alt="LeetCode" class="w-3.5 h-3.5" src="img/logos/leetcode.svg"/>
+          </button>
+          <a class="social-link-btn" href="https://leetcode.com/u/Harshith-2007/" rel="noopener noreferrer" target="_blank">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"></path></svg>
             <span>LeetCode</span>
           </a>
-          <a class="ash-pill-btn" href="https://www.codechef.com/users/harshith_2007" rel="noopener noreferrer" target="_blank">
-            <img alt="CodeChef" class="w-3.5 h-3.5" src="img/logos/codechef.svg"/>
+          <a class="social-link-btn" href="https://www.codechef.com/users/harshith_2007" rel="noopener noreferrer" target="_blank">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.2574.0039c-.37.0101-.7353.041-1.1003.095C9.6164.153 9.0766.4236 8.482.694c-.757.3244-1.5147.6486-2.2176.7027-1.1896.3785-1.568.919-1.8925 1.3516 0 .054-.054.1079-.054.1079-.4325.865-.4873 1.73-.325 2.5952.1621.5407.3786 1.0282.5408 1.5148.3785 1.0274.7578 2.0007.92 3.1362.1622.3244.3235.7571.4316 1.1897.2704.8651.542 1.8383 1.353 2.5952l.0057-.0028c.0175.0183.0301.0387.0482.0568.0072-.0036.0141-.0063.0213-.0099l-.0213-.5849c.6489-.9733 1.5673-1.6221 2.865-1.8925.5195-.1093 1.081-.1497 1.6625-.1278a8.7733 8.7733 0 0 1 1.7988.2357c1.4599.3785 2.595 1.1358 2.6492 1.7846.0273.3549.0398.6952.0326 1.0364-.001.064-.0046.1285-.007.193l.1362.0682c.075-.0375.1424-.107.2059-.1902.0008-.001.002-.002.0028-.0028.0018-.0023.0039-.0061.0057-.0085.0396-.0536.0747-.1236.1107-.1931.0188-.0377.0372-.0866.0554-.1292.2048-.4622.362-1.1536.538-1.9635.0541-.2703.1092-.4864.1633-.7027.4326-.9733 1.0266-1.8382 1.6213-2.6492.9733-1.3518 1.8928-2.5962 1.7846-4.0561-1.784-3.4608-4.2718-4.0017-5.5695-4.272-.2163-.0541-.3233-.0539-.4856-.108-1.3382-.2433-2.4945-.3953-3.6046-.3648zm5.0428 14.3788a9.8602 9.8602 0 0 0-.0326-.9824c-.0541-.703-1.1892-1.46-2.7032-1.8386-.588-.1336-1.1764-.2142-1.7448-.2356-.539-.0137-1.0657.0248-1.5546.1277-1.2436.2704-2.2162.9193-2.811 1.8925l.0511 1.431c.6672-.3558 1.7326-.8747 3.139-.9994.0662-.0059.1368-.0059.2044-.0099.1177-.013.2667-.044.4444-.044 1.6075 0 3.2682.5336 4.8767 1.6483.039-.2744.0611-.549.071-.8234l.044.0227c.0028-.0622.0143-.1268.0156-.1888z"></path></svg>
             <span>CodeChef</span>
           </a>
-          <a class="ash-pill-btn" href="https://codeforces.com/profile/harshaharshith31" rel="noopener noreferrer" target="_blank">
-            <img alt="Codeforces" class="w-3.5 h-3.5" src="img/logos/codeforces.svg"/>
+          <a class="social-link-btn" href="https://codeforces.com/profile/harshaharshith31" rel="noopener noreferrer" target="_blank">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M4.5 7.5C5.328 7.5 6 8.172 6 9v10.5c0 .828-.672 1.5-1.5 1.5h-3C.673 21 0 20.328 0 19.5V9c0-.828.673-1.5 1.5-1.5h3zm9-4.5c.828 0 1.5.672 1.5 1.5v15c0 .828-.672 1.5-1.5 1.5h-3c-.827 0-1.5-.672-1.5-1.5v-15c0-.828.673-1.5 1.5-1.5h3zm9 7.5c.828 0 1.5.672 1.5 1.5v7.5c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5V12c0-.828.672-1.5 1.5-1.5h3z"></path></svg>
             <span>Codeforces</span>
           </a>
         </div>
@@ -224,16 +181,15 @@
       <!-- ============================================================
            1. EXPERIENCES (Ashutosh Blueprint Accordion System)
            ============================================================ -->
-      <div class="mt-6 flex flex-col relative z-10 scroll-mt-24" id="experience">
+      <div class="mt-8 flex flex-col relative z-10 scroll-mt-24" id="experience">
         <!-- Blueprint Crosshairs & Spanning Lines -->
         <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
         <div class="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
         <div class="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
 
-        <div class="py-2 relative mt-1">
+        <div class="py-2.5 relative mt-1">
           <div class="flex items-baseline justify-between">
-            <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Experiences</h2>
-            <span class="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">2023 - Present</span>
+            <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Experience</h2>
           </div>
           <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
           <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
@@ -244,49 +200,46 @@
           <!-- Experience 1: GrindLens -->
           <div class="exp-accordion-item group">
             <div class="exp-item-border"></div>
-            <div class="exp-item-header flex flex-col items-start gap-2.5 py-3.5 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg sm:flex-row sm:items-center sm:justify-between" tabindex="0" role="button" aria-expanded="true">
-              <div class="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                <div class="size-10 shrink-0 rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
-                  <div class="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
-                    <img alt="GrindLens" class="object-contain w-full h-full p-0.5" src="img/grindlens_logo.png" width="40" height="40"/>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-0.5 min-w-0 pr-2 sm:pr-4">
-                  <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">GrindLens</span>
-                  <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate">Founder &amp; Developer</span>
+            <div class="exp-item-header flex items-start gap-3.5 py-4 px-2 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg cursor-pointer" tabindex="0" role="button" aria-expanded="false">
+              <div class="size-10 shrink-0 rounded-[8px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
+                <div class="w-full h-full rounded-[6px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden">
+                  <img alt="GrindLens" class="object-contain w-full h-full p-0.5" src="img/grindlens_logo.png" width="40" height="40"/>
                 </div>
               </div>
-              <div class="flex flex-col items-start gap-0.5 text-left pr-5 pl-[52px] shrink-0 sm:pl-0 sm:items-end sm:text-right">
-                <div class="flex items-center text-[13px] font-medium text-zinc-900 dark:text-zinc-100 relative">
-                  <span>2024 - Present</span>
-                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-500 absolute -right-5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transform: translateY(-50%) rotate(180deg);"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <div class="flex flex-col min-w-0 flex-1">
+                <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">GrindLens</span>
+                <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">Founder &amp; Developer</span>
+                <div class="flex items-center gap-1.5 text-[12px] font-medium text-zinc-700 dark:text-zinc-300 mt-1">
+                  <span>Launched August 19</span>
+                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <span class="text-[12px] text-zinc-500 dark:text-zinc-400">Production</span>
+                <span class="text-[12px] text-zinc-400 dark:text-zinc-500 mt-0.5">Product development</span>
               </div>
             </div>
-            <!-- Collapsible Body (Default Open) -->
-            <div class="exp-item-body -mx-4 grid grid-rows-[1fr]">
+            <!-- Collapsible Body (Default Collapsed) -->
+            <div class="exp-item-body grid grid-rows-[0fr]">
               <div class="overflow-hidden">
                 <div class="exp-inner-content pb-4 pt-1 px-4 text-[13.5px] text-zinc-600 dark:text-zinc-400">
                   <div class="grid grid-cols-3 gap-2 my-3 p-3 bg-zinc-50/70 dark:bg-[#0c0c0e] rounded-lg border border-black/5 dark:border-white/5 font-mono">
                     <div class="exp-metric-col">
-                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">422</p>
+                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">567</p>
                       <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Signups</p>
                     </div>
                     <div class="exp-metric-col">
-                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">4,180</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Visitors</p>
+                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">190+</p>
+                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Recurring users</p>
                     </div>
                     <div class="exp-metric-col">
                       <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">Aug 19</p>
                       <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Launched</p>
                     </div>
                   </div>
-                  <p class="leading-relaxed">I was solving problems every day and still didn't know what to solve next, or which patterns I was completely avoiding. So I built GrindLens to map practiced problems against avoided patterns, and automate spaced revision queueing. Full stack Next.js, TypeScript, PostgreSQL.</p>
+                  <p class="metric-asof">As of October 1. Recurring users counted in the preceding week.</p>
+                  <p class="leading-relaxed">I build and maintain GrindLens, from submission tracking to the practice dashboard. Built with Next.js, TypeScript, and PostgreSQL.</p>
                   <div class="flex items-center gap-3 mt-3 text-[12px] font-mono">
-                    <a class="text-zinc-900 dark:text-zinc-100 underline underline-offset-4" href="https://grindlens.dev" target="_blank" rel="noopener noreferrer">grindlens.dev ↗</a>
+                    <a class="text-zinc-900 dark:text-zinc-100 underline underline-offset-4" href="https://grindlens.dev" target="_blank" rel="noopener noreferrer">Website ↗</a>
                     <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://x.com/grindlensdev" target="_blank" rel="noopener noreferrer">@grindlensdev ↗</a>
-                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://www.linkedin.com/company/grindlens" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://www.linkedin.com/company/grindlens" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
                   </div>
                 </div>
               </div>
@@ -296,24 +249,20 @@
           <!-- Experience 2: Rocket.Chat -->
           <div class="exp-accordion-item group">
             <div class="exp-item-border"></div>
-            <div class="exp-item-header flex flex-col items-start gap-2.5 py-3.5 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg sm:flex-row sm:items-center sm:justify-between" tabindex="0" role="button" aria-expanded="false">
-              <div class="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                <div class="size-10 shrink-0 rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
-                  <div class="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
-                    <img alt="Rocket.Chat" class="object-contain w-full h-full p-0.5" src="img/logos/rocket-chat.png" width="40" height="40"/>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-0.5 min-w-0 pr-2 sm:pr-4">
-                  <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">Rocket.Chat</span>
-                  <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate">Open Source Contributor • Core Infrastructure</span>
+            <div class="exp-item-header flex items-start gap-3.5 py-4 px-2 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg cursor-pointer" tabindex="0" role="button" aria-expanded="false">
+              <div class="size-10 shrink-0 rounded-[8px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
+                <div class="w-full h-full rounded-[6px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden">
+                  <img alt="Rocket.Chat" class="object-contain w-full h-full p-0.5" src="img/logos/rocket-chat.png" width="40" height="40"/>
                 </div>
               </div>
-              <div class="flex flex-col items-start gap-0.5 text-left pr-5 pl-[52px] shrink-0 sm:pl-0 sm:items-end sm:text-right">
-                <div class="flex items-center text-[13px] font-medium text-zinc-900 dark:text-zinc-100 relative">
+              <div class="flex flex-col min-w-0 flex-1">
+                <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">Rocket.Chat</span>
+                <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">Open Source Contributor</span>
+                <div class="flex items-center gap-1.5 text-[12px] font-medium text-zinc-700 dark:text-zinc-300 mt-1">
                   <span>Mar - Apr 2026</span>
-                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-500 absolute -right-5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <span class="text-[12px] text-zinc-500 dark:text-zinc-400">Remote</span>
+                <span class="text-[12px] text-zinc-400 dark:text-zinc-500 mt-0.5">Remote</span>
               </div>
             </div>
             <div class="exp-item-body -mx-4 grid grid-rows-[0fr]">
@@ -322,22 +271,23 @@
                   <div class="grid grid-cols-3 gap-2 my-3 p-3 bg-zinc-50/70 dark:bg-[#0c0c0e] rounded-lg border border-black/5 dark:border-white/5 font-mono">
                     <div class="exp-metric-col">
                       <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">3</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">PRs Merged</p>
+                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Original PRs</p>
                     </div>
                     <div class="exp-metric-col">
                       <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">PR #39853</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Batch Merge</p>
+                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Maintainer PR</p>
                     </div>
                     <div class="exp-metric-col">
                       <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">TypeScript</p>
                       <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Parser</p>
                     </div>
                   </div>
-                  <p class="leading-relaxed">Inside Rocket.Chat's <code>message-parser</code> package in TypeScript: fixed timestamp parsing inside formatted markdown, added defensive guard tests for <code>isNodeOfType</code>, and resolved regression edge cases in emoji handling within <code>reducePlainTexts</code>. Consolidated by maintainer ggazzo into batch PR #39853.</p>
-                  <div class="flex items-center gap-3 mt-3 text-[12px] font-mono">
+                  <p class="leading-relaxed">Contributed parser fixes and tests in TypeScript. My three original PRs were closed and consolidated by maintainer ggazzo into PR #39853. The individual changes are listed under Open Source.</p>
+                  <div class="flex flex-wrap items-center gap-3 mt-3 text-[12px] font-mono">
                     <a class="text-zinc-900 dark:text-zinc-100 underline underline-offset-4" href="https://github.com/RocketChat/Rocket.Chat/pull/39853" target="_blank" rel="noopener noreferrer">PR #39853 ↗</a>
-                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://github.com/RocketChat/Rocket.Chat/pull/39455" target="_blank" rel="noopener noreferrer">PR #39455 ↗</a>
-                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://github.com/RocketChat/Rocket.Chat/pull/39737" target="_blank" rel="noopener noreferrer">PR #39737 ↗</a>
+                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://github.com/RocketChat/Rocket.Chat/pull/39455" target="_blank" rel="noopener noreferrer">PR #39455 (closed) ↗</a>
+                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://github.com/RocketChat/Rocket.Chat/pull/39737" target="_blank" rel="noopener noreferrer">PR #39737 (closed) ↗</a>
+                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://github.com/RocketChat/Rocket.Chat/pull/39733" target="_blank" rel="noopener noreferrer">PR #39733 (closed) ↗</a>
                   </div>
                 </div>
               </div>
@@ -347,24 +297,20 @@
           <!-- Experience 3: Nexus Spring of Code (NSoC 2026) -->
           <div class="exp-accordion-item group">
             <div class="exp-item-border"></div>
-            <div class="exp-item-header flex flex-col items-start gap-2.5 py-3.5 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg sm:flex-row sm:items-center sm:justify-between" tabindex="0" role="button" aria-expanded="false">
-              <div class="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                <div class="size-10 shrink-0 rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
-                  <div class="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
-                    <img alt="NSoC" class="object-contain w-full h-full p-0.5" src="img/logos/nsoc-light.png" width="40" height="40"/>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-0.5 min-w-0 pr-2 sm:pr-4">
-                  <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">Nexus Spring of Code (NSoC 2026)</span>
-                  <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate">Open Source Contributor</span>
+            <div class="exp-item-header flex items-start gap-3.5 py-4 px-2 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg cursor-pointer" tabindex="0" role="button" aria-expanded="false">
+              <div class="size-10 shrink-0 rounded-[8px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
+                <div class="w-full h-full rounded-[6px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden">
+                  <img alt="Nexus Spring of Code (NSoC 2026)" class="object-contain w-full h-full p-0.5" src="img/logos/nsoc-light.png" width="40" height="40"/>
                 </div>
               </div>
-              <div class="flex flex-col items-start gap-0.5 text-left pr-5 pl-[52px] shrink-0 sm:pl-0 sm:items-end sm:text-right">
-                <div class="flex items-center text-[13px] font-medium text-zinc-900 dark:text-zinc-100 relative">
+              <div class="flex flex-col min-w-0 flex-1">
+                <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">Nexus Spring of Code (NSoC 2026)</span>
+                <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">Open Source Contributor</span>
+                <div class="flex items-center gap-1.5 text-[12px] font-medium text-zinc-700 dark:text-zinc-300 mt-1">
                   <span>2026</span>
-                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-500 absolute -right-5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <span class="text-[12px] text-zinc-500 dark:text-zinc-400">Remote</span>
+                <span class="text-[12px] text-zinc-400 dark:text-zinc-500 mt-0.5">Remote</span>
               </div>
             </div>
             <div class="exp-item-body -mx-4 grid grid-rows-[0fr]">
@@ -380,122 +326,27 @@
                       <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Merged PRs</p>
                     </div>
                   </div>
-                  <p class="leading-relaxed">Selected contributor for Nexus Spring of Code (NSoC 2026). Merged 30+ pull requests across JavaScript and TypeScript open source repositories. Ranked 70th out of 988 contributors nationwide.</p>
+                  <p class="leading-relaxed">Selected contributor for NSoC 2026, working across JavaScript and TypeScript open source repositories.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Experience 4: Competitive Programming -->
-          <div class="exp-accordion-item group">
-            <div class="exp-item-border"></div>
-            <div class="exp-item-header flex flex-col items-start gap-2.5 py-3.5 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg sm:flex-row sm:items-center sm:justify-between" tabindex="0" role="button" aria-expanded="false">
-              <div class="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                <div class="size-10 shrink-0 rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
-                  <div class="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
-                    <img alt="LeetCode" class="object-contain w-full h-full p-0.5" src="img/logos/leetcode.svg" width="40" height="40"/>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-0.5 min-w-0 pr-2 sm:pr-4">
-                  <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">Competitive Programming</span>
-                  <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate">LeetCode • CodeChef • Codeforces</span>
-                </div>
-              </div>
-              <div class="flex flex-col items-start gap-0.5 text-left pr-5 pl-[52px] shrink-0 sm:pl-0 sm:items-end sm:text-right">
-                <div class="flex items-center text-[13px] font-medium text-zinc-900 dark:text-zinc-100 relative">
-                  <span>2023 - Present</span>
-                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-500 absolute -right-5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <span class="text-[12px] text-zinc-500 dark:text-zinc-400">Daily Practice</span>
-              </div>
-            </div>
-            <div class="exp-item-body -mx-4 grid grid-rows-[0fr]">
-              <div class="overflow-hidden">
-                <div class="exp-inner-content pb-4 pt-1 px-4 text-[13.5px] text-zinc-600 dark:text-zinc-400">
-                  <div class="grid grid-cols-3 gap-2 my-3 p-3 bg-zinc-50/70 dark:bg-[#0c0c0e] rounded-lg border border-black/5 dark:border-white/5 font-mono">
-                    <div class="exp-metric-col">
-                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">465</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">LeetCode Solved</p>
-                    </div>
-                    <div class="exp-metric-col">
-                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">1720</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Max Rating</p>
-                    </div>
-                    <div class="exp-metric-col">
-                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">200+</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">Day Streak</p>
-                    </div>
-                  </div>
-                  <p class="leading-relaxed">Solving problems daily under strict time and memory limits. 465 problems solved on LeetCode with 1720 max rating across 60 contests. 230+ problems on CodeChef in 2-Star Division across 40 rated rounds.</p>
-                  <div class="flex items-center gap-3 mt-3 text-[12px] font-mono">
-                    <a class="text-zinc-900 dark:text-zinc-100 underline underline-offset-4" href="https://leetcode.com/u/Harshith-2007/" target="_blank" rel="noopener noreferrer">LeetCode Profile ↗</a>
-                    <a class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100" href="https://www.codechef.com/users/harshith_2007" target="_blank" rel="noopener noreferrer">CodeChef Profile ↗</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Experience 5: CMR Technical Campus -->
-          <div class="exp-accordion-item group">
-            <div class="exp-item-border"></div>
-            <div class="exp-item-header flex flex-col items-start gap-2.5 py-3.5 px-4 -mx-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors rounded-lg sm:flex-row sm:items-center sm:justify-between" tabindex="0" role="button" aria-expanded="false">
-              <div class="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                <div class="size-10 shrink-0 rounded-[10px] border border-black/10 bg-zinc-50 p-[2px] shadow-sm dark:border-zinc-800 dark:bg-[#111111]">
-                  <div class="w-full h-full rounded-[7px] border border-black/5 dark:border-black/20 bg-white flex items-center justify-center overflow-hidden relative">
-                    <img alt="CMRTC" class="object-contain w-full h-full p-0.5" src="img/logos/cmrtc.jpg" width="40" height="40"/>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-0.5 min-w-0 pr-2 sm:pr-4">
-                  <span class="text-[15px] font-bold leading-tight text-zinc-900 dark:text-zinc-100 sm:text-[16px]">CMR Technical Campus</span>
-                  <span class="text-[13px] text-zinc-500 dark:text-zinc-400 truncate">B.Tech Computer Science &amp; Engineering</span>
-                </div>
-              </div>
-              <div class="flex flex-col items-start gap-0.5 text-left pr-5 pl-[52px] shrink-0 sm:pl-0 sm:items-end sm:text-right">
-                <div class="flex items-center text-[13px] font-medium text-zinc-900 dark:text-zinc-100 relative">
-                  <span>2024 - 2028</span>
-                  <svg class="exp-chevron w-3.5 h-3.5 text-zinc-500 absolute -right-5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <span class="text-[12px] text-zinc-500 dark:text-zinc-400">Hyderabad, India</span>
-              </div>
-            </div>
-            <div class="exp-item-body -mx-4 grid grid-rows-[0fr]">
-              <div class="overflow-hidden">
-                <div class="exp-inner-content pb-4 pt-1 px-4 text-[13.5px] text-zinc-600 dark:text-zinc-400">
-                  <div class="grid grid-cols-2 gap-2 my-3 p-3 bg-zinc-50/70 dark:bg-[#0c0c0e] rounded-lg border border-black/5 dark:border-white/5 font-mono">
-                    <div class="exp-metric-col">
-                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">8.52</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">CGPA</p>
-                    </div>
-                    <div class="exp-metric-col">
-                      <p class="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">Elite Silver</p>
-                      <p class="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase mt-0.5">IIT Kharagpur NPTEL</p>
-                    </div>
-                  </div>
-                  <p class="leading-relaxed">Undergraduate student in Computer Science & Engineering. NPTEL Elite Silver certified in Introduction to IoT course by IIT Kharagpur with 724 verified examination questions. Strong foundation in data structures, algorithms, and systems engineering.</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
       <!-- ============================================================
            2. PROJECTS (Ashutosh 2-Column Grid + Center Dashed Line)
            ============================================================ -->
-      <div class="mt-0 flex flex-col relative z-10 scroll-mt-24" id="projects">
+      <div class="mt-8 flex flex-col relative z-10 scroll-mt-24" id="projects">
         <!-- Blueprint Crosshairs & Spanning Lines -->
         <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
         <div class="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
         <div class="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
 
-        <div class="py-2 relative mt-1">
+        <div class="py-2.5 relative mt-1">
           <div class="flex items-baseline justify-between">
-            <div>
-              <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Projects</h2>
-              <p class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">Things I wanted to use, or got tired of doing manually.</p>
-            </div>
-            <span class="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">01 - 07</span>
+            <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Projects</h2>
           </div>
           <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
           <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
@@ -503,569 +354,472 @@
         </div>
 
         <!-- 2-Column Projects Area with Center Divider Line -->
-        <div class="relative pt-6 pb-12 px-0">
+        <div class="relative pt-6 pb-8 px-0">
           <!-- Center Dashed Line between the two columns -->
-          <div class="absolute top-0 bottom-6 left-1/2 w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none -translate-x-1/2 hidden md:block dashed-border-y"></div>
+          <div class="absolute top-0 bottom-4 left-1/2 w-0 border-r border-black/30 dark:border-white/[0.15] pointer-events-none -translate-x-1/2 hidden md:block dashed-border-y"></div>
 
-          <!-- 4 Primary Project Cards -->
+          <!-- Featured projects -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 relative z-10" id="projects-grid">
-            <!-- Project 1: GrindLens -->
-            <a class="ash-project-card group" data-project-id="grindlens" href="projects/grindlens.html">
-              <div class="ash-project-screen">
+            <div class="ash-project-card group">
+              <a class="ash-project-screen block" href="projects/grindlens.html" aria-label="Open GrindLens case study">
                 <div class="flex items-center justify-between z-10">
                   <span class="text-[11px] font-mono font-medium text-zinc-400">01</span>
-                  <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50">
-                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                    <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 font-mono">Live • 422 Users</span>
-                  </div>
-                </div>
-                <div class="ash-card-play-overlay">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-white mb-2 font-mono">Open Details</span>
-                  <div class="ash-play-btn">
-                    <svg class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z"></path></svg>
-                  </div>
+                  <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-[3px] border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-400">Web app</span>
                 </div>
                 <div class="ash-inner-window">
-                  <img src="img/grindlens_banner.png" alt="GrindLens preview" loading="lazy" />
+                  <img class="fit-contain" src="img/grindlens_banner.png" alt="GrindLens preview" loading="lazy" />
+                </div>
+              </a>
+              <div class="mt-3.5 flex flex-col flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 leading-snug"><a href="projects/grindlens.html" class="hover:underline">GrindLens</a></h3>
+                  <div class="project-header-icons">
+                    <a href="https://grindlens.dev" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="Visit website" aria-label="Visit website">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </a>
+                    <a href="projects/grindlens.html" class="project-header-icon" title="Project details" aria-label="Project details">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                  </div>
+                </div>
+                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Tracks LeetCode submissions, highlights patterns to practice, and schedules revision. Includes community-reported company questions, filtered by company, topic, and difficulty.</p>
+                <a class="project-origin" href="projects/tracker.html"><span class="origin-label">Started here</span><span>LeetCode Grind Tracker <span aria-hidden="true">↗</span></span></a>
+                <div class="project-tech-stack" aria-label="Technologies">
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img dark-invert" src="img/logos/nextdotjs.svg" alt="Next.js" />
+                    <span class="tech-icon-tooltip">Next.js</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/typescript.svg" alt="TypeScript" />
+                    <span class="tech-icon-tooltip">TypeScript</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/postgresql.svg" alt="PostgreSQL" />
+                    <span class="tech-icon-tooltip">PostgreSQL</span>
+                  </div>
                 </div>
               </div>
-              <div class="mt-3.5 flex flex-col">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">GrindLens</h3>
-                  <span class="text-[12px] font-mono text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
-                </div>
-                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Algorithmic revision engine with automated LeetCode GraphQL polling, pattern gap detection, and spaced queueing.</p>
-                <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-                  <span>Next.js • TypeScript • PostgreSQL</span>
-                  <span class="text-zinc-800 dark:text-zinc-200 font-medium">View Project</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Project 2: RTRP Chat Rooms -->
-            <a class="ash-project-card group" data-project-id="openchat" href="projects/openchat.html">
-              <div class="ash-project-screen">
+            </div>
+            <div class="ash-project-card group">
+              <a class="ash-project-screen block" href="projects/openchat.html" aria-label="Open RTRP Chat Rooms case study">
                 <div class="flex items-center justify-between z-10">
                   <span class="text-[11px] font-mono font-medium text-zinc-400">02</span>
-                  <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50">
-                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                    <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 font-mono">Live Demo</span>
-                  </div>
-                </div>
-                <div class="ash-card-play-overlay">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-white mb-2 font-mono">Open Details</span>
-                  <div class="ash-play-btn">
-                    <svg class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z"></path></svg>
-                  </div>
+                  <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-[3px] border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-400">Live demo</span>
                 </div>
                 <div class="ash-inner-window">
                   <img src="img/rtrp_chat_rooms.png" alt="RTRP Chat Rooms preview" loading="lazy" />
                 </div>
-              </div>
-              <div class="mt-3.5 flex flex-col">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">RTRP Chat Rooms</h3>
-                  <span class="text-[12px] font-mono text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
+              </a>
+              <div class="mt-3.5 flex flex-col flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 leading-snug"><a href="projects/openchat.html" class="hover:underline">RTRP Chat Rooms (Open Chat)</a></h3>
+                  <div class="project-header-icons">
+                    <a href="https://open-chat-application-ubti.onrender.com" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="Visit live demo" aria-label="Visit live demo">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </a>
+                    <a href="https://github.com/Harshith1702/Open_Chat_Application" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="View on GitHub" aria-label="View on GitHub">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    </a>
+                    <a href="projects/openchat.html" class="project-header-icon" title="Project details" aria-label="Project details">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                  </div>
                 </div>
-                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Ephemeral real-time chat with no database, 100-user room isolation, and automatic garbage collection.</p>
-                <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-                  <span>Node.js • Socket.io • Express</span>
-                  <span class="text-zinc-800 dark:text-zinc-200 font-medium">View Project</span>
+                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Real-time chat with no database, up to 100 users per room, and cleanup on disconnect.</p>
+                <div class="project-tech-stack" aria-label="Technologies">
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/nodedotjs.svg" alt="Node.js" />
+                    <span class="tech-icon-tooltip">Node.js</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img dark-invert" src="img/logos/express.svg" alt="Express" />
+                    <span class="tech-icon-tooltip">Express</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img dark-invert" src="img/logos/socketdotio.svg" alt="Socket.IO" />
+                    <span class="tech-icon-tooltip">Socket.IO</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/javascript.svg" alt="JavaScript" />
+                    <span class="tech-icon-tooltip">JavaScript</span>
+                  </div>
                 </div>
               </div>
-            </a>
-
-            <!-- Project 3: LeetCode Grind Tracker -->
-            <a class="ash-project-card group" data-project-id="tracker" href="projects/tracker.html">
-              <div class="ash-project-screen">
+            </div>
+            <div class="ash-project-card group">
+              <a class="ash-project-screen block" href="projects/discord.html" aria-label="Open LeetCode Discord Reporter case study">
                 <div class="flex items-center justify-between z-10">
                   <span class="text-[11px] font-mono font-medium text-zinc-400">03</span>
-                  <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50">
-                    <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-                    <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 font-mono">Personal Tool</span>
-                  </div>
-                </div>
-                <div class="ash-card-play-overlay">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-white mb-2 font-mono">Open Details</span>
-                  <div class="ash-play-btn">
-                    <svg class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z"></path></svg>
-                  </div>
+                  <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-[3px] border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-400">Discord Bot</span>
                 </div>
                 <div class="ash-inner-window">
-                  <img src="img/tracker_ui.png" alt="LeetCode Grind Tracker preview" loading="lazy" />
+                  <img class="fit-contain fit-dark" src="img/discord_reporter.png" alt="LeetCode Discord Reporter preview" loading="lazy" />
                 </div>
-              </div>
-              <div class="mt-3.5 flex flex-col">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">LeetCode Grind Tracker</h3>
-                  <span class="text-[12px] font-mono text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
-                </div>
-                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">The predecessor to GrindLens: Python script syncing GraphQL submissions to MySQL with custom PHP API dashboard.</p>
-                <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-                  <span>Python • MySQL • PHP</span>
-                  <span class="text-zinc-800 dark:text-zinc-200 font-medium">View Project</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Project 4: LeetCode Discord Reporter -->
-            <a class="ash-project-card group" data-project-id="discord" href="projects/discord.html">
-              <div class="ash-project-screen">
-                <div class="flex items-center justify-between z-10">
-                  <span class="text-[11px] font-mono font-medium text-zinc-400">04</span>
-                  <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50">
-                    <div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div>
-                    <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 font-mono">Bot</span>
+              </a>
+              <div class="mt-3.5 flex flex-col flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 leading-snug"><a href="projects/discord.html" class="hover:underline">LeetCode Discord Reporter</a></h3>
+                  <div class="project-header-icons">
+                    <a href="https://github.com/Harshith1702/leetcode-discord-reporter" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="View on GitHub" aria-label="View on GitHub">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    </a>
+                    <a href="projects/discord.html" class="project-header-icon" title="Project details" aria-label="Project details">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
                   </div>
                 </div>
-                <div class="ash-card-play-overlay">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-white mb-2 font-mono">Open Details</span>
-                  <div class="ash-play-btn">
-                    <svg class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z"></path></svg>
+                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Posts accepted LeetCode submissions to Discord each night at 10:15 PM IST.</p>
+                <div class="project-tech-stack" aria-label="Technologies">
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/python.svg" alt="Python" />
+                    <span class="tech-icon-tooltip">Python</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/githubactions.svg" alt="GitHub Actions" />
+                    <span class="tech-icon-tooltip">GitHub Actions</span>
                   </div>
                 </div>
-                <div class="ash-inner-window">
-                  <img src="img/discord_reporter.png" alt="LeetCode Discord Reporter preview" loading="lazy" />
+              </div>
+            </div>
+            <article class="ash-project-card group">
+              <a class="ash-project-screen project-source-preview" href="projects/socialgraph.html" aria-label="Read about Social Follower Graph">
+                <div class="source-preview-heading"><span>04</span><span>C / GRAPHS</span></div>
+                <div class="monitor-workflow"><p class="source-file-label">Follower relationships</p><p>Users in an array.<br/>Connections in an adjacency matrix.</p><p>Follow, unfollow, and mutual-follow suggestions.</p></div>
+                <span class="source-preview-caption">Saved in users.txt and follows.txt.</span>
+              </a>
+              <div class="mt-3.5 flex flex-col flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 leading-snug"><a href="projects/socialgraph.html" class="hover:underline">Social Follower Graph (C)</a></h3>
+                  <div class="project-header-icons">
+                    <a href="https://github.com/Harshith1702/Social_Media_Follower_System_C" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="View on GitHub" aria-label="View on GitHub">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    </a>
+                    <a href="projects/socialgraph.html" class="project-header-icon" title="Project details" aria-label="Project details">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                  </div>
+                </div>
+                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">A console follower system with follow and unfollow operations, mutual-follow suggestions, and file persistence.</p>
+                <div class="project-tech-stack" aria-label="Technologies">
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/c.svg" alt="C" />
+                    <span class="tech-icon-tooltip">C</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img dark-invert" src="img/logos/arrays.svg" alt="Arrays" />
+                    <span class="tech-icon-tooltip">Arrays</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img dark-invert" src="img/logos/file-io.svg" alt="File I/O" />
+                    <span class="tech-icon-tooltip">File I/O</span>
+                  </div>
                 </div>
               </div>
-              <div class="mt-3.5 flex flex-col">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">LeetCode Discord Reporter</h3>
-                  <span class="text-[12px] font-mono text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
-                </div>
-                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Automated webhook bot querying LeetCode GraphQL every night to broadcast accepted submissions into Discord.</p>
-                <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-                  <span>Python • Discord Webhooks</span>
-                  <span class="text-zinc-800 dark:text-zinc-200 font-medium">View Project</span>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <!-- Expanded Extra Projects (2-Column Grid Layout) -->
-          <div class="hidden mt-10 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10 relative z-10" id="extra-projects-wrapper">
-            <!-- Project 5: NPTEL IoT Study Dashboard -->
-            <a class="ash-project-card group" data-project-id="nptel" href="projects/nptel.html">
-              <div class="ash-project-screen">
+            </article>
+            <article class="ash-project-card group">
+              <a class="ash-project-screen block" href="projects/midnight.html" aria-label="Read about Midnight Network">
                 <div class="flex items-center justify-between z-10">
                   <span class="text-[11px] font-mono font-medium text-zinc-400">05</span>
-                  <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50">
-                    <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-                    <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 font-mono">Study Engine</span>
-                  </div>
-                </div>
-                <div class="ash-card-play-overlay">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-white mb-2 font-mono">Open Details</span>
-                  <div class="ash-play-btn">
-                    <svg class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z"></path></svg>
-                  </div>
+                  <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-[3px] border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-400">Live demo</span>
                 </div>
                 <div class="ash-inner-window">
-                  <img src="img/cathedral_submerged.jpg" alt="NPTEL IoT Study Dashboard preview" loading="lazy" />
+                  <img class="fit-contain fit-dark fit-midnight" src="img/midnight_dashboard.png" alt="Midnight Network dashboard preview" loading="lazy" />
+                </div>
+              </a>
+              <div class="mt-3.5 flex flex-col flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 leading-snug"><a href="projects/midnight.html" class="hover:underline">Midnight Network</a></h3>
+                  <div class="project-header-icons">
+                    <a href="https://midnight-network-8m4w.onrender.com/" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="Visit live demo" aria-label="Visit live demo">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </a>
+                    <a href="https://github.com/Harshith1702/midnight-network" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="View on GitHub" aria-label="View on GitHub">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    </a>
+                    <a href="projects/midnight.html" class="project-header-icon" title="Project details" aria-label="Project details">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
+                  </div>
+                </div>
+                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">An HTTP service monitor that stores checks in SQLite and tracks incidents from failure through recovery.</p>
+                <div class="project-tech-stack" aria-label="Technologies">
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/python.svg" alt="Python" />
+                    <span class="tech-icon-tooltip">Python</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img dark-invert" src="img/logos/flask.svg" alt="Flask" />
+                    <span class="tech-icon-tooltip">Flask</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/sqlite.svg" alt="SQLite" />
+                    <span class="tech-icon-tooltip">SQLite</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/docker.svg" alt="Docker" />
+                    <span class="tech-icon-tooltip">Docker</span>
+                  </div>
                 </div>
               </div>
-              <div class="mt-3.5 flex flex-col">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">NPTEL IoT Study Dashboard</h3>
-                  <span class="text-[12px] font-mono text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
-                </div>
-                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Interactive study engine with 724 verified IIT Kharagpur questions, categorized explanations, and searchable solutions.</p>
-                <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-                  <span>JavaScript • HTML5 • CSS3</span>
-                  <span class="text-zinc-800 dark:text-zinc-200 font-medium">View Project</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Project 6: Social Follower Graph (C) -->
-            <a class="ash-project-card group" data-project-id="socialgraph" href="projects/socialgraph.html">
-              <div class="ash-project-screen">
+            </article>
+            <article class="ash-project-card group">
+              <a class="ash-project-screen block" href="projects/nptel.html" aria-label="Read about NPTEL IoT Study Dashboard">
                 <div class="flex items-center justify-between z-10">
                   <span class="text-[11px] font-mono font-medium text-zinc-400">06</span>
-                  <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50">
-                    <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
-                    <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 font-mono">Systems / C</span>
-                  </div>
-                </div>
-                <div class="ash-card-play-overlay">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-white mb-2 font-mono">Open Details</span>
-                  <div class="ash-play-btn">
-                    <svg class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z"></path></svg>
-                  </div>
+                  <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-[3px] border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-400">Web app</span>
                 </div>
                 <div class="ash-inner-window">
-                  <img src="img/city_inverted.jpg" alt="Social Follower Graph preview" loading="lazy" />
+                  <img class="fit-contain fit-dark" src="img/nptel_dashboard.png" alt="NPTEL IoT Study Dashboard preview" loading="lazy" />
                 </div>
-              </div>
-              <div class="mt-3.5 flex flex-col">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">Social Follower Graph (C)</h3>
-                  <span class="text-[12px] font-mono text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
-                </div>
-                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Systems programming simulation of directed social graphs with heap-allocated adjacency lists and zero memory leaks.</p>
-                <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-                  <span>C • Data Structures • Valgrind</span>
-                  <span class="text-zinc-800 dark:text-zinc-200 font-medium">View Project</span>
-                </div>
-              </div>
-            </a>
-
-            <!-- Project 7: Dead Packet Detective -->
-            <a class="ash-project-card group" data-project-id="deadpacket" href="projects/deadpacket.html">
-              <div class="ash-project-screen">
-                <div class="flex items-center justify-between z-10">
-                  <span class="text-[11px] font-mono font-medium text-zinc-400">07</span>
-                  <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-zinc-200/50 dark:border-zinc-800/50 bg-white dark:bg-zinc-900/50">
-                    <div class="w-1.5 h-1.5 rounded-full bg-rose-500"></div>
-                    <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 font-mono">Networking</span>
+              </a>
+              <div class="mt-3.5 flex flex-col flex-1">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 leading-snug"><a href="projects/nptel.html" class="hover:underline">NPTEL IoT Study Dashboard</a></h3>
+                  <div class="project-header-icons">
+                    <a href="https://nptel-iot.vercel.app" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="Visit website" aria-label="Visit website">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </a>
+                    <a href="https://github.com/Harshith1702/nptel-iot" target="_blank" rel="noopener noreferrer" class="project-header-icon" title="View on GitHub" aria-label="View on GitHub">
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    </a>
+                    <a href="projects/nptel.html" class="project-header-icon" title="Project details" aria-label="Project details">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M7 7h10v10"></path></svg>
+                    </a>
                   </div>
                 </div>
-                <div class="ash-card-play-overlay">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-white mb-2 font-mono">Open Details</span>
-                  <div class="ash-play-btn">
-                    <svg class="w-4 h-4 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M5.25 5.653v12.694c0 .856.926 1.39 1.668.958l11.1-6.347a1.125 1.125 0 000-1.916L6.918 4.695c-.742-.432-1.668.102-1.668.958z"></path></svg>
+                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">An assignment-practice dashboard for NPTEL Introduction to IoT, with immediate answer feedback and original assignment PDFs.</p>
+                <div class="project-tech-stack" aria-label="Technologies">
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/react.svg" alt="React" />
+                    <span class="tech-icon-tooltip">React</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/typescript.svg" alt="TypeScript" />
+                    <span class="tech-icon-tooltip">TypeScript</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/vite.svg" alt="Vite" />
+                    <span class="tech-icon-tooltip">Vite</span>
+                  </div>
+                  <div class="tech-icon-wrap">
+                    <img class="tech-icon-img" src="img/logos/tailwindcss.svg" alt="Tailwind CSS" />
+                    <span class="tech-icon-tooltip">Tailwind CSS</span>
                   </div>
                 </div>
-                <div class="ash-inner-window">
-                  <img src="img/overgrown_room.jpg" alt="Dead Packet Detective preview" loading="lazy" />
-                </div>
               </div>
-              <div class="mt-3.5 flex flex-col">
-                <div class="flex items-center justify-between">
-                  <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">Dead Packet Detective</h3>
-                  <span class="text-[12px] font-mono text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
-                </div>
-                <p class="mt-1.5 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">Python low-level socket sniffer inspecting raw TCP/UDP packet headers and identifying protocol anomalies.</p>
-                <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-                  <span>Python • Sockets • Raw IP</span>
-                  <span class="text-zinc-800 dark:text-zinc-200 font-medium">View Project</span>
-                </div>
-              </div>
-            </a>
+            </article>
           </div>
 
+          <details class="additional-builds"><summary id="more-builds-title"><span>More builds <span class="build-count">(2)</span></span><span class="disclosure-sign" aria-hidden="true"></span></summary><div class="additional-builds-content"><article class="additional-build"><div><h4><a href="projects/deadpacket.html">Dead Packet Detective <span aria-hidden="true">↗</span></a></h4><p>A network-forensics workbench that collects DNS, ping, TCP handshake, and route evidence for a hostname or IP.</p><p class="build-stack">Python / Sockets / HTTP</p></div><div class="build-links"><a href="https://github.com/Harshith1702/dead-packet-detective" target="_blank" rel="noopener noreferrer" class="project-action-btn project-action-btn--primary">GitHub ↗</a></div></article><article class="additional-build"><div><h4><a href="projects/tracker.html">LeetCode Grind Tracker <span aria-hidden="true">↗</span></a></h4><p>The DBMS project that preceded GrindLens: a submission sync script, MySQL views, a PHP API, and a JavaScript dashboard.</p><p class="build-stack">Python / MySQL / PHP / JavaScript</p></div><div class="build-links"><a href="https://github.com/Harshith1702/leetcode-grind-tracker" target="_blank" rel="noopener noreferrer" class="project-action-btn project-action-btn--primary">GitHub ↗</a></div></article></div></details>
           <!-- Bottom line of projects box -->
           <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
           <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
           <div class="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
         </div>
 
-        <!-- Centered View All / More Projects Button -->
-        <div class="flex justify-center -mt-[19px] pb-6 relative z-20">
-          <button aria-controls="extra-projects-wrapper" aria-expanded="false" class="ash-pill-btn font-mono" id="toggle-extra-projects-btn" type="button">
-            <span id="extra-projects-btn-text">3 more projects</span>
-            <span class="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors">↗</span>
-          </button>
-        </div>
       </div>
 
       <!-- ============================================================
-           3. OPEN SOURCE CONTRIBUTIONS (Ashutosh Merged/Open/Closed Tabs)
+           3. GITHUB ACTIVITY (Ashutosh 53-Week Monochrome Contribution Calendar)
            ============================================================ -->
-      <div class="scroll-mt-24 relative z-10" id="opensource">
+      <div class="mt-8 flex flex-col relative z-10 scroll-mt-24" id="activity">
         <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
         <div class="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
         <div class="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
 
-        <div class="py-2 relative mt-1">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Open Source Contributions</h2>
-              <p class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">Upstream patches and core infrastructure PRs.</p>
-            </div>
-            <!-- Segmented Tab Switcher with Glider -->
-            <div class="flex items-center gap-2 relative z-20 group">
-              <div class="relative grid grid-cols-3 p-1 bg-zinc-100 dark:bg-[#09090b] rounded-[6px] border border-black/5 dark:border-white/5 shadow-sm w-[230px] select-none font-mono">
-                <div id="os-tab-glider" class="absolute top-1 bottom-1 left-1 w-[calc((100%-8px)/3)] rounded-[4px] bg-white dark:bg-[#1e1e20] border border-zinc-200/50 dark:border-zinc-800/50 shadow-sm transition-transform duration-300 ease-[cubic-bezier(0.33,1,0.68,1)] transform translate-x-0"></div>
-                <button type="button" class="os-tab-btn z-10 relative px-2.5 py-1 text-[11px] font-medium text-center transition-colors capitalize text-zinc-900 dark:text-zinc-100 active" data-tab="merged">merged</button>
-                <button type="button" class="os-tab-btn z-10 relative px-2.5 py-1 text-[11px] font-medium text-center transition-colors capitalize text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200" data-tab="open">open</button>
-                <button type="button" class="os-tab-btn z-10 relative px-2.5 py-1 text-[11px] font-medium text-center transition-colors capitalize text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200" data-tab="closed">closed</button>
-              </div>
-            </div>
-          </div>
-          <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
-          <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
-          <div class="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
-        </div>
-
-        <!-- PR Items Container -->
-        <div class="flex flex-col mt-2 pb-6" id="os-pr-container">
-          <!-- Rendered by script.js -->
-        </div>
-      </div>
-
-      <!-- ============================================================
-           4. PROBLEM SOLVING & RIGOR (Ashutosh Practice Rows)
-           ============================================================ -->
-      <div class="mt-6 flex flex-col relative z-10 scroll-mt-24" id="rigor">
-        <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
-        <div class="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
-        <div class="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
-
-        <div class="py-2 relative mt-1">
+        <div class="py-2.5 relative mt-1">
           <div class="flex items-baseline justify-between">
-            <div>
-              <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Problem Solving</h2>
-              <p class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-0.5">Daily competitive programming and algorithmic rigor.</p>
-            </div>
-            <span class="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">DAILY</span>
+            <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">GitHub Activity</h2>
+            <span id="gh-date-range" class="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">Last 12 Months</span>
           </div>
           <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
           <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
           <div class="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
         </div>
 
-        <div class="practice-list pt-2 pb-6">
-          <a class="practice-row" href="https://leetcode.com/u/Harshith-2007/" rel="noopener noreferrer" target="_blank">
-            <div class="practice-identity">
-              <span class="platform-logo"><img alt="LeetCode" height="22" src="img/logos/leetcode.svg" width="22"/></span>
-              <div>
-                <h3>LeetCode</h3>
-                <span class="practice-handle">Harshith-2007</span>
+        <!-- 53-Week Contribution Heatmap -->
+        <div class="gh-calendar-wrap">
+          <div class="min-w-[600px] select-none">
+            <div id="gh-months-header" class="flex justify-between text-[10px] font-mono text-zinc-400 mb-1.5 px-0.5">
+              <span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span>
+            </div>
+            <div class="gh-calendar-grid" id="gh-calendar-grid" role="img" aria-label="GitHub contribution calendar">
+              <!-- Rendered by script.js -->
+            </div>
+            <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500 px-0.5">
+              <div><span id="gh-total-count" class="font-bold text-zinc-900 dark:text-zinc-100">1,667</span> contributions in the last year</div>
+              <div class="flex items-center gap-1.5">
+                <span>Less</span>
+                <span class="w-2.5 h-2.5 rounded-[2.5px] gh-cell" data-level="0"></span>
+                <span class="w-2.5 h-2.5 rounded-[2.5px] gh-cell" data-level="1"></span>
+                <span class="w-2.5 h-2.5 rounded-[2.5px] gh-cell" data-level="2"></span>
+                <span class="w-2.5 h-2.5 rounded-[2.5px] gh-cell" data-level="3"></span>
+                <span class="w-2.5 h-2.5 rounded-[2.5px] gh-cell" data-level="4"></span>
+                <span>More</span>
               </div>
             </div>
-            <div class="practice-score"><strong>465</strong><span>solved</span></div>
-            <div class="practice-detail"><span>1720 Max Rating • 60 Contests</span><small>200+ day streak</small></div>
-            <span aria-hidden="true" class="practice-arrow">↗</span>
-          </a>
-          <a class="practice-row" href="https://www.codechef.com/users/harshith_2007" rel="noopener noreferrer" target="_blank">
-            <div class="practice-identity">
-              <span class="platform-logo"><img alt="CodeChef" height="22" src="img/logos/codechef.svg" width="22"/></span>
-              <div>
-                <h3>CodeChef</h3>
-                <span class="practice-handle">harshith_2007</span>
-              </div>
-            </div>
-            <div class="practice-score"><strong>230+</strong><span>solved</span></div>
-            <div class="practice-detail"><span>2-Star Division (rating 1400+)</span><small>40 Contests</small></div>
-            <span aria-hidden="true" class="practice-arrow">↗</span>
-          </a>
-          <a class="practice-row" href="https://codeforces.com/profile/harshaharshith31" rel="noopener noreferrer" target="_blank">
-            <div class="practice-identity">
-              <span class="platform-logo"><img alt="Codeforces" height="22" src="img/logos/codeforces.svg" width="22"/></span>
-              <div>
-                <h3>Codeforces</h3>
-                <span class="practice-handle">harshaharshith31</span>
-              </div>
-            </div>
-            <div class="practice-score"><strong>Active</strong><span>contender</span></div>
-            <div class="practice-detail"><span>Competitive programming</span><small>Div 2 / Div 3 contest history</small></div>
-            <span aria-hidden="true" class="practice-arrow">↗</span>
-          </a>
+          </div>
+          <div id="gh-calendar-tooltip" class="gh-calendar-tooltip" role="tooltip" aria-hidden="true"></div>
         </div>
+
+        <!-- Problem Solving Rigor Row -->
+
       </div>
 
+
+      <section class="profile-section" id="competitive">
+        <h2>Competitive Programming</h2>
+        <p class="section-note">Profiles on LeetCode, CodeChef, and Codeforces.</p>
+        <div class="cp-platforms-row pt-2 pb-4">
+          <a class="cp-platform-card group" href="https://leetcode.com/u/Harshith-2007/" rel="noopener noreferrer" target="_blank">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="cp-platform-icon">
+                <img alt="LeetCode" height="18" width="18" src="img/logos/leetcode.svg"/>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1">
+                  <span class="cp-platform-name">LeetCode</span>
+                  <span class="cp-platform-arrow" aria-hidden="true">↗</span>
+                </div>
+                <span class="cp-platform-handle truncate">Harshith-2007</span>
+              </div>
+            </div>
+          </a>
+          <a class="cp-platform-card group" href="https://www.codechef.com/users/harshith_2007" rel="noopener noreferrer" target="_blank">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="cp-platform-icon">
+                <img alt="CodeChef" height="18" width="18" class="dark-invert" src="img/logos/codechef.svg"/>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1">
+                  <span class="cp-platform-name">CodeChef</span>
+                  <span class="cp-platform-arrow" aria-hidden="true">↗</span>
+                </div>
+                <span class="cp-platform-handle truncate">harshith_2007</span>
+              </div>
+            </div>
+          </a>
+          <a class="cp-platform-card group" href="https://codeforces.com/profile/harshaharshith31" rel="noopener noreferrer" target="_blank">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="cp-platform-icon">
+                <img alt="Codeforces" height="18" width="18" src="img/logos/codeforces.svg"/>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1">
+                  <span class="cp-platform-name">Codeforces</span>
+                  <span class="cp-platform-arrow" aria-hidden="true">↗</span>
+                </div>
+                <span class="cp-platform-handle truncate">harshaharshith31</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+      <section class="profile-section" id="education">
+        <h2>Education</h2>
+        <div class="education-entry">
+          <div><h3>CMR Technical Campus</h3><p>B.Tech Computer Science &amp; Engineering</p><p>Hyderabad, India</p><p class="education-grade">CGPA: 8.52</p></div>
+          <span class="education-dates">2024 - 2028</span>
+        </div>
+      </section>
+
       <!-- ============================================================
-           5. SKILLS & TECHNOLOGIES (Ashutosh Flexible Chip Badges with Icons)
+           4. OPEN SOURCE CONTRIBUTIONS (Ashutosh Merged/Open/Closed Tabs)
            ============================================================ -->
-      <div class="mt-6 flex flex-col relative z-10 scroll-mt-24" id="skills">
+      <div class="mt-8 flex flex-col relative z-10 scroll-mt-24" id="opensource">
         <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
         <div class="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
         <div class="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
 
-        <div class="py-2 relative mt-1">
+        <div class="py-2.5 relative mt-1">
+          <div class="flex items-baseline justify-between">
+            <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Open Source Contributions</h2>
+            <span class="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">Pull requests and programs</span>
+          </div>
+          <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
+          <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
+          <div class="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
+        </div>
+
+<article class="oss-repository" aria-labelledby="rocket-contributions-title"><div class="oss-group-heading"><img src="img/logos/rocket-chat.png" alt="" width="28" height="28"/><div><h3 id="rocket-contributions-title">Rocket.Chat</h3><p>message-parser / TypeScript / March - April 2026</p></div></div><p class="oss-description">Three original pull requests, closed and consolidated by a maintainer into PR #39853.</p><div class="contribution-pr-list"><a class="contribution-pr" href="https://github.com/RocketChat/Rocket.Chat/pull/39853" target="_blank" rel="noopener noreferrer"><span class="pr-number">#39853</span><span><strong>Maintainer consolidation</strong><small>Consolidates the three original PRs</small></span><span class="pr-status">Maintainer PR</span><span aria-hidden="true">↗</span></a><a class="contribution-pr" href="https://github.com/RocketChat/Rocket.Chat/pull/39455" target="_blank" rel="noopener noreferrer"><span class="pr-number">#39455</span><span><strong>Timestamp parsing</strong><small>Formatted message timestamps</small></span><span class="pr-status">Closed / consolidated</span><span aria-hidden="true">↗</span></a><a class="contribution-pr" href="https://github.com/RocketChat/Rocket.Chat/pull/39737" target="_blank" rel="noopener noreferrer"><span class="pr-number">#39737</span><span><strong>Parser guard tests</strong><small>Defensive tests for isNodeOfType</small></span><span class="pr-status">Closed / consolidated</span><span aria-hidden="true">↗</span></a><a class="contribution-pr" href="https://github.com/RocketChat/Rocket.Chat/pull/39733" target="_blank" rel="noopener noreferrer"><span class="pr-number">#39733</span><span><strong>Emoji handling tests</strong><small>Regression coverage in reducePlainTexts</small></span><span class="pr-status">Closed / consolidated</span><span aria-hidden="true">↗</span></a></div></article>
+<article class="oss-program" aria-labelledby="nsoc-contributions-title"><div class="oss-group-heading"><img src="img/logos/nsoc-light.png" class="dark:hidden" alt="" width="28" height="28"/><img src="img/logos/nsoc-dark.png" class="hidden dark:block" alt="" width="28" height="28"/><div><p class="oss-kind">Open source program / 2026</p><h3 id="nsoc-contributions-title">Nexus Spring of Code</h3></div></div><p class="oss-description">Selected contributor. 30+ merged pull requests across JavaScript and TypeScript repositories. Ranked 70th out of 988 contributors nationwide.</p></article>
+      </div>
+
+      <!-- ============================================================
+           5. SKILLS & TECHNOLOGIES (Ashutosh Fluid Auto-Wrap Chips with Brand SVGs)
+           ============================================================ -->
+      <div class="mt-8 flex flex-col relative z-10 scroll-mt-24" id="skills">
+        <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
+        <div class="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
+        <div class="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
+
+        <div class="py-2.5 relative mt-1">
           <div class="flex items-baseline justify-between">
             <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Skills &amp; Technologies</h2>
-            <span class="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">Core Stack</span>
           </div>
           <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
           <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
           <div class="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
         </div>
 
-        <div class="relative pt-6 pb-6">
-          <div class="flex flex-wrap gap-2 w-full">
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-sky-500">TS</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">TypeScript</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-amber-500">JS</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">JavaScript</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-blue-500">PY</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Python</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-red-500">JV</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Java</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-indigo-500">C</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">C Systems</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-cyan-500">⚛</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">React</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-zinc-900 dark:text-zinc-100">▲</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Next.js</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-emerald-500">⬢</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Node.js</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-zinc-600 dark:text-zinc-400">ex</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Express</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-sky-600">🐘</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">PostgreSQL</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-orange-500">🐬</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">MySQL</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-purple-500">⚡</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">WebSockets</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-pink-500">◈</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">GraphQL</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-amber-600">⎇</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Git &amp; GitHub</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-zinc-500">🐧</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Linux</span>
-            </div>
-            <div class="grow flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#0a0a0a] dark:hover:bg-[#121214] border border-black/30 dark:border-white/[0.15] rounded-[6px] transition-colors duration-200 cursor-default">
-              <span class="text-[11px] font-mono font-bold text-teal-500">❖</span>
-              <span class="text-[12px] font-medium text-zinc-700 dark:text-zinc-300">Data Structures &amp; Algorithms</span>
-            </div>
-          </div>
-        </div>
+        <dl class="skill-domains">
+          <div><dt>Languages</dt><dd>Java, TypeScript, JavaScript, Python, C, PHP, Dart, SQL</dd></div>
+          <div><dt>Interfaces</dt><dd>HTML, CSS, React, Next.js, Vite, Tailwind CSS, Flutter</dd></div>
+          <div><dt>Backend</dt><dd>Node.js, Express, Flask, Socket.IO, WebSockets, REST APIs, GraphQL</dd></div>
+          <div><dt>Databases</dt><dd>PostgreSQL, MySQL, SQLite</dd></div>
+          <div><dt>Tools</dt><dd>Git, GitHub, Linux, Docker, GitHub Actions, pytest</dd></div>
+        </dl>
       </div>
 
-      <!-- ============================================================
-           6. HIGHLIGHTS & MILESTONES (Ashutosh Milestone Rows)
-           ============================================================ -->
-      <div class="mt-6 flex flex-col relative z-10 scroll-mt-24" id="highlights">
-        <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
-        <div class="absolute top-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
-        <div class="absolute top-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"></div>
 
-        <div class="py-2 relative mt-1">
+
+      <!-- PLAYLIST -->
+      <div class="mt-8 flex flex-col relative z-10 scroll-mt-24" id="playlist">
+        <div class="absolute top-0 left-[-100vw] right-[-100vw] h-0 border-t border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
+        <div class="py-2.5 relative mt-1">
           <div class="flex items-baseline justify-between">
-            <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Highlights</h2>
-            <span class="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">Milestones</span>
+            <h2 class="text-[18px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">Playlist</h2>
+            <span class="font-mono text-[11px] text-zinc-400 dark:text-zinc-500">Spotify</span>
           </div>
           <div class="absolute bottom-0 left-[-100vw] right-[-100vw] h-0 border-b border-black/30 dark:border-white/[0.15] pointer-events-none dashed-border-x"></div>
-          <div class="absolute bottom-0 -left-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] -translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
-          <div class="absolute bottom-0 -right-4 w-[2px] h-[2px] bg-black/50 dark:bg-white/[0.25] translate-x-1/2 translate-y-1/2 pointer-events-none z-20"></div>
         </div>
-
-        <div class="milestone-list pt-4 pb-6">
-          <article class="milestone-row">
-            <img alt="GrindLens Launch" height="72" loading="lazy" src="img/grindlens_banner.png" width="100"/>
-            <div>
-              <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">GrindLens, out in the world.</h3>
-              <p class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">Launched August 19. 422 registered users, 4,180 unique visitors in production. Active user base and automated revision loops.</p>
+        <div class="practice-list pt-2 pb-4">
+          <a class="practice-row" href="https://open.spotify.com/playlist/3swp8jCwb24b6spfAUA465" rel="noopener noreferrer" target="_blank">
+            <div class="practice-identity">
+              <span class="platform-logo"><img alt="Playlist cover" height="22" src="img/playlist-cover.jpg" width="22"/></span>
+              <div>
+                <h3>Harshith</h3>
+                <span class="practice-handle">Spotify playlist</span>
+              </div>
             </div>
-          </article>
-          <article class="milestone-row">
-            <img alt="200+ Day LeetCode Streak" height="72" loading="lazy" src="img/lc_streak.jpg" width="100"/>
-            <div>
-              <h3 class="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">Kept showing up.</h3>
-              <p class="text-[13px] text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">200+ Day streak on LeetCode, 1720 max rating, and rank 70/988 contributors in NSoC nationwide.</p>
-            </div>
-          </article>
+            <div class="practice-score"><strong>60</strong><span>tracks</span></div>
+            <div class="practice-detail"><span>Open on Spotify</span></div>
+            <span aria-hidden="true" class="practice-arrow">↗</span>
+          </a>
         </div>
       </div>
 
       <!-- Bottom Minimalist Signature Quote -->
-      <div class="mt-4 flex flex-col items-center justify-center relative py-8">
+      <div class="mt-8 flex flex-col items-center justify-center relative py-12">
         <div class="max-w-[480px] w-full flex flex-col items-center text-center">
           <h3 class="text-[15px] font-medium leading-relaxed text-zinc-500 dark:text-zinc-400 mb-5 italic">
-            "I notice things. Then I can't leave them alone."
+            "I notice things. Then I cannot leave them alone."
           </h3>
           <div class="flex items-center gap-3 text-[10px] font-medium tracking-[0.2em] text-zinc-400 dark:text-zinc-600 uppercase font-mono">
-            <div class="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
+            <div class="w-6 h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
             HARSHITH PADAKANTI
-            <div class="w-4 h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
+            <div class="w-6 h-[1px] bg-zinc-200 dark:bg-zinc-800"></div>
           </div>
         </div>
       </div>
 
       <!-- Visitor Counter & Persistent Footer -->
       <footer class="visitor-counter-bar">
-        <div class="flex items-center">
-          <span class="visitor-status-dot"></span>
-          <span title="Anonymous browser count; clearing cookies or changing devices may count again.">Browsers: <strong aria-live="polite" class="font-mono text-zinc-900 dark:text-zinc-100 font-bold" id="visitor-count">Unavailable</strong></span>
+        <div id="visitor-counter" hidden><span id="visitor-count"></span> unique browsers</div>
+        <div class="flex items-center gap-3">
+          <a href="llms.txt" target="_blank" rel="noopener noreferrer" class="hover:underline font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">llms.txt</a>
         </div>
-        <div>Harshith Padakanti - India</div>
       </footer>
-    </div>
-  </div>
-
-  <!-- ============================================================
-       IN-PLACE INTERACTIVE PROJECT DETAIL MODAL ("When pressed it shud show inside")
-       ============================================================ -->
-  <div aria-labelledby="modal-project-title" aria-modal="true" class="project-modal-backdrop" id="project-detail-modal" role="dialog">
-    <div class="project-modal-sheet" id="project-modal-sheet">
-      <div class="modal-preview-header">
-        <img alt="" id="modal-project-img" src=""/>
-        <div class="modal-header-gradient"></div>
-        <button aria-label="Close project details" class="modal-close-icon-btn" id="modal-project-close-btn" type="button">
-          <svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16">
-            <line x1="18" x2="6" y1="6" y2="18"></line>
-            <line x1="6" x2="18" y1="6" y2="18"></line>
-          </svg>
-        </button>
-        <div class="modal-header-text">
-          <p class="modal-header-category" id="modal-project-category"></p>
-          <h2 class="modal-header-title" id="modal-project-title"></h2>
-        </div>
-      </div>
-      <div class="modal-scroll-body">
-        <div class="modal-meta-row">
-          <div class="modal-status-pill modal-status-live" id="modal-project-status">
-            <span class="modal-status-dot"></span>
-            <span id="modal-status-text">Live</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <a class="text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" href="#" id="modal-external-link" rel="noopener noreferrer" target="_blank" title="View Live App">
-              <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
-                <path d="M2 12h20"></path>
-              </svg>
-            </a>
-            <a class="text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" href="#" id="modal-github-link" rel="noopener noreferrer" target="_blank" title="View Source on GitHub">
-              <svg fill="currentColor" height="16" viewBox="0 0 24 24" width="16">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-        <p class="modal-description" id="modal-project-desc"></p>
-        <div>
-          <h4 class="modal-section-title">ENGINEERING ARCHITECTURE</h4>
-          <ul class="modal-highlights-list" id="modal-project-highlights"></ul>
-        </div>
-        <div>
-          <h4 class="modal-section-title">TECHNOLOGIES &amp; TOOLS</h4>
-          <div class="modal-tech-pills" id="modal-project-tech"></div>
-        </div>
-        <div class="modal-footer-actions">
-          <a class="modal-primary-btn" href="#" id="modal-action-primary" rel="noopener noreferrer" target="_blank">
-            <span>View Live Project</span>
-            <svg fill="none" height="14" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14">
-              <line x1="7" x2="17" y1="17" y2="7"></line>
-              <polyline points="7 7 17 7 17 17"></polyline>
-            </svg>
-          </a>
-          <a class="modal-secondary-btn" href="#" id="modal-action-secondary" rel="noopener noreferrer" target="_blank">
-            <span>Source on GitHub</span>
-          </a>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -1075,19 +829,31 @@
       <div class="cmdk-input-wrapper">
         <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" x2="16.65" y1="16.65" y2="16.65"></line>
+          <line x1="21" x2="16.65" y1="21" y2="16.65"></line>
         </svg>
         <input autocomplete="off" class="cmdk-input" id="cmdk-input" placeholder="Type a command or search..." type="text"/>
         <span class="text-[11px] font-mono text-zinc-400 px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10">ESC</span>
       </div>
-      <div class="cmdk-list" id="cmdk-list">
+      <div class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Commands">
         <div class="cmdk-item" data-action="email">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="20" x="2" y="4"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
           <span>Copy Email Address (harshith.dev.work@gmail.com)</span>
         </div>
         <div class="cmdk-item" data-action="theme">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
           <span>Toggle Light / Dark Mode</span>
+        </div>
+        <div class="cmdk-item" data-action="llms">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span>Open llms.txt (LLM Documentation)</span>
+        </div>
+        <div class="cmdk-item" data-action="thing">
+          <span class="text-sm select-none">✋</span>
+          <span>Toggle Thing Companion (Wednesday Addams Hand)</span>
+        </div>
+        <div class="cmdk-item" data-action="persona">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M17 3l4 4-4 4"></path><path d="M3 7h18"></path><path d="M7 21l-4-4 4-4"></path><path d="M21 17H3"></path></svg>
+          <span>Switch Persona (Wenz / Harshith)</span>
         </div>
         <div class="cmdk-item" data-action="github">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path></svg>
@@ -1095,19 +861,11 @@
         </div>
         <div class="cmdk-item" data-action="twitter">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4l11.733 16h4.267l-11.733 -16zM4 20l6.768 -6.768M20 4l-6.768 6.768"></path></svg>
-          <span>Open Twitter Profile (@harshith_irl)</span>
+          <span>Open X Profile (@harshith_irl)</span>
         </div>
         <div class="cmdk-item" data-action="leetcode">
           <span class="text-amber-500 font-bold text-xs">LC</span>
           <span>Open LeetCode Profile</span>
-        </div>
-        <div class="cmdk-item" data-action="thing">
-          <span class="text-sm select-none">✋</span>
-          <span>Toggle Thing Companion (Wednesday Addams Hand)</span>
-        </div>
-        <div class="cmdk-item" data-action="persona">
-          <span class="text-sm select-none">🔄</span>
-          <span>Switch Persona (Wenz / Harshith)</span>
         </div>
         <div class="cmdk-item" data-action="grindlens">
           <span class="font-bold text-xs">GL</span>
@@ -1120,10 +878,45 @@
   <!-- Interactive Thing (Wednesday Addams Hand) Crawler -->
   <div id="thing-companion" class="thing-companion" role="img" aria-label="Thing from Wednesday Addams crawling companion">
     <div class="thing-shadow" id="thing-shadow"></div>
-    <img src="img/thing.png" alt="Thing" class="thing-sprite" id="thing-sprite" draggable="false" />
+    <!-- Authentic Thing Hand SVG with Articulated Fingers -->
+    <svg id="thing-sprite" class="thing-sprite" viewBox="0 0 388 482" aria-hidden="true">
+      <defs>
+        <!-- Palm clip -->
+        <clipPath id="clip-palm">
+          <path d="M 0 0 L 388 0 L 388 285 Q 280 295 240 285 Q 180 295 120 285 L 0 285 Z"></path>
+        </clipPath>
+        <!-- Left fingers (Thumb & Index) clip -->
+        <clipPath id="clip-left-fingers">
+          <path d="M 0 250 L 195 250 L 195 482 L 0 482 Z"></path>
+        </clipPath>
+        <!-- Middle finger clip -->
+        <clipPath id="clip-middle-finger">
+          <path d="M 180 250 L 295 250 L 295 482 L 180 482 Z"></path>
+        </clipPath>
+        <!-- Right finger clip -->
+        <clipPath id="clip-right-finger">
+          <path d="M 280 250 L 388 250 L 388 482 L 280 482 Z"></path>
+        </clipPath>
+      </defs>
+      <!-- BASE PALM -->
+      <g id="palm-part" style="transform-origin: 194px 260px;">
+        <image href="img/thing.png" width="388" height="482" clip-path="url(#clip-palm)"/>
+      </g>
+      <!-- FINGERS -->
+      <g id="left-part" style="transform-origin: 120px 270px;">
+        <image href="img/thing.png" width="388" height="482" clip-path="url(#clip-left-fingers)"/>
+      </g>
+      <g id="middle-part" style="transform-origin: 240px 270px;">
+        <image href="img/thing.png" width="388" height="482" clip-path="url(#clip-middle-finger)"/>
+      </g>
+      <g id="right-part" style="transform-origin: 330px 270px;">
+        <image href="img/thing.png" width="388" height="482" clip-path="url(#clip-right-finger)"/>
+      </g>
+    </svg>
     <div class="thing-speech-bubble" id="thing-bubble">*tap tap*</div>
   </div>
 
-  <script src="script.js?v=54"></script>
+  <script src="script.js?v=59"></script>
+  <script src="reveal-fx.js?v=3"></script>
 </body>
 </html>

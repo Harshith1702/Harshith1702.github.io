@@ -1,49 +1,40 @@
 // ============================================================
-// HARSHITH PADAKANTI - INTERACTION ENGINE V2
-// Portfolio interactions
+// HARSHITH PADAKANTI - PORTFOLIO INTERACTION ENGINE
+// Blueprint & Minimalist Architecture
 // Zero em/en dashes. Only standard hyphens.
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Preferences remain usable when browser storage is blocked.
+  // Preferences storage with error resilience
   const preferences = {
     get(key) { try { return localStorage.getItem(key); } catch { return null; } },
     set(key, value) { try { localStorage.setItem(key, value); } catch {} }
   };
 
   // ----------------------------------------------------------
-  // 0. HERO BANNER VIDEO AUTOPLAY ASSURANCE
+  // 1. HERO BANNER VIDEO AUTOPLAY ASSURANCE
   // ----------------------------------------------------------
   const heroVideo = document.getElementById('hero-banner-video');
   if (heroVideo) {
-    heroVideo.play().catch(() => {});
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) heroVideo.pause(); else heroVideo.play().catch(() => {});
   }
 
   // ----------------------------------------------------------
-  // 3. EXTRA PROJECTS TOGGLE
+  // 2. LIVE DOTO DIGITAL CLOCK (IF PRESENT)
   // ----------------------------------------------------------
-  const toggleExtraBtn = document.getElementById('toggle-extra-projects-btn');
-  const extraProjectsWrapper = document.getElementById('extra-projects-wrapper');
-  const extraBtnText = document.getElementById('extra-projects-btn-text');
-
-  if (toggleExtraBtn && extraProjectsWrapper) {
-    toggleExtraBtn.addEventListener('click', () => {
-      const isHidden = extraProjectsWrapper.classList.contains('hidden');
-      toggleExtraBtn.setAttribute('aria-expanded', String(isHidden));
-      if (isHidden) {
-        extraProjectsWrapper.classList.remove('hidden');
-        if (extraBtnText) extraBtnText.textContent = 'Fewer projects';
-        toggleExtraBtn.querySelector('svg').style.transform = 'rotate(180deg)';
-      } else {
-        extraProjectsWrapper.classList.add('hidden');
-        if (extraBtnText) extraBtnText.textContent = '3 more projects';
-        toggleExtraBtn.querySelector('svg').style.transform = 'rotate(0deg)';
-      }
-    });
+  const clockEl = document.getElementById('live-clock');
+  if (clockEl) {
+    function updateDigitalClock() {
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      clockEl.textContent = `${pad(now.getHours())}.${pad(now.getMinutes())}.${pad(now.getSeconds())}`;
+    }
+    setInterval(updateDigitalClock, 1000);
+    updateDigitalClock();
   }
 
   // ----------------------------------------------------------
-  // 4. THEME TOGGLER (LIGHT DEFAULT / DARK TOGGLE)
+  // 3. THEME TOGGLER (LIGHT DEFAULT / DARK TOGGLE)
   // ----------------------------------------------------------
   const themeToggleBtn = document.getElementById('theme-toggle-btn');
   const html = document.documentElement;
@@ -62,11 +53,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function toggleTheme(e) {
+    const isDark = html.classList.contains('dark');
+    const targetTheme = isDark ? 'light' : 'dark';
+
+    if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      html.classList.add('theme-transition');
+      setTheme(targetTheme);
+      window.setTimeout(() => html.classList.remove('theme-transition'), 350);
+      return;
+    }
+
+    let x = window.innerWidth / 2;
+    let y = 40;
+    if (e && typeof e.clientX === 'number' && e.clientX > 0) {
+      x = e.clientX;
+      y = e.clientY;
+    } else if (themeToggleBtn) {
+      const rect = themeToggleBtn.getBoundingClientRect();
+      x = rect.left + rect.width / 2;
+      y = rect.top + rect.height / 2;
+    }
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
+      setTheme(targetTheme);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`
+      ];
+      document.documentElement.animate(
+        {
+          clipPath: clipPath
+        },
+        {
+          duration: 400,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          pseudoElement: '::view-transition-new(root)'
+        }
+      );
+    }).catch(() => {
+      setTheme(targetTheme);
+    });
+  }
+
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const current = html.classList.contains('dark') ? 'dark' : 'light';
-      setTheme(current === 'dark' ? 'light' : 'dark');
+      toggleTheme(e);
     });
   }
 
@@ -79,6 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const thingShadow = document.getElementById('thing-shadow');
   const thingBubble = document.getElementById('thing-bubble');
   const thingToggleBtn = document.getElementById('thing-toggle-btn');
+
+  // Articulated finger segments from img/thing.png
+  const palmPart = document.getElementById('palm-part');
+  const leftFingers = document.getElementById('left-part');
+  const midFinger = document.getElementById('middle-part');
+  const rightFinger = document.getElementById('right-part');
 
   let thingEnabled = preferences.get('thing_enabled') !== 'false';
 
@@ -123,112 +170,237 @@ document.addEventListener('DOMContentLoaded', () => {
   if (thingCompanion) {
     updateThingVisibility();
 
-    // Initial position on screen
-    let currentX = window.innerWidth * 0.75;
-    let currentY = window.innerHeight * 0.65;
+    // Crawl motion state for authentic Thing hand
+    let currentX = window.innerWidth * 0.8;
+    let currentY = window.innerHeight * 0.7;
+    let mouseX = currentX;
+    let mouseY = currentY;
     let targetX = currentX;
     let targetY = currentY;
     let facing = 1;
-    let crawlCycle = 0;
-    let isMoving = false;
+    let facingScale = 1;
+    let walkCycle = 0;
     let idleTicks = 0;
-    let tapCycle = 0;
     let hopOffset = 0;
+    let hopScale = 1;
+
+    // Standoff gap configuration:
+    // Companion tracks cursor but stays at a generous buffer (~65px)
+    // so it NEVER blocks clicking buttons, links, or inputs.
+    const STANDOFF_GAP = 65;
+
+    function updateTargetFromMouse(mx, my) {
+      mouseX = mx;
+      mouseY = my;
+      idleTicks = 0;
+
+      // Keep companion to the side of the cursor and slightly below
+      const side = (mouseX >= currentX) ? -1 : 1;
+      targetX = mouseX + side * STANDOFF_GAP;
+      targetY = mouseY + 24;
+
+      // Clamp within viewport
+      targetX = Math.max(25, Math.min(window.innerWidth - 45, targetX));
+      targetY = Math.max(35, Math.min(window.innerHeight - 45, targetY));
+    }
 
     // Track mouse
     window.addEventListener('mousemove', (e) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-      idleTicks = 0;
-      isMoving = true;
+      updateTargetFromMouse(e.clientX, e.clientY);
     }, { passive: true });
 
     // Touch support for mobile/tablet
     window.addEventListener('touchmove', (e) => {
       if (e.touches.length > 0) {
-        targetX = e.touches[0].clientX;
-        targetY = e.touches[0].clientY;
-        idleTicks = 0;
-        isMoving = true;
+        updateTargetFromMouse(e.touches[0].clientX, e.touches[0].clientY);
       }
     }, { passive: true });
 
-    // Click reaction: hop & tap
+    // Click reaction: surprised hop, articulated fingers, speech bubble
     thingCompanion.addEventListener('click', (e) => {
       e.stopPropagation();
-      hopOffset = -22;
+      hopOffset = -18;
+      hopScale = 1.15;
+      if (leftFingers) leftFingers.style.transform = 'translateY(-3px) rotate(-22deg) scaleY(1.06)';
+      if (midFinger) midFinger.style.transform = 'translateY(-5px) rotate(20deg) scaleY(1.08)';
+      if (rightFinger) rightFinger.style.transform = 'translateY(-3px) rotate(-18deg) scaleY(1.06)';
+      if (palmPart) palmPart.style.transform = 'translateY(-4px) rotate(0deg)';
       const phrases = ['*tap tap tap*', '*scuttles*', '*handshake?*', '*scampering*', '🖐', 'Thing approves.'];
       const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
       showThingBubble(randomPhrase, 1400);
     });
 
-    // Animation crawl loop
-    function animateThing() {
+    // Companion animation loop
+    function animateCompanion() {
       if (!thingEnabled || !thingCompanion) {
-        requestAnimationFrame(animateThing);
+        requestAnimationFrame(animateCompanion);
         return;
       }
 
-      // Smooth damp hop offset back to 0
-      hopOffset += (0 - hopOffset) * 0.15;
+      // Smooth damp hop offset and scale back to normal
+      hopOffset += (0 - hopOffset) * 0.16;
+      hopScale += (1 - hopScale) * 0.14;
 
-      const dx = targetX - currentX;
-      const dy = targetY - currentY;
-      const dist = Math.hypot(dx, dy);
+      // Distance to actual mouse cursor
+      const dxMouse = mouseX - currentX;
+      const dyMouse = mouseY - currentY;
+      const distToMouse = Math.hypot(dxMouse, dyMouse);
 
-      if (dist > 30) {
-        // Crawling toward cursor
-        isMoving = true;
-        idleTicks = 0;
-        // Balanced crawl speed (calm and natural, not rushing crazily)
-        const speed = Math.min(Math.max(dist * 0.045, 1.8), 4.5);
-        currentX += (dx / dist) * speed;
-        currentY += (dy / dist) * speed;
+      // Distance to escort target
+      const dxTarget = targetX - currentX;
+      const dyTarget = targetY - currentY;
+      const distTarget = Math.hypot(dxTarget, dyTarget);
 
-        crawlCycle += speed * 0.16;
-        const wiggle = Math.sin(crawlCycle) * 11;
-        const bob = Math.abs(Math.sin(crawlCycle * 2)) * -4.5;
+      let vx = 0;
+      let vy = 0;
 
-        if (dx < -3) facing = -1;
-        else if (dx > 3) facing = 1;
-
-        thingCompanion.style.transform = `translate3d(${currentX - 22}px, ${currentY - 38 + hopOffset}px, 0)`;
-        if (thingSprite) {
-          thingSprite.style.transform = `scaleX(${facing}) rotate(${wiggle}deg) translateY(${bob}px)`;
-        }
-        if (thingShadow) {
-          thingShadow.style.transform = `scale(${1 - bob * 0.05})`;
-        }
-      } else {
-        // Stationary / Idle
-        isMoving = false;
-        idleTicks++;
-
-        // Fingertip tapping every ~3.5 seconds of idle
-        if (idleTicks > 120 && idleTicks % 200 < 50) {
-          tapCycle += 0.35;
-          const tapWiggle = Math.sin(tapCycle * 5) * 7;
-          const tapBob = Math.abs(Math.sin(tapCycle * 5)) * -2.5;
-          if (thingSprite) {
-            thingSprite.style.transform = `scaleX(${facing}) rotate(${tapWiggle}deg) translateY(${tapBob}px)`;
-          }
-        } else {
-          // Resting flat
-          if (thingSprite) {
-            thingSprite.style.transform = `scaleX(${facing}) rotate(0deg) translateY(0px)`;
-          }
-          if (thingShadow) {
-            thingShadow.style.transform = 'scale(1)';
-          }
-        }
-
-        thingCompanion.style.transform = `translate3d(${currentX - 22}px, ${currentY - 38 + hopOffset}px, 0)`;
+      // 1. Escort tracking: smoothly move towards target position if beyond deadzone
+      if (distTarget > 12) {
+        const escortSpeed = Math.min(Math.max(distTarget * 0.032, 0.6), 3.2);
+        vx += (dxTarget / distTarget) * escortSpeed;
+        vy += (dyTarget / distTarget) * escortSpeed;
       }
 
-      requestAnimationFrame(animateThing);
+      // 2. Active Cursor Evasion:
+      // When mouse moves against Thing (< 68px), Thing actively scurries away on its fingers.
+      // Evasion velocity pushes Thing away from the encroaching cursor.
+      const SAFE_RADIUS = 68;
+      if (distToMouse < SAFE_RADIUS) {
+        const evadeStrength = ((SAFE_RADIUS - distToMouse) / SAFE_RADIUS) * 3.8 + 0.9;
+        const evX = distToMouse > 0.1 ? -(dxMouse / distToMouse) : (facing * -1);
+        const evY = distToMouse > 0.1 ? -(dyMouse / distToMouse) : 0;
+        vx += evX * evadeStrength;
+        vy += evY * evadeStrength;
+      }
+
+      // Apply movement
+      currentX += vx;
+      currentY += vy;
+
+      // Viewport bounds clamping
+      currentX = Math.max(22, Math.min(window.innerWidth - 45, currentX));
+      currentY = Math.max(32, Math.min(window.innerHeight - 45, currentY));
+
+      const moveSpeed = Math.hypot(vx, vy);
+
+      // 3. Dynamic Walking vs Resting Kinematics:
+      // Whenever Thing has movement velocity (seeking or evading), it physically crawls on its fingers.
+      if (moveSpeed > 0.22) {
+        idleTicks = 0;
+
+        // Facing direction aligns with horizontal movement velocity:
+        // When fleeing from mouse on right, vx is negative -> faces left and runs away!
+        if (vx < -0.25) facing = -1;
+        else if (vx > 0.25) facing = 1;
+        facingScale += (facing - facingScale) * 0.22;
+
+        // Advance walk cadence proportionally to moveSpeed
+        const cadence = Math.min(Math.max(moveSpeed, 0.9), 3.8) * 0.24;
+        walkCycle += cadence;
+        const phi = walkCycle;
+        const sinP = Math.sin(phi);
+        const cosP = Math.cos(phi);
+
+        // Articulated finger step kinematics
+        let leftAngle, leftScaleY, leftTy;
+        let midAngle, midScaleY, midTy;
+        let rightAngle, rightScaleY, rightTy;
+
+        if (sinP >= 0) {
+          midAngle = -sinP * 18;
+          midScaleY = 0.94 + 0.06 * cosP;
+          midTy = 0;
+
+          leftAngle = sinP * 22;
+          leftScaleY = 0.88 + 0.12 * (1 - sinP);
+          leftTy = -5.0 * sinP;
+
+          rightAngle = Math.sin(phi + 0.25) * 18;
+          rightScaleY = 0.88 + 0.12 * (1 - sinP);
+          rightTy = -4.2 * sinP;
+        } else {
+          leftAngle = sinP * 18;
+          leftScaleY = 0.94 + 0.06 * cosP;
+          leftTy = 0;
+
+          rightAngle = Math.sin(phi + 0.25) * 16;
+          rightScaleY = 0.94 + 0.06 * cosP;
+          rightTy = 0;
+
+          midAngle = -sinP * 24;
+          midScaleY = 0.85 + 0.15 * (1 + sinP);
+          midTy = -6.0 * (-sinP);
+        }
+
+        if (leftFingers) leftFingers.style.transform = 'translateY(' + leftTy + 'px) rotate(' + leftAngle + 'deg) scaleY(' + leftScaleY + ')';
+        if (midFinger) midFinger.style.transform = 'translateY(' + midTy + 'px) rotate(' + midAngle + 'deg) scaleY(' + midScaleY + ')';
+        if (rightFinger) rightFinger.style.transform = 'translateY(' + rightTy + 'px) rotate(' + rightAngle + 'deg) scaleY(' + rightScaleY + ')';
+
+        const palmBob = Math.sin(phi * 2) * 2.0;
+        const palmRoll = Math.sin(phi) * 4.2;
+        const wristDrag = -facing * Math.min(moveSpeed, 3.0) * 2.0;
+        const palmTilt = palmRoll + wristDrag;
+
+        if (palmPart) palmPart.style.transform = 'translateY(' + palmBob + 'px) rotate(' + palmTilt + 'deg)';
+
+        if (thingSprite) {
+          const bodyLean = facing * 3.4;
+          thingSprite.style.transform = 'scaleX(' + (facingScale * hopScale) + ') scaleY(' + hopScale + ') rotate(' + bodyLean + 'deg)';
+        }
+
+        thingCompanion.style.transform = 'translate3d(' + (currentX - 18) + 'px, ' + (currentY - 36 + hopOffset) + 'px, 0)';
+
+        if (thingShadow) {
+          thingShadow.style.transform = 'scale(1.0)';
+          thingShadow.style.opacity = '0.58';
+        }
+      } else {
+        // Stationary resting state (when Thing has reached standoff spot and cursor is not encroaching)
+        idleTicks++;
+
+        // Face toward mouse cursor while resting
+        if (dxMouse > 8) facing = 1;
+        else if (dxMouse < -8) facing = -1;
+        facingScale += (facing - facingScale) * 0.22;
+
+        // Thing desk finger drumming
+        const drumCycle = idleTicks % 190;
+        if (idleTicks > 60 && drumCycle < 55) {
+          const drumPhase = drumCycle * 0.35;
+          const drumRight = Math.max(0, Math.sin(drumPhase - 2.4)) * -16;
+          const drumMid = Math.max(0, Math.sin(drumPhase - 1.2)) * -18;
+          const drumLeft = Math.max(0, Math.sin(drumPhase)) * -20;
+
+          if (leftFingers) leftFingers.style.transform = 'translateY(' + (drumLeft * 0.15) + 'px) rotate(' + drumLeft + 'deg) scaleY(1)';
+          if (midFinger) midFinger.style.transform = 'translateY(' + (drumMid * 0.15) + 'px) rotate(' + drumMid + 'deg) scaleY(1)';
+          if (rightFinger) rightFinger.style.transform = 'translateY(' + (drumRight * 0.15) + 'px) rotate(' + drumRight + 'deg) scaleY(1)';
+
+          if (palmPart) {
+            palmPart.style.transform = 'translateY(' + (Math.sin(drumPhase) * 0.6) + 'px) rotate(' + (Math.sin(drumPhase) * 1.2) + 'deg)';
+          }
+        } else {
+          const breath = Math.sin(idleTicks * 0.04) * 0.6;
+          if (leftFingers) leftFingers.style.transform = 'translateY(0) rotate(0deg) scaleY(1)';
+          if (midFinger) midFinger.style.transform = 'translateY(0) rotate(0deg) scaleY(1)';
+          if (rightFinger) rightFinger.style.transform = 'translateY(0) rotate(0deg) scaleY(1)';
+          if (palmPart) palmPart.style.transform = 'translateY(' + breath + 'px) rotate(0deg)';
+        }
+
+        if (thingSprite) {
+          thingSprite.style.transform = 'scaleX(' + (facingScale * hopScale) + ') scaleY(' + hopScale + ') rotate(0deg)';
+        }
+
+        thingCompanion.style.transform = 'translate3d(' + (currentX - 18) + 'px, ' + (currentY - 36 + hopOffset) + 'px, 0)';
+        if (thingShadow) {
+          thingShadow.style.transform = 'scale(1)';
+          thingShadow.style.opacity = '0.52';
+        }
+      }
+
+      requestAnimationFrame(animateCompanion);
     }
 
-    animateThing();
+    animateCompanion();
   }
 
   // ----------------------------------------------------------
@@ -237,52 +409,64 @@ document.addEventListener('DOMContentLoaded', () => {
   const personas = {
     wenz: {
       name: 'Wenz',
-      subtitle: '19 • Systems Builder & Competitive Programmer',
+      subtitle: '19, Full-stack and backend developer, OSS',
       avatar: 'img/about_wednesday.jpg',
       alt: 'Wednesday Addams',
-      greeting: '*Wednesday approves* 🖤'
+      greeting: '*Wednesday approves* 🖤',
+      bio: 'I love solving problems I face and things I get curious about. Also solving others\' code through open source and other projects.'
     },
     harshith: {
       name: 'Harshith Padakanti',
-      subtitle: '19 • India',
+      subtitle: '19, Full-stack and backend developer, OSS',
       avatar: 'img/about_harshith.jpg',
       alt: 'Harshith Padakanti',
-      greeting: '*Harshith!* 🖐'
+      greeting: '*Harshith!* 🖐',
+      bio: 'I love solving problems I face and things I get curious about. Also solving others\' code through open source and other projects.'
     }
   };
 
   const profileName = document.getElementById('profile-name');
   const profileSubtitle = document.getElementById('profile-subtitle');
+  const profileBio = document.getElementById('profile-bio');
   const profileAvatar = document.getElementById('profile-avatar');
-  const personaToggleBtn = document.getElementById('persona-toggle-btn');
-  const tabWenz = document.getElementById('tab-wenz');
-  const tabHarshith = document.getElementById('tab-harshith');
+  const personaRevealBtn = document.getElementById('persona-reveal-btn');
 
-  let currentPersona = preferences.get('persona') || 'wenz';
+  // Always clear stale persona so initial visit always shows Wenz with Reveal button
+  try { localStorage.removeItem('persona'); } catch (e) {}
+  let currentPersona = 'wenz';
 
   function applyPersona(personaKey, showBubble = false) {
     const p = personas[personaKey] || personas.wenz;
     currentPersona = personaKey;
-    preferences.set('persona', personaKey);
 
     if (profileName) profileName.textContent = p.name;
     if (profileSubtitle) profileSubtitle.textContent = p.subtitle;
+    if (profileBio) profileBio.textContent = p.bio;
     if (profileAvatar) {
       profileAvatar.src = p.avatar;
       profileAvatar.alt = p.alt;
     }
 
-    if (tabWenz && tabHarshith) {
-      if (personaKey === 'wenz') {
-        tabWenz.classList.add('active');
-        tabWenz.setAttribute('aria-selected', 'true');
-        tabHarshith.classList.remove('active');
-        tabHarshith.setAttribute('aria-selected', 'false');
+    if (personaRevealBtn) {
+      if (personaKey === 'harshith') {
+        personaRevealBtn.classList.add('revealing');
+        personaRevealBtn.style.display = 'none';
       } else {
-        tabHarshith.classList.add('active');
-        tabHarshith.setAttribute('aria-selected', 'true');
-        tabWenz.classList.remove('active');
-        tabWenz.setAttribute('aria-selected', 'false');
+        personaRevealBtn.classList.remove('revealing');
+        personaRevealBtn.style.display = '';
+      }
+    }
+
+    if (showBubble) {
+      if (profileName) {
+        profileName.classList.remove('persona-animate-down');
+        void profileName.offsetWidth;
+        profileName.classList.add('persona-animate-down');
+      }
+      if (profileAvatar) {
+        profileAvatar.classList.remove('persona-avatar-fade');
+        void profileAvatar.offsetWidth;
+        profileAvatar.classList.add('persona-avatar-fade');
       }
     }
 
@@ -296,258 +480,15 @@ document.addEventListener('DOMContentLoaded', () => {
     applyPersona(next, showBubble);
   }
 
-  if (tabWenz) {
-    tabWenz.addEventListener('click', (e) => {
-      e.stopPropagation();
-      applyPersona('wenz', true);
-    });
-  }
-  if (tabHarshith) {
-    tabHarshith.addEventListener('click', (e) => {
+  if (personaRevealBtn) {
+    personaRevealBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       applyPersona('harshith', true);
     });
   }
-  if (personaToggleBtn) {
-    personaToggleBtn.addEventListener('click', (e) => {
-      if (e.target === personaToggleBtn) {
-        togglePersona(true);
-      }
-    });
-  }
 
-  // Initialize persona on load
-  applyPersona(currentPersona, false);
-
-  // ----------------------------------------------------------
-  // 5. IN-PLACE INTERACTIVE PROJECT DETAIL MODAL
-  // ----------------------------------------------------------
-  const projectsData = {
-    grindlens: {
-      title: 'GrindLens',
-      category: 'Algorithmic Revision Engine',
-      status: 'Live Production • 422 Users',
-      statusType: 'live',
-      img: 'img/grindlens_banner.png',
-      desc: "I was solving problems every day and still didn't know what to solve next, or which patterns I was completely avoiding. So I built GrindLens to map practiced problems against avoided patterns and automate revision queueing.",
-      highlights: [
-        'Automated LeetCode GraphQL polling to detect accepted solutions and pattern gaps.',
-        'Spaced repetition algorithm prioritizing forgotten problem patterns before interviews.',
-        'Over 422 registered users and 4,180 unique visitors in production.'
-      ],
-      tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind CSS', 'GraphQL'],
-      live: 'https://grindlens.dev',
-      github: 'https://github.com/Harshith1702/GrindLens'
-    },
-    openchat: {
-      title: 'RTRP Chat Rooms (Open Chat)',
-      category: 'Real-Time Ephemeral Chat',
-      status: 'Live Demo',
-      statusType: 'live',
-      img: 'img/rtrp_chat_rooms.png',
-      desc: 'I wanted somewhere to talk without anyone else keeping the conversation. So I built a chat app with no database. There are no accounts or message logs. Messages only exist in memory while the room is open, and disappear completely as soon as the session ends.',
-      highlights: [
-        'Zero-database ephemeral architecture with memory-only room state.',
-        'Room presence isolation with 100-user cap per room and debounced broadcasts.',
-        'Instant media exchange and automatic room cleanup upon client disconnect.'
-      ],
-      tech: ['Node.js', 'Express', 'Socket.io', 'WebSockets'],
-      live: 'https://open-chat-application-ubti.onrender.com',
-      github: 'https://github.com/Harshith1702/Open_Chat_Application'
-    },
-    tracker: {
-      title: 'LeetCode Grind Tracker',
-      category: 'Analytical Dashboard',
-      status: 'Open Source',
-      statusType: 'oss',
-      img: 'img/tracker_ui.png',
-      desc: 'Before GrindLens became a product, it was this. A Python script fetching my LeetCode submissions, a MySQL database, a small PHP API, and a JavaScript dashboard to track streaks and weak topics. That script ran for months before I decided to turn it into a real product.',
-      highlights: [
-        'Python automation fetching daily submissions via LeetCode GraphQL endpoint.',
-        'Relational MySQL schema tracking problem tags, difficulties, and timestamps.',
-        'PHP API serving analytical stats to interactive JavaScript dashboard.'
-      ],
-      tech: ['Python', 'MySQL', 'PHP', 'JavaScript'],
-      live: null,
-      github: 'https://github.com/Harshith1702/leetcode-grind-tracker'
-    },
-    discord: {
-      title: 'LeetCode Discord Reporter',
-      category: 'Discord Automation Bot',
-      status: 'Open Source',
-      statusType: 'oss',
-      img: 'img/discord_reporter.png',
-      desc: 'I was copying my solved problem links into our daily training group every day. I got tired of doing it, so I made a bot do it. A bot that checks the LeetCode GraphQL endpoint every night at 10:15 PM IST for accepted submissions and posts them directly to our Discord server.',
-      highlights: [
-        'Scheduled nightly execution via GitHub Actions workflow.',
-        'Queries recentAcSubmissionList from LeetCode GraphQL endpoint with IST window validation.',
-        'Formats difficulty stats and fires formatted Discord webhook payloads.'
-      ],
-      tech: ['Python', 'GitHub Actions', 'Discord Webhooks', 'GraphQL'],
-      live: null,
-      github: 'https://github.com/Harshith1702/leetcode-discord-reporter'
-    },
-    nptel: {
-      title: 'NPTEL IoT Study Dashboard',
-      category: 'Interactive Study Engine',
-      status: 'Open Source',
-      statusType: 'oss',
-      img: 'img/cathedral_submerged.jpg',
-      desc: "Interactive exam and study dashboard for IIT Kharagpur's Introduction to IoT course with 724 verified questions and searchable solutions. Built to help students navigate massive question banks with instant search and self-assessment modes.",
-      highlights: [
-        'Fast client-side indexed search across 724 verified course questions and diagrams.',
-        'Self-assessment mode with instant scoring and explanation review.',
-        'Zero-dependency vanilla JavaScript, HTML5, and CSS3 architecture.'
-      ],
-      tech: ['JavaScript', 'HTML5', 'CSS3', 'LocalStorage'],
-      live: null,
-      github: 'https://github.com/Harshith1702/nptel-iot'
-    },
-    socialgraph: {
-      title: 'Social Follower Graph (C)',
-      category: 'Systems & Data Structures',
-      status: 'Open Source',
-      statusType: 'oss',
-      img: 'img/city_inverted.jpg',
-      desc: 'Low-level C simulation of a directed follower network with dynamic user creation, mutual follow tracking, and heap-allocated adjacency lists. Built to explore graph algorithms and manual memory management in systems programming.',
-      highlights: [
-        'Heap-allocated adjacency list representation with custom memory allocation guards.',
-        'Directed graph traversal supporting mutual follower discovery and degree metrics.',
-        'Valgrind-verified zero memory leaks and proper recursive deallocation.'
-      ],
-      tech: ['C', 'Data Structures', 'Memory Management', 'Graph Algorithms'],
-      live: null,
-      github: 'https://github.com/Harshith1702/Social_Media_Follower_System_C'
-    },
-    deadpacket: {
-      title: 'Dead Packet Detective',
-      category: 'Network Protocol Utility',
-      status: 'Open Source',
-      statusType: 'oss',
-      img: 'img/bedside_3am.jpg',
-      desc: 'Python network utility that captures and parses network protocol headers, inspects TCP/UDP flags, and logs flow anomalies. Inspects packets at the raw socket level for diagnostic and monitoring workflows.',
-      highlights: [
-        'Raw socket packet sniffing and binary protocol header unpacking.',
-        'TCP flag analysis (SYN, ACK, FIN, RST) and port connection state tracking.',
-        'Real-time anomaly detection logging malformed packets and burst connections.'
-      ],
-      tech: ['Python', 'Networking', 'Raw Sockets', 'Packet Parsing'],
-      live: null,
-      github: 'https://github.com/Harshith1702/dead-packet-detective'
-    }
-  };
-
-  const projectModal = document.getElementById('project-detail-modal');
-  const modalCloseBtn = document.getElementById('modal-project-close-btn');
-  const modalImg = document.getElementById('modal-project-img');
-  const modalCat = document.getElementById('modal-project-category');
-  const modalTitle = document.getElementById('modal-project-title');
-  const modalDesc = document.getElementById('modal-project-desc');
-  const modalStatus = document.getElementById('modal-project-status');
-  const modalStatusText = document.getElementById('modal-status-text');
-  const modalExternalLink = document.getElementById('modal-external-link');
-  const modalGithubLink = document.getElementById('modal-github-link');
-  const modalHighlights = document.getElementById('modal-project-highlights');
-  const modalTech = document.getElementById('modal-project-tech');
-  const modalActionPrimary = document.getElementById('modal-action-primary');
-  const modalActionSecondary = document.getElementById('modal-action-secondary');
-
-  function openProjectModal(projectId) {
-    const data = projectsData[projectId];
-    if (!data || !projectModal) return;
-
-    if (modalImg) {
-      modalImg.src = data.img;
-      modalImg.alt = data.title;
-    }
-    if (modalCat) modalCat.textContent = data.category;
-    if (modalTitle) modalTitle.textContent = data.title;
-    if (modalDesc) modalDesc.textContent = data.desc;
-
-    if (modalStatus && modalStatusText) {
-      modalStatusText.textContent = data.status;
-      if (data.statusType === 'live') {
-        modalStatus.className = 'modal-status-pill modal-status-live';
-      } else {
-        modalStatus.className = 'modal-status-pill modal-status-oss';
-      }
-    }
-
-    if (modalExternalLink) {
-      if (data.live) {
-        modalExternalLink.href = data.live;
-        modalExternalLink.style.display = 'inline-flex';
-      } else {
-        modalExternalLink.style.display = 'none';
-      }
-    }
-
-    if (modalGithubLink) {
-      if (data.github) {
-        modalGithubLink.href = data.github;
-        modalGithubLink.style.display = 'inline-flex';
-      } else {
-        modalGithubLink.style.display = 'none';
-      }
-    }
-
-    if (modalHighlights) {
-      modalHighlights.innerHTML = data.highlights.map(h => '<li><span class="bullet" aria-hidden="true">•</span><span>' + h + '</span></li>').join('');
-    }
-
-    if (modalTech) {
-      modalTech.innerHTML = data.tech.map(t => '<span class="modal-tech-pill">' + t + '</span>').join('');
-    }
-
-    if (modalActionPrimary) {
-      if (data.live) {
-        modalActionPrimary.href = data.live;
-        modalActionPrimary.style.display = 'inline-flex';
-      } else {
-        modalActionPrimary.style.display = 'none';
-      }
-    }
-
-    if (modalActionSecondary) {
-      if (data.github) {
-        modalActionSecondary.href = data.github;
-        modalActionSecondary.style.display = 'inline-flex';
-      } else {
-        modalActionSecondary.style.display = 'none';
-      }
-    }
-
-    projectModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeProjectModal() {
-    if (projectModal) {
-      projectModal.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  }
-
-  document.querySelectorAll('[data-project-id]').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
-      e.preventDefault();
-      const id = card.getAttribute('data-project-id');
-      openProjectModal(id);
-    });
-  });
-
-  if (modalCloseBtn) {
-    modalCloseBtn.addEventListener('click', closeProjectModal);
-  }
-
-  if (projectModal) {
-    projectModal.addEventListener('click', (e) => {
-      if (e.target === projectModal) {
-        closeProjectModal();
-      }
-    });
-  }
+  // Initialize persona on load: always start with Wenz and visible Reveal option
+  applyPersona('wenz', false);
 
   // ----------------------------------------------------------
   // 6. COMMAND PALETTE (CMD+K)
@@ -586,23 +527,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function visibleCmdkItems() {
+    return cmdkList ? Array.from(cmdkList.querySelectorAll('.cmdk-item')).filter(item => item.style.display !== 'none') : [];
+  }
+
+  function selectCmdkItem(index) {
+    if (!cmdkList) return;
+    const items = visibleCmdkItems();
+    cmdkList.querySelectorAll('.cmdk-item').forEach(item => item.setAttribute('aria-selected', 'false'));
+    if (!items.length) return;
+    const next = items[(index + items.length) % items.length];
+    next.setAttribute('aria-selected', 'true');
+    next.scrollIntoView({ block: 'nearest' });
+  }
+
   function filterCmdk(query) {
     if (!cmdkList) return;
-    const items = cmdkList.querySelectorAll('.cmdk-item');
     const q = query.toLowerCase().trim();
-    items.forEach(item => {
-      const text = item.textContent.toLowerCase();
-      if (!q || text.includes(q)) {
-        item.style.display = 'flex';
-      } else {
-        item.style.display = 'none';
-      }
+    cmdkList.querySelectorAll('.cmdk-item').forEach(item => {
+      item.setAttribute('role', 'option');
+      item.style.display = (!q || item.textContent.toLowerCase().includes(q)) ? 'flex' : 'none';
     });
+    let empty = cmdkList.querySelector('.cmdk-empty');
+    const none = visibleCmdkItems().length === 0;
+    if (none && !empty) {
+      empty = document.createElement('div');
+      empty.className = 'cmdk-empty';
+      empty.textContent = 'No matching commands';
+      cmdkList.appendChild(empty);
+    } else if (!none && empty) {
+      empty.remove();
+    }
+    selectCmdkItem(0);
   }
 
   if (cmdkInput) {
     cmdkInput.addEventListener('input', (e) => {
       filterCmdk(e.target.value);
+    });
+    cmdkInput.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Enter') return;
+      e.preventDefault();
+      const items = visibleCmdkItems();
+      const current = items.findIndex(item => item.getAttribute('aria-selected') === 'true');
+      if (e.key === 'Enter') {
+        if (items[current]) items[current].click();
+        return;
+      }
+      selectCmdkItem(current + (e.key === 'ArrowDown' ? 1 : -1));
     });
   }
 
@@ -612,15 +584,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!item) return;
       const action = item.getAttribute('data-action');
       if (action === 'email') {
-        navigator.clipboard.writeText('harshith.dev.work@gmail.com');
-        item.querySelector('span').textContent = 'Email copied to clipboard!';
+        const address = 'harshith.dev.work@gmail.com';
+        (navigator.clipboard ? navigator.clipboard.writeText(address) : Promise.reject()).catch(() => { window.location.href = 'mailto:' + address; });
+        const span = item.querySelector('span');
+        if (span) span.textContent = 'Email copied to clipboard!';
         setTimeout(() => {
           closeCmdk();
-          item.querySelector('span').textContent = 'Copy Email Address (harshith.dev.work@gmail.com)';
+          if (span) span.textContent = 'Copy Email Address (harshith.dev.work@gmail.com)';
         }, 800);
       } else if (action === 'theme') {
-        const current = html.classList.contains('dark') ? 'dark' : 'light';
-        setTheme(current === 'dark' ? 'light' : 'dark');
+        toggleTheme();
+        closeCmdk();
+      } else if (action === 'llms') {
+        window.open('llms.txt', '_blank');
+        closeCmdk();
+      } else if (action === 'thing') {
+        toggleThingCompanion();
+        closeCmdk();
+      } else if (action === 'persona') {
+        togglePersona(true);
         closeCmdk();
       } else if (action === 'github') {
         window.open('https://github.com/Harshith1702', '_blank', 'noopener,noreferrer');
@@ -630,12 +612,6 @@ document.addEventListener('DOMContentLoaded', () => {
         closeCmdk();
       } else if (action === 'leetcode') {
         window.open('https://leetcode.com/u/Harshith-2007/', '_blank', 'noopener,noreferrer');
-        closeCmdk();
-      } else if (action === 'thing') {
-        toggleThingCompanion();
-        closeCmdk();
-      } else if (action === 'persona') {
-        togglePersona(true);
         closeCmdk();
       } else if (action === 'grindlens') {
         window.open('https://grindlens.dev', '_blank', 'noopener,noreferrer');
@@ -654,9 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
         openCmdk();
       }
     } else if (e.key === 'Escape') {
-      if (projectModal && projectModal.classList.contains('open')) {
-        closeProjectModal();
-      }
       closeCmdk();
     }
   });
@@ -674,25 +647,14 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         if (!data.success || !Number.isSafeInteger(data.count) || data.count < 0) throw new Error('Invalid count');
         visitorCountEl.textContent = data.count.toLocaleString();
+        const visitorWrap = document.getElementById('visitor-counter');
+        if (visitorWrap) visitorWrap.hidden = false;
       })
-      .catch(() => { visitorCountEl.textContent = 'Unavailable'; });
+      .catch(() => {});
   }
 
   // ----------------------------------------------------------
-  // 11. LIVE DOTO DIGITAL CLOCK
-  // ----------------------------------------------------------
-  function updateDigitalClock() {
-    const clockEl = document.getElementById('live-clock');
-    if (!clockEl) return;
-    const now = new Date();
-    const pad = (n) => String(n).padStart(2, '0');
-    clockEl.textContent = `${pad(now.getHours())}.${pad(now.getMinutes())}.${pad(now.getSeconds())}`;
-  }
-  setInterval(updateDigitalClock, 1000);
-  updateDigitalClock();
-
-  // ----------------------------------------------------------
-  // 12. EXPERIENCE ACCORDION INTERACTION
+  // 8. EXPERIENCE ACCORDION INTERACTION (Default All Collapsed)
   // ----------------------------------------------------------
   const expItems = document.querySelectorAll('.exp-accordion-item');
   expItems.forEach(item => {
@@ -700,17 +662,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = item.querySelector('.exp-item-body');
     const chevron = item.querySelector('.exp-chevron');
     if (header && body) {
+      body.inert = true;
       header.addEventListener('click', () => {
         const isOpen = header.getAttribute('aria-expanded') === 'true';
         header.setAttribute('aria-expanded', String(!isOpen));
+        body.inert = isOpen;
         if (!isOpen) {
           body.classList.remove('grid-rows-[0fr]');
           body.classList.add('grid-rows-[1fr]');
-          if (chevron) chevron.style.transform = 'translateY(-50%) rotate(180deg)';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
         } else {
           body.classList.remove('grid-rows-[1fr]');
           body.classList.add('grid-rows-[0fr]');
-          if (chevron) chevron.style.transform = 'translateY(-50%) rotate(0deg)';
+          if (chevron) chevron.style.transform = 'rotate(0deg)';
         }
       });
       header.addEventListener('keydown', (e) => {
@@ -723,141 +687,145 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ----------------------------------------------------------
-  // 13. OPEN SOURCE CONTRIBUTIONS TABS
+  // 9. GITHUB 53-WEEK CONTRIBUTION CALENDAR (Monochrome)
+  // Dynamic 1-year rolling window ending on current week.
   // ----------------------------------------------------------
-  const osPrData = {
-    merged: [
-      {
-        repo: 'RocketChat/Rocket.Chat',
-        title: 'Batch merge: timestamp parsing, isNodeOfType guard tests, emoji fixes',
-        pr: '#39853',
-        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39853',
-        date: 'Apr 2026',
-        status: 'merged'
-      },
-      {
-        repo: 'RocketChat/Rocket.Chat',
-        title: 'Fix timestamp parsing in markdown formatted messages',
-        pr: '#39455',
-        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39455',
-        date: 'Mar 2026',
-        status: 'merged'
-      },
-      {
-        repo: 'RocketChat/Rocket.Chat',
-        title: 'Add defensive unit tests for isNodeOfType discriminators',
-        pr: '#39737',
-        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39737',
-        date: 'Apr 2026',
-        status: 'merged'
-      },
-      {
-        repo: 'RocketChat/Rocket.Chat',
-        title: 'Fix emoji coverage in plain text reduction pipeline',
-        pr: '#39733',
-        url: 'https://github.com/RocketChat/Rocket.Chat/pull/39733',
-        date: 'Apr 2026',
-        status: 'merged'
-      },
-      {
-        repo: 'NSoC 2026 Nationwide',
-        title: '30+ Merged Pull Requests across open source repositories (Rank 70 / 988)',
-        pr: 'NSoC',
-        url: 'https://github.com/Harshith1702',
-        date: '2026',
-        status: 'merged'
-      }
-    ],
-    open: [
-      {
-        repo: 'Harshith1702/GrindLens',
-        title: 'Spaced repetition queueing engine optimization for GraphQL polling',
-        pr: '#12',
-        url: 'https://github.com/Harshith1702/GrindLens',
-        date: 'Active',
-        status: 'open'
-      },
-      {
-        repo: 'Harshith1702/Open_Chat_Application',
-        title: 'Debounced room broadcast cleanup and socket heartbeat telemetry',
-        pr: '#4',
-        url: 'https://github.com/Harshith1702/Open_Chat_Application',
-        date: 'Active',
-        status: 'open'
-      }
-    ],
-    closed: [
-      {
-        repo: 'RocketChat/Rocket.Chat',
-        title: 'Exploratory parser benchmark across nested markdown trees',
-        pr: '#39210',
-        url: 'https://github.com/RocketChat/Rocket.Chat',
-        date: 'Mar 2026',
-        status: 'closed'
-      }
-    ]
-  };
+  const calendarGrid = document.getElementById('gh-calendar-grid');
+  const calendarTooltip = document.getElementById('gh-calendar-tooltip');
+  const ghTotalCount = document.getElementById('gh-total-count');
+  const ghDateRange = document.getElementById('gh-date-range');
+  const ghMonthsHeader = document.getElementById('gh-months-header');
 
-  const osContainer = document.getElementById('os-pr-container');
-  const osTabs = document.querySelectorAll('.os-tab-btn');
-  const osGlider = document.getElementById('os-tab-glider');
+  if (calendarGrid) {
+    // 371 consecutive days from authentic Harshith1702 GitHub contributions
+    const initialContributions = [
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,13,17,19,0,0,0,0,8,2,7,0,10,6,0,15,44,23,30,18,13,11,5,0,0,0,0,0,0,0,1,0,0,0,0,0,0,13,7,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,16,0,26,12,9,4,12,8,4,10,4,2,3,8,9,6,8,37,24,9,7,20,8,14,46,9,10,4,9,11,12,23,19,4,1,2,2,15,13,3,3,1,4,1,3,3,2,2,3,2,5,18,8,3,2,1,5,3,9,9,7,3,8,6,7,9,8,4,4,0,3,2,6,20,19,19,13,4,18,7,13,7,5,1,5,13,12,8,2,9,13,9,21,3,7,5,3,4,16,9,14,10,3,5,0,3,4,3,11,2,2,1,1,1,4,3,2,3,4,3,2,2,9,1,2,0,1,2,2,6,2,2,2,2,2,2,3,0,1,2,1,0,12,0,3,2,2,2,2,0,3,3,1,1,0,2,0,3,3,1,1,2,0,1,5,1,0,2,0,0,0,9,10,3,16,0,4,1,0,8,5,5,0,10,3,1,4,3,5,4,17,2,3,2,0,3,5,3,6,11,3,1,11,2,0,0,0,2,0,3,0,2,1,6,5,6,4,15,3,3,4,3,3,0,0,2,0,3,2,0,4,2,0,16,0,0,0,0,26,15,6,31,9,0,0,0,0,0,1
+    ];
 
-  function renderOsPrs(tabKey) {
-    if (!osContainer) return;
-    const items = osPrData[tabKey] || [];
-    if (items.length === 0) {
-      osContainer.innerHTML = '<p class="py-4 text-[13px] text-zinc-500">No pull requests in this category.</p>';
-      return;
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    // Rolling 1-year timeline calculation
+    const now = new Date();
+    const todayDayOfWeek = (now.getDay() + 6) % 7; // Monday = 0, Sunday = 6
+    const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - todayDayOfWeek));
+    const startDate = new Date(endOfWeek.getFullYear(), endOfWeek.getMonth(), endOfWeek.getDate() - (53 * 7 - 1));
+    const todayIndex = 52 * 7 + todayDayOfWeek;
+
+    // Update dynamic date range string
+    const dateOpts = { month: 'short', day: 'numeric', year: 'numeric' };
+    const formattedStart = startDate.toLocaleDateString('en-US', dateOpts);
+    const formattedEnd = now.toLocaleDateString('en-US', dateOpts);
+    if (ghDateRange) {
+      ghDateRange.textContent = `${formattedStart} - ${formattedEnd}`;
     }
-    osContainer.innerHTML = items.map(item => `
-      <a class="os-pr-item group" href="${item.url}" target="_blank" rel="noopener noreferrer">
-        <div class="flex items-start gap-3 min-w-0">
-          <span class="os-status-dot-${item.status}"></span>
-          <div class="flex flex-col min-w-0">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-[12px] font-mono text-zinc-400 dark:text-zinc-500">${item.repo}</span>
-              <span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">${item.pr}</span>
-            </div>
-            <p class="text-[13.5px] font-medium text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors mt-0.5 leading-snug">${item.title}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 shrink-0 font-mono text-[11px] text-zinc-400">
-          <span>${item.date}</span>
-          <span class="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
-        </div>
-      </a>
-    `).join('');
-  }
 
-  if (osTabs && osTabs.length > 0) {
-    const gliderOffsets = {
-      merged: '0px',
-      open: '74px',
-      closed: '148px'
-    };
-    osTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const key = tab.getAttribute('data-tab');
-        osTabs.forEach(t => {
-          t.classList.remove('active', 'text-zinc-900', 'dark:text-zinc-100');
-          t.classList.add('text-zinc-500', 'dark:text-zinc-400');
-        });
-        tab.classList.add('active', 'text-zinc-900', 'dark:text-zinc-100');
-        tab.classList.remove('text-zinc-500', 'dark:text-zinc-400');
-        if (osGlider && gliderOffsets[key]) {
-          osGlider.style.transform = `translateX(${gliderOffsets[key]})`;
+    // Update dynamic 12-month headers
+    if (ghMonthsHeader) {
+      const startMonth = startDate.getMonth();
+      ghMonthsHeader.innerHTML = Array.from({ length: 12 }, (_, i) => {
+        return `<span>${monthNames[(startMonth + i) % 12]}</span>`;
+      }).join('');
+    }
+
+    function getLevel(cnt) {
+      if (cnt <= 0) return 0;
+      if (cnt <= 3) return 1;
+      if (cnt <= 6) return 2;
+      if (cnt <= 9) return 3;
+      return 4;
+    }
+
+    function renderCalendar() {
+      let calendarHtml = '';
+      let totalContributions = 0;
+
+      for (let c = 0; c < 53; c++) {
+        calendarHtml += '<div class="gh-col">';
+        for (let r = 0; r < 7; r++) {
+          const idx = c * 7 + r;
+          const cellDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + idx);
+          const isFuture = idx > todayIndex;
+
+          let cnt = 0;
+          if (!isFuture) {
+            cnt = idx < initialContributions.length ? initialContributions[idx] : 0;
+            totalContributions += cnt;
+          }
+
+          const y = cellDate.getFullYear();
+          const m = String(cellDate.getMonth() + 1).padStart(2, '0');
+          const d = String(cellDate.getDate()).padStart(2, '0');
+          const dateStr = `${y}-${m}-${d}`;
+          const lvl = isFuture ? 0 : getLevel(cnt);
+          const futureAttr = isFuture ? ' data-future="true"' : '';
+
+          calendarHtml += `<div class="gh-cell" data-level="${lvl}" data-count="${cnt}" data-date="${dateStr}"${futureAttr}></div>`;
         }
-        renderOsPrs(key);
+        calendarHtml += '</div>';
+      }
+
+      calendarGrid.innerHTML = calendarHtml;
+      calendarGrid.setAttribute('aria-label', `GitHub contribution snapshot: ${formattedStart} through ${formattedEnd}`);
+      if (ghTotalCount) {
+        ghTotalCount.textContent = totalContributions.toLocaleString();
+      }
+      setupCalendarTooltips();
+    }
+
+    function setupCalendarTooltips() {
+      if (!calendarTooltip) return;
+      const cells = calendarGrid.querySelectorAll('.gh-cell');
+
+      cells.forEach(cell => {
+        function showTooltip(e) {
+          if (cell.getAttribute('data-future') === 'true') {
+            calendarTooltip.classList.remove('visible');
+            return;
+          }
+          const count = parseInt(cell.getAttribute('data-count') || '0', 10);
+          const dateStr = cell.getAttribute('data-date') || '';
+          if (!dateStr) return;
+          const parts = dateStr.split('-');
+          const month = monthNames[parseInt(parts[1], 10) - 1];
+          const day = parseInt(parts[2], 10);
+          const year = parts[0];
+          const dateFormatted = `${month} ${day}, ${year}`;
+
+          let message = `${count} contribution${count === 1 ? '' : 's'} on ${dateFormatted}`;
+          if (count === 0) {
+            message = `No contributions on ${dateFormatted}`;
+          }
+
+          calendarTooltip.textContent = message;
+          const rect = cell.getBoundingClientRect();
+          calendarTooltip.style.left = `${rect.left + rect.width / 2}px`;
+          calendarTooltip.style.top = `${rect.top}px`;
+          calendarTooltip.classList.add('visible');
+        }
+
+        function hideTooltip() {
+          calendarTooltip.classList.remove('visible');
+        }
+
+        cell.addEventListener('mouseenter', showTooltip);
+        cell.addEventListener('mousemove', showTooltip);
+        cell.addEventListener('mouseleave', hideTooltip);
+        cell.addEventListener('focus', showTooltip);
+        cell.addEventListener('blur', hideTooltip);
       });
-    });
-    renderOsPrs('merged');
+    }
+
+    renderCalendar();
   }
 
   // ----------------------------------------------------------
-  // 14. FLOATING RIGHT INDEX SCROLL SPY
+  // 10. OPEN SOURCE CONTRIBUTIONS
+  // ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // 11. FLOATING RIGHT INDEX SCROLL SPY
   // ----------------------------------------------------------
   const indexLinks = document.querySelectorAll('.nav-index-link');
-  const floatingIndexTrackedSections = ['experience', 'projects', 'opensource', 'rigor', 'skills', 'highlights'];
+  const floatingIndexTrackedSections = ['experience', 'projects', 'activity', 'competitive', 'education', 'opensource', 'skills', 'playlist'];
 
   function updateIndexActive() {
     const scrollY = window.scrollY + 200;
