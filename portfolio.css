@@ -2419,7 +2419,7 @@ html.dark .err-portrait-frame {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 452 / 652;
+  aspect-ratio: 525 / 857;
   object-fit: cover;
   transition: transform 0.4s ease;
 }

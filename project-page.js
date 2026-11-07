@@ -39,6 +39,7 @@ if (window.location.protocol.startsWith('http') && navigator.doNotTrack !== '1')
   if (ravenPortrait && ravenQuip) {
     const quips = [
       "*caw* wrong turn, kid.",
+      "404 error, not found kid",
       "not found kid, check other",
       "The ravens checked /dev/null.",
       "Outcast quad: 404 unmapped.",
