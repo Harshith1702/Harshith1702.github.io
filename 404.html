@@ -39,27 +39,44 @@
   </header>
 
   <main class="case-page">
-    <header class="case-heading">
-      <p class="case-eyebrow">
-        <span>ERROR 404</span>
-        <span>PACKET DROPPED</span>
-      </p>
-      <div class="case-title">
-        <h1 style="font-family: var(--font-geist-mono); letter-spacing: -0.03em;">not found kid, check other</h1>
+    <div class="err-hero-split">
+      <div class="err-portrait-wrap">
+        <div class="err-portrait-frame" id="raven-portrait" title="Click to probe the void">
+          <span class="err-crosshair top-left"></span>
+          <span class="err-crosshair top-right"></span>
+          <span class="err-crosshair bottom-left"></span>
+          <span class="err-crosshair bottom-right"></span>
+          <img src="/img/harshith_nevermore.jpg" alt="Harshith Padakanti in Nevermore uniform beside a perched raven" class="err-portrait-img" width="452" height="652" loading="eager"/>
+          <div class="err-raven-tag" id="raven-quip">*caw* wrong turn, kid.</div>
+        </div>
+        <div class="err-caption">
+          <span>HARSHITH P. // ARCHIVE</span>
+          <span>NEVERMORE QUAD</span>
+        </div>
       </div>
-      <p class="case-intro">
-        The requested packet dropped straight into <code style="font-family: var(--font-geist-mono); font-size: 0.9em; padding: 2px 6px; background: rgba(0,0,0,0.06); border-radius: 4px;">/dev/null</code>. No active socket or handler is bound to this URI.
-      </p>
-    </header>
 
-    <!-- Creative Diagnostic Terminal Showcase -->
-    <section class="diagnostic-panel" aria-label="Diagnostic tracer">
-      <div class="diagnostic-header">
-        <span class="diagnostic-dot"></span>
-        <span class="diagnostic-title">DIAGNOSTIC TRACE // ERR_ROUTE_IN_THE_VOID</span>
-        <span class="diagnostic-status">STATUS: 404</span>
-      </div>
-      <pre class="diagnostic-body"><code><span class="diag-prompt">$</span> curl -I https://harshithp.me<span id="bad-path"></span>
+      <div class="err-content-col">
+        <header class="case-heading" style="margin-bottom: 20px;">
+          <p class="case-eyebrow">
+            <span>ERROR 404</span>
+            <span>UNMAPPED CORRIDOR</span>
+          </p>
+          <div class="case-title">
+            <h1 style="font-family: var(--font-geist-mono); font-size: clamp(18px, 4vw, 30px); letter-spacing: -0.03em; line-height: 1.25;">not found kid, check other</h1>
+          </div>
+          <p class="case-intro">
+            The requested packet dropped straight into <code style="font-family: var(--font-geist-mono); font-size: 0.9em; padding: 2px 6px; background: rgba(0,0,0,0.06); border-radius: 4px;">/dev/null</code>. Even the ravens couldn't trace an active handler or socket bound to this URI.
+          </p>
+        </header>
+
+        <!-- Creative Diagnostic Terminal Showcase -->
+        <section class="diagnostic-panel" aria-label="Diagnostic tracer">
+          <div class="diagnostic-header">
+            <span class="diagnostic-dot"></span>
+            <span class="diagnostic-title">DIAGNOSTIC TRACE // ERR_ROUTE_IN_THE_VOID</span>
+            <span class="diagnostic-status">STATUS: 404</span>
+          </div>
+          <pre class="diagnostic-body"><code><span class="diag-prompt">$</span> curl -I https://harshithp.me<span id="bad-path"></span>
 HTTP/2 404 Not Found
 server: harshith-edge/2.0
 x-diagnostic: not found kid, check other
@@ -72,14 +89,16 @@ cache-control: no-cache
 [3] <a class="diag-link" href="/projects/openchat.html">/projects/openchat     (RTRP Chat: Zero-Persistence Ephemeral Rooms)</a>
 [4] <a class="diag-link" href="/projects/discord.html">/projects/discord      (LeetCode Discord Bot: Automated Daily Cron)</a>
 [5] <a class="diag-link" href="/projects/deadpacket.html">/projects/deadpacket   (Dead Packet Detective: Network Forensics)</a></code></pre>
-      <div class="diagnostic-footer">
-        <span class="diag-hint">Tip: Press keys <strong>1</strong> - <strong>5</strong> or <strong>H</strong> to jump immediately</span>
-      </div>
-    </section>
+          <div class="diagnostic-footer">
+            <span class="diag-hint">Tip: Press keys <strong>1</strong> - <strong>5</strong> or <strong>H</strong> to jump immediately</span>
+          </div>
+        </section>
 
-    <div class="case-actions" style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
-      <a class="case-live" href="/">Return to Home <span aria-hidden="true">→</span></a>
-      <a class="case-secondary" href="/#projects">Browse Projects <span aria-hidden="true">↓</span></a>
+        <div class="case-actions" style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <a class="case-live" href="/">Return to Home <span aria-hidden="true">→</span></a>
+          <a class="case-secondary" href="/#projects">Browse Projects <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
     </div>
 
     <footer class="case-footer" style="margin-top: 48px;">
@@ -87,33 +106,5 @@ cache-control: no-cache
       <span style="font-family: var(--font-geist-mono); font-size: 11px;">HARSHITH PADAKANTI // 404</span>
     </footer>
   </main>
-
-  <script>
-    // Populate dynamic attempted path safely
-    try {
-      const p = window.location.pathname;
-      const el = document.getElementById('bad-path');
-      if (el && p && p !== '/404.html' && p !== '/404') {
-        el.textContent = ' ' + p;
-      }
-    } catch (e) {}
-
-    // Interactive hotkeys for instant jump
-    window.addEventListener('keydown', (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
-      const routes = {
-        '1': '/',
-        'h': '/',
-        'H': '/',
-        '2': '/projects/grindlens.html',
-        '3': '/projects/openchat.html',
-        '4': '/projects/discord.html',
-        '5': '/projects/deadpacket.html'
-      };
-      if (routes[e.key]) {
-        window.location.href = routes[e.key];
-      }
-    });
-  </script>
 </body>
 </html>

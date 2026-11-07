@@ -8,7 +8,8 @@
 
   try {
     const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (saved === 'dark' || (!saved && prefersDark)) {
       document.documentElement.classList.remove('light');
       document.documentElement.classList.add('dark');
       document.documentElement.style.colorScheme = 'dark';
