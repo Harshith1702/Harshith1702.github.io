@@ -18,7 +18,7 @@
   <link href="img/favicon-192x192.png" rel="apple-touch-icon" sizes="192x192"/>
   <link href="style.css?v=58" rel="stylesheet"/>
   <script src="theme.js"></script>
-  <link href="portfolio.css?v=58" rel="stylesheet"/>
+  <link href="portfolio.css?v=59" rel="stylesheet"/>
   <link href="reveal-fx.css?v=3" rel="stylesheet"/>
 </head>
 <body class="min-h-full flex flex-col dark:bg-black dark:text-zinc-50 transition-colors duration-300">
@@ -78,7 +78,7 @@
         <div class="flex items-center gap-2.5 sm:gap-5 min-w-0 flex-1 mr-2">
           <div class="relative p-[2.5px] rounded-[8px] border-[1.5px] border-black/30 dark:border-white/[0.15] shrink-0 bg-white dark:bg-zinc-950 shadow-sm">
             <div class="relative w-12 h-12 sm:w-20 sm:h-20 rounded-[5px] overflow-hidden bg-zinc-100 dark:bg-zinc-900">
-              <img alt="Wednesday Addams" class="h-full w-full object-cover" id="profile-avatar" src="img/about_wednesday.jpg"/>
+              <img alt="Wednesday Addams" class="h-full w-full object-cover cursor-zoom-in" id="profile-avatar" src="img/about_wednesday.jpg" title="Click to view full photo"/>
             </div>
           </div>
           <div class="flex flex-col min-w-0">
@@ -875,6 +875,12 @@
     </div>
   </div>
 
+  <!-- Avatar Zoom Modal (Minimalist Full-Res Lightbox) -->
+  <div id="avatar-zoom-modal" class="avatar-modal" aria-hidden="true" role="dialog" aria-label="Expanded profile avatar">
+    <img id="avatar-zoom-img" class="avatar-modal-img" src="img/about_wednesday.jpg" alt="Expanded profile avatar"/>
+    <div class="avatar-modal-hint">Click anywhere or press Esc to close</div>
+  </div>
+
   <!-- Interactive Thing (Wednesday Addams Hand) Crawler -->
   <div id="thing-companion" class="thing-companion" role="img" aria-label="Thing from Wednesday Addams crawling companion">
     <div class="thing-shadow" id="thing-shadow"></div>
@@ -916,7 +922,7 @@
     <div class="thing-speech-bubble" id="thing-bubble">*tap tap*</div>
   </div>
 
-  <script src="script.js?v=59"></script>
+  <script src="script.js?v=60"></script>
   <script src="reveal-fx.js?v=3"></script>
 </body>
 </html>

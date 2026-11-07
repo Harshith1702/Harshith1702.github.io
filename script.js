@@ -491,6 +491,36 @@ document.addEventListener('DOMContentLoaded', () => {
   applyPersona('wenz', false);
 
   // ----------------------------------------------------------
+  // 5. AVATAR ZOOM LIGHTBOX
+  // ----------------------------------------------------------
+  const avatarZoomModal = document.getElementById('avatar-zoom-modal');
+  const avatarZoomImg = document.getElementById('avatar-zoom-img');
+
+  function openAvatarZoom() {
+    if (avatarZoomModal && avatarZoomImg && profileAvatar) {
+      avatarZoomImg.src = profileAvatar.src;
+      avatarZoomImg.alt = profileAvatar.alt || 'Expanded avatar';
+      avatarZoomModal.classList.add('open');
+      avatarZoomModal.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function closeAvatarZoom() {
+    if (avatarZoomModal) {
+      avatarZoomModal.classList.remove('open');
+      avatarZoomModal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  if (profileAvatar) {
+    profileAvatar.addEventListener('click', openAvatarZoom);
+  }
+
+  if (avatarZoomModal) {
+    avatarZoomModal.addEventListener('click', closeAvatarZoom);
+  }
+
+  // ----------------------------------------------------------
   // 6. COMMAND PALETTE (CMD+K)
   // ----------------------------------------------------------
   const cmdkBtn = document.getElementById('cmdk-btn');
@@ -631,6 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else if (e.key === 'Escape') {
       closeCmdk();
+      closeAvatarZoom();
     }
   });
 

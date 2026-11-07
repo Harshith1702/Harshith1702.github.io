@@ -1890,7 +1890,67 @@ html.dark .persona-reveal-btn:hover {
 }
 
 #profile-avatar {
-  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
+  image-rendering: high-quality;
+  cursor: zoom-in;
+  transition: opacity 0.18s ease;
+}
+
+#profile-avatar:hover {
+  opacity: 0.92;
+}
+
+/* Minimalist Avatar Zoom Lightbox */
+.avatar-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1rem;
+  cursor: zoom-out;
+}
+
+.avatar-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.avatar-modal-img {
+  max-width: min(90vw, 480px);
+  max-height: min(80vh, 480px);
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  transform: scale(0.95);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #000000;
+  object-fit: contain;
+  image-rendering: auto;
+  image-rendering: high-quality;
+}
+
+.avatar-modal.open .avatar-modal-img {
+  transform: scale(1);
+}
+
+.avatar-modal-hint {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 14px;
+  user-select: none;
 }
 
 
