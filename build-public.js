@@ -9,7 +9,7 @@ if (path.dirname(destination) !== __dirname || path.basename(destination) !== 'p
 }
 fs.rmSync(destination, { recursive: true, force: true });
 fs.mkdirSync(destination, { recursive: true });
-for (const name of ['index.html', '404.html', 'privacy.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'projects', 'favicon.ico', 'img', 'fonts', 'cursor', 'video', 'llms.txt', 'CNAME']) {
+for (const name of ['index.html', '404.html', 'privacy.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'projects', 'experience', 'opensource', 'favicon.ico', 'img', 'fonts', 'cursor', 'video', 'llms.txt', 'CNAME']) {
   if (fs.existsSync(path.join(__dirname, name))) {
     fs.cpSync(path.join(__dirname, name), path.join(destination, name), {
       recursive: true,

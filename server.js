@@ -107,7 +107,7 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=u
   '.webmanifest': 'application/manifest+json; charset=utf-8' };
 const PROJECT_IDS = ['grindlens', 'rocketchat', 'openchat', 'discord', 'midnight', 'deadpacket', 'nptel', 'socialgraph', 'tracker'];
 const PUBLIC_FILES = new Set(['index.html', '404.html', 'privacy.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'favicon.ico', 'llms.txt',
-  'projects/index.html',
+  'projects/index.html', 'experience/index.html', 'opensource/index.html',
   ...PROJECT_IDS.map(id => `projects/${id}.html`)]);
 // Unknown, private, and malformed paths all show the same designed 404 page.
 function notFound(req, res) {
@@ -135,7 +135,18 @@ function requestHandler(req, res) {
     res.writeHead(405); return res.end('Method not allowed');
   }
   let relative = pathname === '/' ? 'index.html' : pathname.slice(1);
-  if (relative === 'projects' || relative === 'projects/') relative = 'projects/index.html';
+  if (['projects', 'projects/'].includes(relative)) {
+    res.writeHead(302, { 'Location': '/#projects' });
+    return res.end();
+  }
+  if (['experience', 'experience/'].includes(relative)) {
+    res.writeHead(302, { 'Location': '/#experience' });
+    return res.end();
+  }
+  if (['opensource', 'opensource/'].includes(relative)) {
+    res.writeHead(302, { 'Location': '/#opensource' });
+    return res.end();
+  }
   if (PROJECT_IDS.some(id => relative === `projects/${id}`)) relative += '.html';
   const ext = path.extname(relative).toLowerCase();
   const allowed = PUBLIC_FILES.has(relative) ||
