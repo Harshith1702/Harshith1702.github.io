@@ -4,17 +4,24 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>404: Not Found / Harshith Padakanti</title>
-  <meta content="Page not found. Return to Harshith Padakanti's portfolio." name="description"/>
+  <meta content="not found kid, check other. Diagnostic route tracer and active project index for Harshith Padakanti's portfolio." name="description"/>
+  <meta property="og:title" content="404: Not Found / Harshith Padakanti"/>
+  <meta property="og:description" content="not found kid, check other. Diagnostic route tracer and active project index."/>
+  <meta property="og:image" content="https://harshithp.me/img/og-preview.png"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+  <link href="/img/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
   <link href="/img/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
   <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
-  <link href="/img/favicon-192x192.png" rel="apple-touch-icon" sizes="192x192"/>
-  <link href="/style.css?v=58" rel="stylesheet"/>
+  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+  <link href="/site.webmanifest" rel="manifest"/>
+  <link href="/style.css?v=59" rel="stylesheet"/>
   <script src="/theme.js"></script>
   <script defer src="/project-page.js"></script>
-  <link href="/portfolio.css?v=58" rel="stylesheet"/>
+  <link href="/portfolio.css?v=59" rel="stylesheet"/>
 </head>
 <body class="project-detail-body">
   <header class="case-nav">
@@ -35,31 +42,78 @@
     <header class="case-heading">
       <p class="case-eyebrow">
         <span>ERROR 404</span>
-        <span>UNKNOWN PATH</span>
+        <span>PACKET DROPPED</span>
       </p>
       <div class="case-title">
-        <h1>Page not found</h1>
+        <h1 style="font-family: var(--font-geist-mono); letter-spacing: -0.03em;">not found kid, check other</h1>
       </div>
       <p class="case-intro">
-        This page does not exist. Return to the portfolio to browse projects and contributions.
+        The requested packet dropped straight into <code style="font-family: var(--font-geist-mono); font-size: 0.9em; padding: 2px 6px; background: rgba(0,0,0,0.06); border-radius: 4px;">/dev/null</code>. No active socket or handler is bound to this URI.
       </p>
-      <div class="case-actions">
-        <a class="case-live" href="/">Return to portfolio <span aria-hidden="true">→</span></a>
-      </div>
     </header>
 
-    <figure class="case-figure">
-      <img alt="A door standing alone in the desert opening onto a rainy city" height="750" src="/img/imagined_threshold.jpg" width="1200"/>
-      <figcaption>
-        <span>404 / IMAGINED THRESHOLD</span>
-        <span>NOT AN ACTIVE ROUTE</span>
-      </figcaption>
-    </figure>
+    <!-- Creative Diagnostic Terminal Showcase -->
+    <section class="diagnostic-panel" aria-label="Diagnostic tracer">
+      <div class="diagnostic-header">
+        <span class="diagnostic-dot"></span>
+        <span class="diagnostic-title">DIAGNOSTIC TRACE // ERR_ROUTE_IN_THE_VOID</span>
+        <span class="diagnostic-status">STATUS: 404</span>
+      </div>
+      <pre class="diagnostic-body"><code><span class="diag-prompt">$</span> curl -I https://harshithp.me<span id="bad-path"></span>
+HTTP/2 404 Not Found
+server: harshith-edge/2.0
+x-diagnostic: not found kid, check other
+content-type: text/html; charset=utf-8
+cache-control: no-cache
 
-    <footer class="case-footer">
+<span class="diag-comment">// Active route table loaded:</span>
+[1] <a class="diag-link" href="/">/                      (Root Index: Systems &amp; Backend Portfolio)</a>
+[2] <a class="diag-link" href="/projects/grindlens.html">/projects/grindlens    (GrindLens: Algorithmic Pattern Visualizer)</a>
+[3] <a class="diag-link" href="/projects/openchat.html">/projects/openchat     (RTRP Chat: Zero-Persistence Ephemeral Rooms)</a>
+[4] <a class="diag-link" href="/projects/discord.html">/projects/discord      (LeetCode Discord Bot: Automated Daily Cron)</a>
+[5] <a class="diag-link" href="/projects/deadpacket.html">/projects/deadpacket   (Dead Packet Detective: Network Forensics)</a></code></pre>
+      <div class="diagnostic-footer">
+        <span class="diag-hint">Tip: Press keys <strong>1</strong> - <strong>5</strong> or <strong>H</strong> to jump immediately</span>
+      </div>
+    </section>
+
+    <div class="case-actions" style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+      <a class="case-live" href="/">Return to Home <span aria-hidden="true">→</span></a>
+      <a class="case-secondary" href="/#projects">Browse Projects <span aria-hidden="true">↓</span></a>
+    </div>
+
+    <footer class="case-footer" style="margin-top: 48px;">
       <a class="case-all" href="/">← Back to home</a>
-      <span style="font-family: var(--font-geist-mono); font-size: 11px;">STATUS 404</span>
+      <span style="font-family: var(--font-geist-mono); font-size: 11px;">HARSHITH PADAKANTI // 404</span>
     </footer>
   </main>
+
+  <script>
+    // Populate dynamic attempted path safely
+    try {
+      const p = window.location.pathname;
+      const el = document.getElementById('bad-path');
+      if (el && p && p !== '/404.html' && p !== '/404') {
+        el.textContent = ' ' + p;
+      }
+    } catch (e) {}
+
+    // Interactive hotkeys for instant jump
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
+      const routes = {
+        '1': '/',
+        'h': '/',
+        'H': '/',
+        '2': '/projects/grindlens.html',
+        '3': '/projects/openchat.html',
+        '4': '/projects/discord.html',
+        '5': '/projects/deadpacket.html'
+      };
+      if (routes[e.key]) {
+        window.location.href = routes[e.key];
+      }
+    });
+  </script>
 </body>
 </html>

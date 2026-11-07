@@ -103,9 +103,10 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=u
   '.js': 'application/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.ico': 'image/x-icon',
   '.ttf': 'font/ttf', '.otf': 'font/otf', '.woff': 'font/woff', '.woff2': 'font/woff2',
-  '.txt': 'text/plain; charset=utf-8' };
+  '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8' };
 const PROJECT_IDS = ['grindlens', 'rocketchat', 'openchat', 'discord', 'midnight', 'deadpacket', 'nptel', 'socialgraph', 'tracker'];
-const PUBLIC_FILES = new Set(['index.html', '404.html', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'favicon.ico', 'llms.txt',
+const PUBLIC_FILES = new Set(['index.html', '404.html', 'privacy.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'favicon.ico', 'llms.txt',
   ...PROJECT_IDS.map(id => `projects/${id}.html`)]);
 // Unknown, private, and malformed paths all show the same designed 404 page.
 function notFound(req, res) {
