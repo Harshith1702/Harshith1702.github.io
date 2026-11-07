@@ -6,3 +6,12 @@ document.getElementById('project-theme-toggle')?.addEventListener('click', () =>
   root.style.colorScheme = theme;
   try { localStorage.setItem('theme', theme); } catch {}
 });
+
+// Use clean URLs on web servers while preserving static HTML local file compatibility
+if (window.location.protocol.startsWith('http')) {
+  document.querySelectorAll('a[href*="index.html"]').forEach(a => {
+    const raw = a.getAttribute('href');
+    if (raw) a.setAttribute('href', raw.replace('index.html', ''));
+  });
+}
+
