@@ -2120,7 +2120,7 @@ html.dark {
 .case-actions a, .case-footer a, .case-back, .case-signature {
   display: inline-flex; align-items: center; min-height: 44px; min-width: 44px;
 }
-#cmdk-btn, #theme-toggle-btn, #project-theme-toggle { min-width: 44px; min-height: 44px; }
+#project-theme-toggle { min-width: 44px; min-height: 44px; }
 #theme-toggle-btn, #project-theme-toggle { display: inline-flex; align-items: center; justify-content: center; }
 .project-card-actions, .project-card-actions > div, .project-demos { gap: 4px 14px; }
 .project-demos { font-size: 12px; }
@@ -2165,9 +2165,10 @@ html.dark .skill-domains > div { border-color: #27272a; }
   #about > div > div:first-child > div:last-child { min-width: 0; overflow: hidden; }
   #profile-name { font-size: 18px !important; line-height: 1.2 !important; }
   #profile-subtitle { font-size: 10.5px !important; line-height: 1.4 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; max-width: 100%; }
-  #about > div > div:last-child { flex-shrink: 0; gap: 2px; }
+  #profile-controls, #about > div > div:last-child { flex-shrink: 0; gap: 6px !important; }
   .persona-reveal-btn { padding: 0 8px !important; font-size: 10px !important; height: 22px !important; }
-  #cmdk-btn, #theme-toggle-btn, #thing-toggle-btn { width: 26px !important; height: 26px !important; min-width: 26px !important; min-height: 26px !important; }
+  #cmdk-btn { width: auto !important; height: 28px !important; min-width: unset !important; min-height: 28px !important; flex-shrink: 0; }
+  #theme-toggle-btn, #thing-toggle-btn { width: 28px !important; height: 28px !important; min-width: 28px !important; min-height: 28px !important; flex-shrink: 0; }
 }
 @media (max-width: 360px) {
   #profile-name { font-size: 16px !important; font-weight: 700; line-height: 1.2; overflow-wrap: normal; }
