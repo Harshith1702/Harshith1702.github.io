@@ -8,15 +8,15 @@
 
   try {
     const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (saved === 'dark' || (!saved && prefersDark)) {
-      document.documentElement.classList.remove('light');
-      document.documentElement.classList.add('dark');
-      document.documentElement.style.colorScheme = 'dark';
-    } else {
+    // Default to dark mode unless explicitly chosen as light
+    if (saved === 'light') {
       document.documentElement.classList.remove('dark');
       document.documentElement.classList.add('light');
       document.documentElement.style.colorScheme = 'light';
+    } else {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
     }
   } catch (e) {}
 })();
