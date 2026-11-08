@@ -22,7 +22,7 @@ if (window.location.protocol.startsWith('http') && navigator.doNotTrack !== '1' 
   } catch (e) {}
 }
 
-// 404 Interactive Raven & Hotkey Navigation
+// 404 Diagnostic tracer & Navigation resilience
 (function() {
   const badPathEl = document.getElementById('bad-path');
   if (badPathEl) {
@@ -35,16 +35,45 @@ if (window.location.protocol.startsWith('http') && navigator.doNotTrack !== '1' 
   }
 
   if (document.querySelector('.diagnostic-panel')) {
+    const isGh = window.location.hostname.endsWith('github.io') && window.location.pathname.includes('/Harshith-Padakanti/');
+    const isFile = window.location.protocol === 'file:';
+    const basePath = isGh ? '/Harshith-Padakanti/' : (isFile ? 'index.html' : '/');
+
+    // Make home and navigation buttons click-safe across subpaths and file protocol
+    document.querySelectorAll('a[href="/"], a.case-back, a.case-live, a.case-all').forEach(a => {
+      a.addEventListener('click', (e) => {
+        if (isFile) {
+          e.preventDefault();
+          window.location.href = 'index.html';
+        } else if (isGh) {
+          e.preventDefault();
+          window.location.href = '/Harshith-Padakanti/';
+        }
+      });
+    });
+
+    document.querySelectorAll('a[href="/#projects"], a.case-secondary').forEach(a => {
+      a.addEventListener('click', (e) => {
+        if (isFile) {
+          e.preventDefault();
+          window.location.href = 'index.html#projects';
+        } else if (isGh) {
+          e.preventDefault();
+          window.location.href = '/Harshith-Padakanti/#projects';
+        }
+      });
+    });
+
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;
       const routes = {
-        '1': '/',
-        'h': '/',
-        'H': '/',
-        '2': '/projects/grindlens.html',
-        '3': '/projects/openchat.html',
-        '4': '/projects/discord.html',
-        '5': '/projects/deadpacket.html'
+        '1': basePath,
+        'h': basePath,
+        'H': basePath,
+        '2': (isFile ? 'projects/grindlens.html' : (isGh ? '/Harshith-Padakanti' : '') + '/projects/grindlens.html'),
+        '3': (isFile ? 'projects/openchat.html' : (isGh ? '/Harshith-Padakanti' : '') + '/projects/openchat.html'),
+        '4': (isFile ? 'projects/discord.html' : (isGh ? '/Harshith-Padakanti' : '') + '/projects/discord.html'),
+        '5': (isFile ? 'projects/deadpacket.html' : (isGh ? '/Harshith-Padakanti' : '') + '/projects/deadpacket.html')
       };
       if (routes[e.key]) {
         window.location.href = routes[e.key];

@@ -55,7 +55,10 @@
     <div class="fixed inset-0 z-50 pointer-events-none hidden lg:block">
       <nav class="nav-index-floating absolute top-[22vh] left-[calc(69%+32px)] pointer-events-auto flex flex-col gap-4 mt-2">
         <h3 class="text-[10px] font-bold tracking-[0.2em] text-zinc-400 dark:text-zinc-600 uppercase mb-1">Index</h3>
-        <a class="nav-index-link active-index" href="#experience" data-section="experience">
+        <a class="nav-index-link" href="#about" data-section="about">
+          <span class="nav-indicator-line"></span>Home
+        </a>
+        <a class="nav-index-link" href="#experience" data-section="experience">
           <span class="nav-indicator-line"></span>Experience
         </a>
         <a class="nav-index-link" href="#projects" data-section="projects">
@@ -773,6 +776,14 @@
         <span class="text-[11px] font-mono text-zinc-400 px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10">ESC</span>
       </div>
       <div class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Commands">
+        <div class="cmdk-item" data-action="nav-home">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Go to Home</span>
+        </div>
+        <div class="cmdk-item" data-action="nav-projects">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <span>Go to Projects</span>
+        </div>
         <div class="cmdk-item" data-action="email">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="20" x="2" y="4"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
           <span>Copy Email Address (harshith.dev.work@gmail.com)</span>

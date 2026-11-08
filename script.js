@@ -621,7 +621,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = e.target.closest('.cmdk-item');
       if (!item) return;
       const action = item.getAttribute('data-action');
-      if (action === 'email') {
+      if (action === 'nav-home') {
+        const homeEl = document.getElementById('about');
+        if (homeEl) {
+          homeEl.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.location.href = '#about';
+        }
+        closeCmdk();
+      } else if (action === 'nav-projects') {
+        const projEl = document.getElementById('projects');
+        if (projEl) {
+          projEl.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.location.href = '#projects';
+        }
+        closeCmdk();
+      } else if (action === 'email') {
         const address = 'harshith.dev.work@gmail.com';
         (navigator.clipboard ? navigator.clipboard.writeText(address) : Promise.reject()).catch(() => { window.location.href = 'mailto:' + address; });
         const span = item.querySelector('span');
@@ -887,11 +903,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // 11. FLOATING RIGHT INDEX SCROLL SPY
   // ----------------------------------------------------------
   const indexLinks = document.querySelectorAll('.nav-index-link');
-  const floatingIndexTrackedSections = ['experience', 'projects', 'activity', 'competitive', 'education', 'opensource', 'skills', 'playlist'];
+  const floatingIndexTrackedSections = ['about', 'experience', 'projects', 'activity', 'competitive', 'education', 'opensource', 'skills', 'playlist'];
 
   function updateIndexActive() {
     const scrollY = window.scrollY + 200;
-    let currentId = 'experience';
+    let currentId = 'about';
     for (const id of floatingIndexTrackedSections) {
       const el = document.getElementById(id);
       if (el) {

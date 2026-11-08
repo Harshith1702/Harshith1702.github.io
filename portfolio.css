@@ -1573,17 +1573,17 @@ html.dark .gh-cell {
 }
 /* Light Mode Monochrome Grayscale Levels */
 .gh-cell[data-level="0"] { background-color: #ebedf0; }
-.gh-cell[data-level="1"] { background-color: #d4d4d8; }
-.gh-cell[data-level="2"] { background-color: #a1a1aa; }
-.gh-cell[data-level="3"] { background-color: #52525b; }
+.gh-cell[data-level="1"] { background-color: #b4b6be; }
+.gh-cell[data-level="2"] { background-color: #7b7e8c; }
+.gh-cell[data-level="3"] { background-color: #4a4d58; }
 .gh-cell[data-level="4"] { background-color: #18181b; }
 
-/* Dark Mode Monochrome Grayscale Levels (matching user screenshot) */
-html.dark .gh-cell[data-level="0"] { background-color: #18181b; }
-html.dark .gh-cell[data-level="1"] { background-color: #27272a; }
-html.dark .gh-cell[data-level="2"] { background-color: #52525b; }
-html.dark .gh-cell[data-level="3"] { background-color: #a1a1aa; }
-html.dark .gh-cell[data-level="4"] { background-color: #ffffff; }
+/* Dark Mode - Exact match to user screenshot media_1794100013275.png */
+html.dark .gh-cell[data-level="0"] { background-color: #1b1b1e; }
+html.dark .gh-cell[data-level="1"] { background-color: #393941; }
+html.dark .gh-cell[data-level="2"] { background-color: #4f4f56; }
+html.dark .gh-cell[data-level="3"] { background-color: #838383; }
+html.dark .gh-cell[data-level="4"] { background-color: #ababab; }
 
 /* Skills Chips with SVG brand icons (Fluid auto-wrap matching ashutoshx7.me) */
 .ash-skills-wrap {
