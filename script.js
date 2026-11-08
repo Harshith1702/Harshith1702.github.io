@@ -514,6 +514,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (profileAvatar) {
     profileAvatar.addEventListener('click', openAvatarZoom);
+    profileAvatar.tabIndex = 0;
+    profileAvatar.setAttribute('role', 'button');
+    profileAvatar.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openAvatarZoom();
+      }
+    });
   }
 
   if (avatarZoomModal) {
@@ -668,8 +676,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------------------------------------------------
   // 7. VISITOR COUNTER
   // ----------------------------------------------------------
+  const discordBtn = document.getElementById('discord-btn');
+  if (discordBtn) {
+    // A listener, not an inline onclick: the CSP (script-src 'self') blocks inline handlers
+    discordBtn.addEventListener('click', () => {
+      const label = discordBtn.querySelector('span');
+      const handle = 'harshith_padakanti';
+      (navigator.clipboard ? navigator.clipboard.writeText(handle) : Promise.reject()).then(
+        () => { if (label) label.textContent = 'Copied!'; },
+        () => { if (label) label.textContent = handle; }
+      );
+      setTimeout(() => { if (label) label.textContent = 'Discord'; }, 1400);
+    });
+  }
+
   const visitorCountEl = document.getElementById('visitor-count');
-  if (visitorCountEl) {
+  const counterHost = !/(?:github\.io|vercel\.app)$/.test(location.hostname);
+  if (visitorCountEl && counterHost) {
     fetch('/api/visit', { method: 'POST', credentials: 'same-origin', signal: AbortSignal.timeout(8000) })
       .then(response => {
         if (!response.ok) throw new Error('Counter unavailable');
@@ -719,7 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ----------------------------------------------------------
   // 9. GITHUB 53-WEEK CONTRIBUTION CALENDAR (Monochrome)
-  // Dynamic 1-year rolling window ending on current week.
+  // Fixed snapshot of the owner's GitHub contributions, pinned to its real dates.
   // ----------------------------------------------------------
   const calendarGrid = document.getElementById('gh-calendar-grid');
   const calendarTooltip = document.getElementById('gh-calendar-tooltip');
@@ -735,27 +758,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    // Rolling 1-year timeline calculation
-    const now = new Date();
-    const todayDayOfWeek = (now.getDay() + 6) % 7; // Monday = 0, Sunday = 6
-    const endOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (6 - todayDayOfWeek));
-    const startDate = new Date(endOfWeek.getFullYear(), endOfWeek.getMonth(), endOfWeek.getDate() - (53 * 7 - 1));
-    const todayIndex = 52 * 7 + todayDayOfWeek;
+    // The counts above start on Monday, October 20, 2025 and end on Sunday,
+    // October 25, 2026. The dates are pinned to that range so every count lands
+    // on its real day. A window computed from today shifts them by weeks.
+    const startDate = new Date(2025, 9, 20);
+    const snapshotEnd = new Date(2026, 9, 25);
+    const todayIndex = initialContributions.length - 1;
 
     // Update dynamic date range string
     const dateOpts = { month: 'short', day: 'numeric', year: 'numeric' };
     const formattedStart = startDate.toLocaleDateString('en-US', dateOpts);
-    const formattedEnd = now.toLocaleDateString('en-US', dateOpts);
+    const formattedEnd = snapshotEnd.toLocaleDateString('en-US', dateOpts);
     if (ghDateRange) {
       ghDateRange.textContent = `${formattedStart} - ${formattedEnd}`;
     }
 
-    // Update dynamic 12-month headers
+    // Month labels sit over the first week column of each month
     if (ghMonthsHeader) {
-      const startMonth = startDate.getMonth();
-      ghMonthsHeader.innerHTML = Array.from({ length: 12 }, (_, i) => {
-        return `<span>${monthNames[(startMonth + i) % 12]}</span>`;
-      }).join('');
+      ghMonthsHeader.style.position = 'relative';
+      ghMonthsHeader.style.height = '14px';
+      let labels = '';
+      let lastMonth = -1;
+      for (let c = 0; c < 53; c++) {
+        const monday = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + c * 7);
+        if (monday.getMonth() !== lastMonth) {
+          lastMonth = monday.getMonth();
+          labels += `<span style="position:absolute;left:${(c / 53 * 100).toFixed(2)}%">${monthNames[lastMonth]}</span>`;
+        }
+      }
+      ghMonthsHeader.innerHTML = labels;
     }
 
     function getLevel(cnt) {

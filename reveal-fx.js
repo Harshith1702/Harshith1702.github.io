@@ -14,7 +14,7 @@
   const html = document.documentElement;
   const byId = (id) => document.getElementById(id);
   const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const wide = () => window.matchMedia('(min-width: 320px)').matches;
+  const wide = () => navigator.deviceMemory === undefined || navigator.deviceMemory >= 4;
 
   // ----------------------------------------------------------
   // 1. THEME SWITCH
@@ -210,7 +210,7 @@
     if (!c) return null;
 
     const master = c.createGain();
-    master.gain.value = 0.7;
+    master.gain.value = 0.45;
     const tone = c.createBiquadFilter();
     tone.type = 'lowpass';
     tone.frequency.value = 5200;
@@ -328,8 +328,10 @@
   })();
 
   function createFigure(canvas, w, h) {
-    const cols = Math.floor(w / CELL) + PAD * 2;
-    const rows = Math.floor(h / CELL) + PAD;
+    // Big screens get bigger cells, so the grid stays under about 110k cells
+    const cell = Math.max(CELL, Math.ceil(Math.sqrt((w * h) / 110000)));
+    const cols = Math.floor(w / cell) + PAD * 2;
+    const rows = Math.floor(h / cell) + PAD;
     canvas.width = cols;
     canvas.height = rows;
     const ctx = canvas.getContext('2d');
@@ -393,11 +395,11 @@
       for (let s = 1; s < spine.length; s++) {
         const a = spine[s - 1];
         const b = spine[s];
-        const steps = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / (CELL * 0.5)));
+        const steps = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / (cell * 0.5)));
         for (let k = 0; k <= steps; k++) {
           const t = k / steps;
-          const gx = PAD + Math.round((a[0] + (b[0] - a[0]) * t) / CELL);
-          const gy = Math.round((a[1] + (b[1] - a[1]) * t) / CELL);
+          const gx = PAD + Math.round((a[0] + (b[0] - a[0]) * t) / cell);
+          const gy = Math.round((a[1] + (b[1] - a[1]) * t) / cell);
           if (gx < PAD || gx > cols - 1 - PAD || gy < 0 || gy > rows - 1 - PAD) continue;
           freeze(gy * cols + gx, now);
         }
@@ -449,7 +451,8 @@
       step(now, count) { relax(8); grow(count, now); paint(now); },
       cols,
       rows,
-      offset: PAD * CELL
+      cell,
+      offset: PAD * cell
     };
   }
 
@@ -615,12 +618,9 @@
   }
 
   function startScene() {
-    if (storm || reduced()) {
-      if (!storm) thunder = playThunder();
-      return;
-    }
-    thunder = playThunder();
+    if (storm || reduced()) return;
     if (!wide()) return;
+    thunder = playThunder();
 
     const strip = innerWidth;
     const bz = buildBolt(strip, innerHeight);
@@ -652,8 +652,8 @@
     const fern = hero.querySelector('.fx-fern');
     figure = createFigure(fern, strip, innerHeight);
     if (figure) {
-      fern.style.width = (figure.cols * CELL) + 'px';
-      fern.style.height = (figure.rows * CELL) + 'px';
+      fern.style.width = (figure.cols * figure.cell) + 'px';
+      fern.style.height = (figure.rows * figure.cell) + 'px';
       fern.style.left = (-figure.offset) + 'px';
     }
 

@@ -1,3 +1,13 @@
+Copy accuracy and cleanup pass - November 8, 2026
+
+- Site audit: removed unsupported claims (low-latency, high-throughput, packet telemetry, over 1,000 problems, Go, Redis, Prisma) from index meta, manifest, llms.txt, project page meta, 404, and privacy page. Project meta now matches page copy. Rocket.Chat meta no longer says NSoC 2026.
+- Privacy page now states that Google Fonts receives visitor IPs. Self-hosting Geist is still open.
+- build-public.js ships only referenced images (allowlist in IMG_ALLOW). data/visitors.json is gitignored.
+- Reveal: thunder no longer plays when reduced motion is on, volume lowered, storm skipped on devices reporting under 4 GB memory. The cmd+K persona switch and the Reveal button are unchanged otherwise.
+- Avatar lightbox opens with Enter or Space. Visitor counter fetch skipped on github.io. TRUST_PROXY=1 set in render.yaml.
+- Generated clean, authentic og-preview.png without cyan accents or inflated claims, highlighting the verified 4 featured projects, real contributions count, and accurate stack.
+- Open: self-hosted fonts, Skills entries without a source line (Java, GraphQL, Linux, WebSockets).
+
 Reveal storm coverage, mobile storm fix, CNAME, and site-wide audit - November 7, 2026
 
 - Fixed Reveal storm coverage: eliminated under-page bleed-through by making .fx-storm immediately fully opaque with solid blood-dark veil (#050102 with deep red gradient) and removed max-width: 1023px media query that previously disabled storm on mobile/tablets.

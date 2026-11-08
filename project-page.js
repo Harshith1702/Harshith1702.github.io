@@ -16,7 +16,7 @@ if (window.location.protocol.startsWith('http')) {
 }
 
 // Anonymous first-party visit telemetry (strictly first-party, zero third-party tracking)
-if (window.location.protocol.startsWith('http') && navigator.doNotTrack !== '1') {
+if (window.location.protocol.startsWith('http') && navigator.doNotTrack !== '1' && !/(?:github\.io|vercel\.app)$/.test(window.location.hostname)) {
   try {
     fetch('/api/visit', { method: 'POST', credentials: 'same-origin', signal: AbortSignal.timeout(6000) }).catch(() => {});
   } catch (e) {}

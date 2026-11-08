@@ -4,7 +4,7 @@
 > "I love solving problems I face and things I get curious about. Also solving others' code through open source and other projects."
 
 ## Personal Summary
-Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science undergraduate and systems-focused engineer based in India. He builds high-throughput backend services, interactive web applications, real-time collaboration platforms, and developer tooling. He also actively practices competitive programming with over 1,000 algorithmic problems solved across LeetCode, Codeforces, and CodeChef.
+Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science undergraduate based in India. He builds backend services, web applications, real-time apps, and developer tooling. He also practices competitive programming on LeetCode, Codeforces, and CodeChef.
 
 ## Contacts and Verified Profiles
 - Location: India
@@ -24,12 +24,11 @@ Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science und
 - Timeline: 2024 - 2028
 
 ## Core Technical Skills
-- Programming Languages: TypeScript, JavaScript, Python, C, Go, SQL, HTML5, CSS3
-- Backend and Frameworks: Node.js, Express.js, Flask, Next.js, REST APIs, WebSockets (Socket.IO)
-- Databases and Data Storage: PostgreSQL, SQLite, Redis, Prisma ORM
-- DevOps, Systems, and Tooling: Docker, Linux, Git, GitHub Actions, Vercel, Render
-- Software Architecture: Clean Architecture, in-memory architectures, incident tracking systems, real-time sync
-- Competitive Programming: Algorithms, Data Structures, Graph Theory, Dynamic Programming, Number Theory
+- Languages: Java, TypeScript, JavaScript, Python, C, PHP, Dart, SQL
+- Interfaces: HTML, CSS, React, Next.js, Vite, Tailwind CSS, Flutter
+- Backend: Node.js, Express, Flask, Socket.IO, WebSockets, REST APIs, GraphQL
+- Databases: PostgreSQL, MySQL, SQLite
+- Tools: Git, GitHub, Linux, Docker, GitHub Actions, pytest
 
 ## Key Projects
 
@@ -37,8 +36,8 @@ Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science und
 - Type: Full Stack Web Application
 - Public URL: https://grindlens.dev
 - Repository: Private repository per project owner
-- Technologies: Next.js, TypeScript, PostgreSQL, Tailwind CSS
-- Description: Technical preparation and interview tracking platform for software engineers.
+- Technologies: Next.js, TypeScript, PostgreSQL
+- Description: LeetCode practice tool that tracks submissions, highlights patterns to practice, and schedules revision. Includes community-reported company questions filtered by company, topic, and difficulty.
 
 ### 2. RTRP Chat Rooms (Open Chat)
 - Type: Real-time Communication Application
@@ -54,24 +53,24 @@ Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science und
 - Description: Automated bot running on GitHub Actions and cron scheduling. Automatically queries accepted LeetCode submissions and posts daily performance summaries to Discord every night at 10:15 PM IST.
 
 ### 4. Social Follower Graph (C)
-- Type: Systems and Data Structures Application
+- Type: Console Application (C)
 - Repository: https://github.com/Harshith1702/Social_Media_Follower_System_C
 - Technologies: C, Adjacency Matrix, File I/O
-- Description: High-performance console social network engine implemented in standard C. Models user follow/unfollow relationships and mutual-follow recommendations using adjacency matrices with persistent disk storage in users.txt and follows.txt.
+- Description: A console follower system in C with follow and unfollow operations, mutual-follow suggestions, and file persistence (users.txt and follows.txt). Users are kept in an array and connections in an adjacency matrix. An educational prototype with a fixed maximum user count.
 
 ### 5. Midnight Network
-- Type: Distributed Service Monitor
+- Type: HTTP Service Monitor
 - Repository: https://github.com/Harshith1702/midnight-network
 - Live Demo: https://midnight-network-8m4w.onrender.com/
 - Technologies: Python, Flask, SQLite, Docker
-- Description: HTTP uptime and latency monitoring platform. Continuously tracks endpoint health, persists ping latency history in SQLite, opens incidents on failure, and auto-resolves on service recovery.
+- Description: HTTP service monitor. Checks each service on an interval, stores results in SQLite, opens an incident on failure, and closes it on recovery. Single worker, no authentication or alerts.
 
 ### 6. NPTEL IoT Study Dashboard
 - Type: Interactive Educational Web Platform
 - Repository: https://github.com/Harshith1702/nptel-iot
 - Live Demo: https://nptel-iot.vercel.app
-- Technologies: React, JavaScript, Vite, Tailwind CSS
-- Description: Interactive study companion and assignment practice dashboard for the NPTEL Internet of Things curriculum with instant grading, scoring metrics, and bundled reference documents.
+- Technologies: React, TypeScript, Vite, Tailwind CSS
+- Description: Assignment-practice dashboard for NPTEL Introduction to IoT, with immediate answer feedback and original assignment PDFs.
 
 ### 7. LeetCode Grind Tracker
 - Type: Progress Tracking Dashboard

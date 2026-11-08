@@ -4,6 +4,7 @@ public/
 .env.*
 !.env.example
 data/*.tmp
+data/visitors.json
 data/*.json.*.tmp
 reference/
 _trash/

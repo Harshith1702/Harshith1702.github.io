@@ -9,11 +9,21 @@ if (path.dirname(destination) !== __dirname || path.basename(destination) !== 'p
 }
 fs.rmSync(destination, { recursive: true, force: true });
 fs.mkdirSync(destination, { recursive: true });
+// Only images the pages actually use are deployed. Everything else stays in the working folder.
+const IMG_ALLOW = new Set(['about_wednesday.jpg', 'about_harshith.jpg', 'grindlens_logo.png', 'grindlens_banner.png', 'rtrp_chat_rooms.png', 'discord_reporter.png', 'tracker_ui.png', 'thing.png', 'playlist-cover.jpg', 'banner_ocean_moon.jpg', 'og-preview.png', 'favicon-16x16.png', 'favicon-32x32.png', 'favicon-192x192.png', 'apple-touch-icon.png']);
+const imgRoot = path.join(__dirname, 'img');
+function publicFilter(source) {
+  if (fs.lstatSync(source).isSymbolicLink()) return false;
+  const rel = path.relative(imgRoot, source);
+  if (rel.startsWith('..') || path.isAbsolute(rel) || rel === '') return true;
+  if (rel.startsWith('logos')) return true;
+  return IMG_ALLOW.has(rel);
+}
 for (const name of ['index.html', '404.html', 'privacy.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'projects', 'experience', 'opensource', 'favicon.ico', 'img', 'fonts', 'cursor', 'video', 'llms.txt', 'CNAME']) {
   if (fs.existsSync(path.join(__dirname, name))) {
     fs.cpSync(path.join(__dirname, name), path.join(destination, name), {
       recursive: true,
-      filter: source => !fs.lstatSync(source).isSymbolicLink()
+      filter: publicFilter
     });
   }
 }
