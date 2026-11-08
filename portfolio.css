@@ -441,15 +441,9 @@ html.dark .ash-action-btn:hover {
   display: flex;
   align-items: center;
   gap: 7px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
   padding: 2px 0 4px;
-}
-.socials-strip::-webkit-scrollbar {
-  display: none;
 }
 .social-link-btn {
   display: inline-flex;
