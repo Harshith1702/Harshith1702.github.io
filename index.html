@@ -113,43 +113,43 @@
             </div>
           </div>
           <div class="flex flex-col min-w-0">
-            <h1 class="text-[19px] sm:text-[28px] font-bold text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight font-sans truncate" id="profile-name">
-              Wenz
-            </h1>
+            <div class="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-wrap">
+              <h1 class="text-[19px] sm:text-[28px] font-bold text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight font-sans truncate" id="profile-name">
+                Wenz
+              </h1>
+              <button type="button" id="persona-reveal-btn" class="persona-reveal-btn shrink-0" aria-label="Reveal identity">reveal identity</button>
+            </div>
             <p class="text-[11px] sm:text-[14px] text-zinc-500 dark:text-zinc-400 font-mono mt-0.5 truncate" id="profile-subtitle">19, Full-stack and backend developer, OSS</p>
           </div>
         </div>
-        <!-- Right Controls: Utility Row (⌘K, Thing, Theme) + Persona Switcher Pill -->
-        <div class="flex flex-col items-end justify-center gap-1.5 h-auto py-1" id="profile-controls">
-          <div class="flex items-center gap-1.5 sm:gap-2">
-            <button aria-label="Open command palette" class="relative group cursor-pointer transition-all duration-300 active:scale-95" id="cmdk-btn" type="button">
-              <div class="absolute -inset-[4.5px] border border-black/5 dark:border-white/5 rounded-[9px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10"></div>
-              <div class="relative flex items-center gap-1.5 px-2.5 py-1 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[5px] text-[11px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm font-mono">
-                <span class="leading-none mt-[0.5px]">⌘</span>
-                <span class="leading-none mt-[0.5px]">K</span>
-              </div>
-            </button>
-            <button id="thing-toggle-btn" aria-label="Toggle Thing companion" title="Toggle Thing Companion (Wednesday Addams Hand)" class="relative flex h-[28px] w-[28px] cursor-pointer items-center justify-center text-zinc-500 transition-all duration-300 hover:text-zinc-900 active:scale-95 dark:text-zinc-400 hover:dark:text-zinc-100 thing-toggle-active" type="button">
-              <span class="text-sm select-none">✋</span>
-            </button>
-            <button aria-label="Toggle theme" class="relative z-50 flex h-[28px] w-[28px] cursor-pointer items-center justify-center text-zinc-500 transition-all duration-300 hover:text-zinc-900 active:scale-95 dark:text-zinc-400 hover:dark:text-zinc-100" id="theme-toggle-btn" type="button">
-              <svg class="dark:hidden h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path>
-              </svg>
-              <svg class="hidden dark:block h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="4"></circle>
-                <path d="M12 2v2"></path>
-                <path d="M12 20v2"></path>
-                <path d="m4.93 4.93 1.41 1.41"></path>
-                <path d="m17.66 17.66 1.41 1.41"></path>
-                <path d="M2 12h2"></path>
-                <path d="M20 12h2"></path>
-                <path d="m6.34 17.66-1.41 1.41"></path>
-                <path d="m19.07 4.93-1.41 1.41"></path>
-              </svg>
-            </button>
-          </div>
-          <button type="button" id="persona-reveal-btn" class="persona-reveal-btn" aria-label="Reveal identity">Reveal</button>
+        <!-- Right Controls: Utility Row (⌘K, Thing, Theme) -->
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0" id="profile-controls">
+          <button aria-label="Open command palette" class="relative group cursor-pointer transition-all duration-300 active:scale-95" id="cmdk-btn" type="button">
+            <div class="absolute -inset-[4.5px] border border-black/5 dark:border-white/5 rounded-[9px] pointer-events-none transition-colors duration-300 group-hover:border-black/10 dark:group-hover:border-white/10"></div>
+            <div class="relative flex items-center gap-1.5 px-2.5 py-1 bg-zinc-50 hover:bg-zinc-100 dark:bg-[#09090b] dark:hover:bg-[#121214] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-[5px] text-[11px] font-medium transition-all duration-300 border border-black/5 dark:border-white/5 shadow-sm font-mono">
+              <span class="leading-none mt-[0.5px]">⌘</span>
+              <span class="leading-none mt-[0.5px]">K</span>
+            </div>
+          </button>
+          <button id="thing-toggle-btn" aria-label="Toggle Thing companion" title="Toggle Thing Companion (Wednesday Addams Hand)" class="relative flex h-[28px] w-[28px] cursor-pointer items-center justify-center text-zinc-500 transition-all duration-300 hover:text-zinc-900 active:scale-95 dark:text-zinc-400 hover:dark:text-zinc-100 thing-toggle-active" type="button">
+            <span class="text-sm select-none">✋</span>
+          </button>
+          <button aria-label="Toggle theme" class="relative z-50 flex h-[28px] w-[28px] cursor-pointer items-center justify-center text-zinc-500 transition-all duration-300 hover:text-zinc-900 active:scale-95 dark:text-zinc-400 hover:dark:text-zinc-100" id="theme-toggle-btn" type="button">
+            <svg class="dark:hidden h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path>
+            </svg>
+            <svg class="hidden dark:block h-4 w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
