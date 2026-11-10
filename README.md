@@ -1,43 +1,47 @@
 # Harshith Padakanti - Portfolio
 
-Personal portfolio and systems engineering showcase. Built as a static site with a small Node.js server for local development and a unique visitor counter.
+Personal website and software engineering showcase. Built with vanilla HTML, modern CSS, and lightweight JavaScript, with a minimalist Node.js server for local development and privacy-respecting visitor counting.
 
-## Stack
+Live site: [harshithp.me](https://harshithp.me)
 
-- HTML, CSS, and vanilla JavaScript for the site
-- Node.js (>= 18) for the local server and visitor counter
-- Vercel / Render / GitHub Pages for deployment
+## Tech Stack
 
-## Getting started
+- Frontend: Vanilla HTML5, CSS3, JavaScript
+- Runtime & Server: Node.js (>= 18), Express
+- Deployment: GitHub Pages / Vercel / Render
 
-`ash
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/Harshith1702/Harshith-Padakanti.git
+cd Harshith-Padakanti
+
+# Install dependencies
 npm install
+
+# Start local development server
 npm start
-`
+```
 
-The site runs at http://localhost:3000.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Scripts
+## Available Scripts
 
-- 
-pm start - run the local server
-- 
-pm run dev - same as start
-- 
-pm test - run the security and link checks
-- 
-pm run build - generate the deployable public/ directory
+- `npm start`: Run local development server on port 3000
+- `npm run dev`: Run development server
+- `npm test`: Run security and route verification tests
+- `npm run build`: Build deployable static output to `public/`
 
-## Deployment
+## Project Structure
 
-- Vercel: uses uild-public.js to populate public/ and serves it as the output directory.
-- Render: runs 
-ode server.js with TRUST_PROXY=1.
-- GitHub Pages: deploy the contents of public/.
-
-## Notes
-
-- Visitor data is stored in data/visitors.json and is intentionally gitignored.
-- The public/ directory is generated and gitignored. Run 
-pm run build to recreate it.
-- The Wednesday Addams "Thing" companion in the UI is preserved as-is.
+```
+├── index.html          # Main portfolio homepage
+├── projects/           # Individual project deep-dive pages
+├── img/                # Optimized image assets and tech icons
+├── portfolio.css       # Core typography, dark mode, and layout styles
+├── script.js           # Client interactions and command palette
+├── theme.js            # Instant dark mode initialization
+├── server.js           # Local development server and visit API
+└── build-public.js     # Static export script
+```
