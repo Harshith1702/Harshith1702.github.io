@@ -3,9 +3,12 @@ public/
 .env
 .env.*
 !.env.example
-data/*.tmp
-data/visitors.json
-data/*.json.*.tmp
+data/
 reference/
 _trash/
 scratch_*
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
