@@ -626,7 +626,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (homeEl) {
           homeEl.scrollIntoView({ behavior: 'smooth' });
         } else {
-          window.location.href = '#about';
+          const inSubdir = /\/(projects|experience|opensource)\//.test(window.location.pathname);
+          window.location.href = (inSubdir ? '../index.html' : 'index.html') + '#about';
         }
         closeCmdk();
       } else if (action === 'nav-projects') {
@@ -634,7 +635,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (projEl) {
           projEl.scrollIntoView({ behavior: 'smooth' });
         } else {
-          window.location.href = '#projects';
+          const inSubdir = /\/(projects|experience|opensource)\//.test(window.location.pathname);
+          window.location.href = (inSubdir ? '../index.html' : 'index.html') + '#projects';
         }
         closeCmdk();
       } else if (action === 'email') {
@@ -878,12 +880,20 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/api/github/contributions')
       .then(r => r.ok ? r.json() : null)
       .then(payload => {
+        if (payload && Array.isArray(payload.contributions) && payload.contributions.length > 0) return payload;
+        return fetch('https://github-contributions-api.jogruber.de/v4/Harshith1702?y=last')
+          .then(r => r.ok ? r.json() : null);
+      })
+      .then(payload => {
         if (!payload || !Array.isArray(payload.contributions) || payload.contributions.length === 0) return;
         const counts = payload.contributions.map(c => (c && typeof c.count === 'number') ? c.count : 0);
         const startDate = new Date(payload.contributions[0].date + 'T00:00:00');
         renderCalendar(startDate, counts);
-        if (ghTotalCount && typeof payload.total === 'number') {
-          ghTotalCount.textContent = payload.total.toLocaleString();
+        const total = typeof payload.total === 'number'
+          ? payload.total
+          : (payload.total && typeof payload.total.lastYear === 'number' ? payload.total.lastYear : null);
+        if (ghTotalCount && typeof total === 'number') {
+          ghTotalCount.textContent = total.toLocaleString();
         }
       })
       .catch(() => { /* keep fallback */ });
