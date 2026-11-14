@@ -767,43 +767,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const ghMonthsHeader = document.getElementById('gh-months-header');
 
   if (calendarGrid) {
-    // 371 consecutive days from authentic Harshith1702 GitHub contributions
-    const initialContributions = [
-      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,13,17,19,0,0,0,0,8,2,7,0,10,6,0,15,44,23,30,18,13,11,5,0,0,0,0,0,0,0,1,0,0,0,0,0,0,13,7,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,16,0,26,12,9,4,12,8,4,10,4,2,3,8,9,6,8,37,24,9,7,20,8,14,46,9,10,4,9,11,12,23,19,4,1,2,2,15,13,3,3,1,4,1,3,3,2,2,3,2,5,18,8,3,2,1,5,3,9,9,7,3,8,6,7,9,8,4,4,0,3,2,6,20,19,19,13,4,18,7,13,7,5,1,5,13,12,8,2,9,13,9,21,3,7,5,3,4,16,9,14,10,3,5,0,3,4,3,11,2,2,1,1,1,4,3,2,3,4,3,2,2,9,1,2,0,1,2,2,6,2,2,2,2,2,2,3,0,1,2,1,0,12,0,3,2,2,2,2,0,3,3,1,1,0,2,0,3,3,1,1,2,0,1,5,1,0,2,0,0,0,9,10,3,16,0,4,1,0,8,5,5,0,10,3,1,4,3,5,4,17,2,3,2,0,3,5,3,6,11,3,1,11,2,0,0,0,2,0,3,0,2,1,6,5,6,4,15,3,3,4,3,3,0,0,2,0,3,2,0,4,2,0,16,0,0,0,0,26,15,6,31,9,0,0,0,0,0,1
-    ];
-
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    // The counts above start on Monday, October 20, 2025 and end on Sunday,
-    // October 25, 2026. The dates are pinned to that range so every count lands
-    // on its real day. A window computed from today shifts them by weeks.
-    const startDate = new Date(2025, 9, 20);
-    const snapshotEnd = new Date(2026, 9, 25);
-    const todayIndex = initialContributions.length - 1;
-
-    // Update dynamic date range string
-    const dateOpts = { month: 'short', day: 'numeric', year: 'numeric' };
-    const formattedStart = startDate.toLocaleDateString('en-US', dateOpts);
-    const formattedEnd = snapshotEnd.toLocaleDateString('en-US', dateOpts);
-    if (ghDateRange) {
-      ghDateRange.textContent = `${formattedStart} - ${formattedEnd}`;
-    }
-
-    // Month labels sit over the first week column of each month
-    if (ghMonthsHeader) {
-      ghMonthsHeader.style.position = 'relative';
-      ghMonthsHeader.style.height = '14px';
-      let labels = '';
-      let lastMonth = -1;
-      for (let c = 0; c < 53; c++) {
-        const monday = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + c * 7);
-        if (monday.getMonth() !== lastMonth) {
-          lastMonth = monday.getMonth();
-          labels += `<span style="position:absolute;left:${(c / 53 * 100).toFixed(2)}%">${monthNames[lastMonth]}</span>`;
-        }
-      }
-      ghMonthsHeader.innerHTML = labels;
-    }
+    // Authentic fallback snapshot: 371 days, Oct 20, 2025 - Oct 25, 2026.
+    const fallbackCounts = [
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,13,17,19,0,0,0,0,8,2,7,0,10,6,0,15,44,23,30,18,13,11,5,0,0,0,0,0,0,0,1,0,0,0,0,0,0,13,7,6,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,16,0,26,12,9,4,12,8,4,10,4,2,3,8,9,6,8,37,24,9,7,20,8,14,46,9,10,4,9,11,12,23,19,4,1,2,2,15,13,3,3,1,4,1,3,3,2,2,3,2,5,18,8,3,2,1,5,3,9,9,7,3,8,6,7,9,8,4,4,0,3,2,6,20,19,19,13,4,18,7,13,7,5,1,5,13,12,8,2,9,13,9,21,3,7,5,3,4,16,9,14,10,3,5,0,3,4,3,11,2,2,1,1,1,4,3,2,3,4,3,2,2,9,1,2,0,1,2,2,6,2,2,2,2,2,2,3,0,1,2,1,0,12,0,3,2,2,2,2,0,3,3,1,1,0,2,0,3,3,1,1,2,0,1,5,1,0,2,0,0,0,9,10,3,16,0,4,1,0,8,5,5,0,10,3,1,4,3,5,4,17,2,3,2,0,3,5,3,6,11,3,1,11,2,0,0,0,2,0,3,0,2,1,6,5,6,4,15,3,3,4,3,3,0,0,2,0,3,2,0,4,2,0,16,0,0,0,0,26,15,6,31,9,0,0,0,0,0,1
+    ];
+    const fallbackStart = new Date(2025, 9, 20);
 
     function getLevel(cnt) {
       if (cnt <= 0) return 0;
@@ -813,49 +783,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return 4;
     }
 
-    function renderCalendar() {
-      let calendarHtml = '';
-      let totalContributions = 0;
-
-      for (let c = 0; c < 53; c++) {
-        calendarHtml += '<div class="gh-col">';
-        for (let r = 0; r < 7; r++) {
-          const idx = c * 7 + r;
-          const cellDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + idx);
-          const isFuture = idx > todayIndex;
-
-          let cnt = 0;
-          if (!isFuture) {
-            cnt = idx < initialContributions.length ? initialContributions[idx] : 0;
-            totalContributions += cnt;
-          }
-
-          const y = cellDate.getFullYear();
-          const m = String(cellDate.getMonth() + 1).padStart(2, '0');
-          const d = String(cellDate.getDate()).padStart(2, '0');
-          const dateStr = `${y}-${m}-${d}`;
-          const lvl = isFuture ? 0 : getLevel(cnt);
-          const futureAttr = isFuture ? ' data-future="true"' : '';
-
-          calendarHtml += `<div class="gh-cell" data-level="${lvl}" data-count="${cnt}" data-date="${dateStr}"${futureAttr}></div>`;
-        }
-        calendarHtml += '</div>';
-      }
-
-      calendarGrid.innerHTML = calendarHtml;
-      calendarGrid.setAttribute('aria-label', `GitHub contribution snapshot: ${formattedStart} through ${formattedEnd}`);
-      if (ghTotalCount) {
-        ghTotalCount.textContent = totalContributions.toLocaleString();
-      }
-      setupCalendarTooltips();
-    }
-
     function setupCalendarTooltips() {
       if (!calendarTooltip) return;
       const cells = calendarGrid.querySelectorAll('.gh-cell');
-
       cells.forEach(cell => {
-        function showTooltip(e) {
+        function showTooltip() {
           if (cell.getAttribute('data-future') === 'true') {
             calendarTooltip.classList.remove('visible');
             return;
@@ -868,23 +800,15 @@ document.addEventListener('DOMContentLoaded', () => {
           const day = parseInt(parts[2], 10);
           const year = parts[0];
           const dateFormatted = `${month} ${day}, ${year}`;
-
           let message = `${count} contribution${count === 1 ? '' : 's'} on ${dateFormatted}`;
-          if (count === 0) {
-            message = `No contributions on ${dateFormatted}`;
-          }
-
+          if (count === 0) message = `No contributions on ${dateFormatted}`;
           calendarTooltip.textContent = message;
           const rect = cell.getBoundingClientRect();
           calendarTooltip.style.left = `${rect.left + rect.width / 2}px`;
           calendarTooltip.style.top = `${rect.top}px`;
           calendarTooltip.classList.add('visible');
         }
-
-        function hideTooltip() {
-          calendarTooltip.classList.remove('visible');
-        }
-
+        function hideTooltip() { calendarTooltip.classList.remove('visible'); }
         cell.addEventListener('mouseenter', showTooltip);
         cell.addEventListener('mousemove', showTooltip);
         cell.addEventListener('mouseleave', hideTooltip);
@@ -893,10 +817,78 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    renderCalendar();
+    function renderCalendar(startDate, counts) {
+      const totalDays = counts.length;
+      const lastDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + totalDays - 1);
+      const dateOpts = { month: 'short', day: 'numeric', year: 'numeric' };
+      const formattedStart = startDate.toLocaleDateString('en-US', dateOpts);
+      const formattedEnd = lastDate.toLocaleDateString('en-US', dateOpts);
+      if (ghDateRange) ghDateRange.textContent = `${formattedStart} - ${formattedEnd}`;
+
+      if (ghMonthsHeader) {
+        ghMonthsHeader.style.position = 'relative';
+        ghMonthsHeader.style.height = '14px';
+        let labels = '';
+        let lastMonth = -1;
+        const weeks = Math.ceil(totalDays / 7);
+        for (let c = 0; c < weeks; c++) {
+          const monday = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + c * 7);
+          if (monday.getMonth() !== lastMonth) {
+            lastMonth = monday.getMonth();
+            labels += `<span style="position:absolute;left:${(c / weeks * 100).toFixed(2)}%">${monthNames[lastMonth]}</span>`;
+          }
+        }
+        ghMonthsHeader.innerHTML = labels;
+      }
+
+      let calendarHtml = '';
+      let totalContributions = 0;
+      const weeks = Math.ceil(totalDays / 7);
+      for (let c = 0; c < weeks; c++) {
+        calendarHtml += '<div class="gh-col">';
+        for (let r = 0; r < 7; r++) {
+          const idx = c * 7 + r;
+          const cellDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + idx);
+          const isFuture = idx >= totalDays;
+          let cnt = 0;
+          if (!isFuture && idx < counts.length) {
+            cnt = counts[idx] || 0;
+            totalContributions += cnt;
+          }
+          const y = cellDate.getFullYear();
+          const m = String(cellDate.getMonth() + 1).padStart(2, '0');
+          const d = String(cellDate.getDate()).padStart(2, '0');
+          const dateStr = `${y}-${m}-${d}`;
+          const lvl = isFuture ? 0 : getLevel(cnt);
+          const futureAttr = isFuture ? ' data-future="true"' : '';
+          calendarHtml += `<div class="gh-cell" data-level="${lvl}" data-count="${cnt}" data-date="${dateStr}"${futureAttr}></div>`;
+        }
+        calendarHtml += '</div>';
+      }
+      calendarGrid.innerHTML = calendarHtml;
+      calendarGrid.setAttribute('aria-label', `GitHub contribution activity: ${formattedStart} through ${formattedEnd}`);
+      if (ghTotalCount) ghTotalCount.textContent = totalContributions.toLocaleString();
+      setupCalendarTooltips();
+    }
+
+    // Initial render with authentic fallback snapshot.
+    renderCalendar(fallbackStart, fallbackCounts);
+
+    // Attempt to upgrade to live data from our backend proxy.
+    fetch('/api/github/contributions')
+      .then(r => r.ok ? r.json() : null)
+      .then(payload => {
+        if (!payload || !Array.isArray(payload.contributions) || payload.contributions.length === 0) return;
+        const counts = payload.contributions.map(c => (c && typeof c.count === 'number') ? c.count : 0);
+        const startDate = new Date(payload.contributions[0].date + 'T00:00:00');
+        renderCalendar(startDate, counts);
+        if (ghTotalCount && typeof payload.total === 'number') {
+          ghTotalCount.textContent = payload.total.toLocaleString();
+        }
+      })
+      .catch(() => { /* keep fallback */ });
   }
 
-  // ----------------------------------------------------------
   // 10. OPEN SOURCE CONTRIBUTIONS
   // ----------------------------------------------------------
   // ----------------------------------------------------------

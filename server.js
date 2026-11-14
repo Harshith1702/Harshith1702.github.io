@@ -99,6 +99,37 @@ function handleVisitRequest(req, res) {
   res.setHeader('Set-Cookie', `anon_vid=${token}; Path=/; Max-Age=63072000; SameSite=Lax; HttpOnly${secure ? '; Secure' : ''}`);
   return json(res, 200, { success: true, count: visitorStore.totalUnique, isNew });
 }
+const githubContributionsCache = { data: null, until: 0 };
+async function handleGitHubContributions(req, res) {
+  for (const [name, value] of Object.entries(securityHeaders)) res.setHeader(name, value);
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', 'GET');
+    return json(res, 405, { success: false, error: 'Method not allowed' });
+  }
+  if (githubContributionsCache.data && Date.now() < githubContributionsCache.until) {
+    return json(res, 200, githubContributionsCache.data);
+  }
+  try {
+    const upstream = await fetch('https://github-contributions-api.jogruber.de/v4/Harshith1702?y=last', {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!upstream.ok) throw new Error('Upstream unavailable');
+    const payload = await upstream.json();
+    const contributions = Array.isArray(payload.contributions)
+      ? payload.contributions.map(item => ({ date: item.date, count: Number(item.count) || 0 }))
+      : [];
+    const data = {
+      success: true,
+      total: typeof payload.total?.lastYear === 'number' ? payload.total.lastYear : contributions.reduce((sum, item) => sum + item.count, 0),
+      contributions
+    };
+    githubContributionsCache.data = data;
+    githubContributionsCache.until = Date.now() + 3600000;
+    return json(res, 200, data);
+  } catch (err) {
+    return json(res, 502, { success: false, error: 'GitHub contributions unavailable' });
+  }
+}
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'application/javascript; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.ico': 'image/x-icon',
@@ -128,6 +159,12 @@ function requestHandler(req, res) {
       return json(res, 405, { success: false });
     }
     return handleVisitRequest(req, res);
+  }
+  if (pathname === '/api/github/contributions') {
+    handleGitHubContributions(req, res).catch(() => {
+      try { json(res, 502, { success: false, error: 'GitHub contributions unavailable' }); } catch { /* response already sent */ }
+    });
+    return;
   }
   if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { status: 'ok' });
   if (!['GET', 'HEAD'].includes(req.method)) {
