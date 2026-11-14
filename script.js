@@ -876,27 +876,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial render with authentic fallback snapshot.
     renderCalendar(fallbackStart, fallbackCounts);
 
-    // Attempt to upgrade to live data from our backend proxy.
-    fetch('/api/github/contributions')
-      .then(r => r.ok ? r.json() : null)
-      .then(payload => {
-        if (payload && Array.isArray(payload.contributions) && payload.contributions.length > 0) return payload;
-        return fetch('https://github-contributions-api.jogruber.de/v4/Harshith1702?y=last')
-          .then(r => r.ok ? r.json() : null);
-      })
-      .then(payload => {
-        if (!payload || !Array.isArray(payload.contributions) || payload.contributions.length === 0) return;
-        const counts = payload.contributions.map(c => (c && typeof c.count === 'number') ? c.count : 0);
-        const startDate = new Date(payload.contributions[0].date + 'T00:00:00');
-        renderCalendar(startDate, counts);
-        const total = typeof payload.total === 'number'
-          ? payload.total
-          : (payload.total && typeof payload.total.lastYear === 'number' ? payload.total.lastYear : null);
-        if (ghTotalCount && typeof total === 'number') {
-          ghTotalCount.textContent = total.toLocaleString();
-        }
-      })
-      .catch(() => { /* keep fallback */ });
+    // Attempt to upgrade to live data. Try the local proxy first, then the
+    // public contributions API so static hosts (GitHub Pages) also work.
+    (async () => {
+      let payload = null;
+      try {
+        const response = await fetch('/api/github/contributions');
+        if (response.ok) payload = await response.json();
+      } catch { /* proxy unavailable */ }
+      if (!payload) {
+        try {
+          const response = await fetch('https://github-contributions-api.jogruber.de/v4/Harshith1702?y=last');
+          if (response.ok) payload = await response.json();
+        } catch { /* public API unavailable */ }
+      }
+      if (!payload || !Array.isArray(payload.contributions) || payload.contributions.length === 0) return;
+      const counts = payload.contributions.map(c => (c && typeof c.count === 'number') ? c.count : 0);
+      const startDate = new Date(payload.contributions[0].date + 'T00:00:00');
+      renderCalendar(startDate, counts);
+      const total = typeof payload.total === 'number'
+        ? payload.total
+        : (payload.total && typeof payload.total.lastYear === 'number' ? payload.total.lastYear : null);
+      if (ghTotalCount && typeof total === 'number') {
+        ghTotalCount.textContent = total.toLocaleString();
+      }
+    })();
   }
 
   // 10. OPEN SOURCE CONTRIBUTIONS
