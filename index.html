@@ -35,43 +35,46 @@
   {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": "https://harshithp.me/#person",
     "name": "Harshith Padakanti",
     "alternateName": "Wenz",
-    "url": "https://harshithp.me",
+    "url": "https://harshithp.me/",
+    "image": "https://harshithp.me/img/about_harshith.jpg",
     "jobTitle": "Full-stack and Backend Developer",
+    "description": "Full-stack and backend developer. Builds GrindLens, a LeetCode practice tracker, plus real-time apps and open source contributions.",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "GrindLens",
+      "url": "https://grindlens.dev"
+    },
+    "knowsAbout": [
+      "Backend development",
+      "Full-stack development",
+      "TypeScript",
+      "PostgreSQL",
+      "Real-time applications",
+      "Competitive programming",
+      "Open source"
+    ],
     "sameAs": [
       "https://github.com/Harshith1702",
       "https://x.com/harshith_irl",
       "https://www.linkedin.com/in/harshith-padakanti/",
-      "https://leetcode.com/u/Harshith-2007/"
+      "https://leetcode.com/u/Harshith-2007/",
+      "https://codeforces.com/profile/harshaharshith31",
+      "https://www.codechef.com/users/harshith_2007"
     ]
   }
   </script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Harshith Padakanti",
-  "url": "https://harshithp.me/",
-  "sameAs": [
-    "https://github.com/Harshith1702",
-    "https://www.linkedin.com/in/harshith-padakanti",
-    "https://leetcode.com/u/Harshith-2007/",
-    "https://codeforces.com/profile/harshaharshith31",
-    "https://www.codechef.com/users/harshith_2007",
-    "https://x.com/harshith_irl"
-  ],
-  "jobTitle": "Full-stack and Backend Developer",
-  "description": "Full-stack and backend developer. Builds GrindLens, a LeetCode practice tracker, plus real-time apps and open source contributions."
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://harshithp.me/#website",
   "name": "Harshith Padakanti Portfolio",
   "url": "https://harshithp.me/",
-  "description": "Personal portfolio and systems engineering showcase."
+  "description": "Personal portfolio and systems engineering showcase.",
+  "publisher": { "@id": "https://harshithp.me/#person" }
 }
 </script>
 <link href="https://github.com/Harshith1702" rel="me"/>
@@ -603,7 +606,7 @@
               <!-- Rendered by script.js -->
             </div>
             <div class="flex items-center justify-between mt-3 text-[11px] font-mono text-zinc-400 dark:text-zinc-500 px-0.5">
-              <div><span id="gh-total-count" class="font-bold text-zinc-900 dark:text-zinc-100">1,667</span> contributions in this period</div>
+              <div class="flex items-center gap-2"><span><span id="gh-total-count" class="font-bold text-zinc-900 dark:text-zinc-100">1,667</span> contributions in this period</span><span class="text-[10px] text-zinc-400 dark:text-zinc-600" id="gh-live-status">syncing</span></div>
               <div class="flex items-center gap-1.5">
                 <span>Less</span>
                 <span class="w-2.5 h-2.5 rounded-[2.5px] gh-cell" data-level="0"></span>
@@ -888,7 +891,7 @@
     <div class="thing-speech-bubble" id="thing-bubble">*tap tap*</div>
   </div>
 
-  <script src="script.js?v=62"></script>
+  <script src="script.js?v=63"></script>
   <script src="reveal-fx.js?v=4"></script>
 </body>
 </html>

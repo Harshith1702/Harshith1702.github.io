@@ -39,30 +39,8 @@ if (window.location.protocol.startsWith('http') && navigator.doNotTrack !== '1' 
     const isFile = window.location.protocol === 'file:';
     const basePath = isGh ? '/Harshith-Padakanti/' : (isFile ? 'index.html' : '/');
 
-    // Make home and navigation buttons click-safe across subpaths and file protocol
-    document.querySelectorAll('a[href="/"], a.case-back, a.case-live, a.case-all').forEach(a => {
-      a.addEventListener('click', (e) => {
-        if (isFile) {
-          e.preventDefault();
-          window.location.href = 'index.html';
-        } else if (isGh) {
-          e.preventDefault();
-          window.location.href = '/Harshith-Padakanti/';
-        }
-      });
-    });
-
-    document.querySelectorAll('a[href="/#projects"], a.case-secondary').forEach(a => {
-      a.addEventListener('click', (e) => {
-        if (isFile) {
-          e.preventDefault();
-          window.location.href = 'index.html#projects';
-        } else if (isGh) {
-          e.preventDefault();
-          window.location.href = '/Harshith-Padakanti/#projects';
-        }
-      });
-    });
+    // Relative links already include index.html for file:// usage and are
+    // rewritten to clean paths on http, so no click interception is needed.
 
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey) return;

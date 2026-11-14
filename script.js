@@ -879,18 +879,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Attempt to upgrade to live data. Try the local proxy first, then the
     // public contributions API so static hosts (GitHub Pages) also work.
     (async () => {
+      const liveStatus = document.getElementById('gh-live-status');
+      const markStatus = (text) => { if (liveStatus) liveStatus.textContent = text; };
       let payload = null;
       try {
-        const response = await fetch('/api/github/contributions');
+        const response = await fetch('/api/github/contributions', { cache: 'no-store' });
         if (response.ok) payload = await response.json();
       } catch { /* proxy unavailable */ }
       if (!payload) {
         try {
-          const response = await fetch('https://github-contributions-api.jogruber.de/v4/Harshith1702?y=last');
+          const response = await fetch('https://github-contributions-api.jogruber.de/v4/Harshith1702?y=last', { cache: 'no-store' });
           if (response.ok) payload = await response.json();
         } catch { /* public API unavailable */ }
       }
-      if (!payload || !Array.isArray(payload.contributions) || payload.contributions.length === 0) return;
+      if (!payload || !Array.isArray(payload.contributions) || payload.contributions.length === 0) {
+        markStatus('snapshot');
+        return;
+      }
       const counts = payload.contributions.map(c => (c && typeof c.count === 'number') ? c.count : 0);
       const startDate = new Date(payload.contributions[0].date + 'T00:00:00');
       renderCalendar(startDate, counts);
@@ -900,6 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (ghTotalCount && typeof total === 'number') {
         ghTotalCount.textContent = total.toLocaleString();
       }
+      markStatus('live');
     })();
   }
 
