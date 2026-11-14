@@ -1,7 +1,8 @@
 # Harshith Padakanti
 
 > 19, Full-stack and backend developer, OSS contributor, competitive programmer.
-> "I love solving problems I face and things I get curious about. Also solving others' code through open source and other projects."
+> "I'm not crazy, I'm just not you!"
+> ~some 50y/o unc
 
 ## Personal Summary
 Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science undergraduate based in India. He builds backend services, web applications, real-time apps, and developer tooling. He also practices competitive programming on LeetCode, Codeforces, and CodeChef.
