@@ -765,11 +765,11 @@ html.dark .cp-platform-handle {
 /* 5. Floating Right Index Navigation */
 .nav-index-floating {
   position: fixed;
-  top: 22vh;
-  left: max(calc(50% + 388px), calc(68% + 24px));
+  top: clamp(100px, 20vh, 180px);
+  left: max(calc(50% + 375px), calc(70% + 24px));
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   z-index: 50;
   pointer-events: auto;
 }
@@ -1883,11 +1883,12 @@ html.dark .persona-reveal-btn:hover {
   animation: personaAvatarFade 0.22s ease-out forwards;
 }
 
-#profile-avatar {
+#profile-avatar, #profile-avatar-video {
   image-rendering: auto;
   image-rendering: high-quality;
   cursor: zoom-in;
   transition: opacity 0.18s ease;
+  object-fit: cover;
 }
 
 #profile-avatar:hover {
@@ -1919,8 +1920,8 @@ html.dark .persona-reveal-btn:hover {
 }
 
 .avatar-modal-img {
-  max-width: min(90vw, 480px);
-  max-height: min(80vh, 480px);
+  max-width: min(94vw, 980px);
+  max-height: min(88vh, 850px);
   width: auto;
   height: auto;
   border-radius: 12px;
@@ -2112,7 +2113,6 @@ html.dark {
 #hero-banner-container, #about { left: var(--page-edge); right: var(--page-edge); }
 .blueprint-guide-left { left: var(--page-edge); }
 .blueprint-guide-right { right: var(--page-edge); }
-.nav-index-floating { left: calc(50% + 380px); }
 #projects-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px 32px; }
 .project-card-actions > div { min-width: 0; flex-shrink: 1; }
 .project-card-actions a, .project-demos a, .build-links a,
@@ -2150,9 +2150,6 @@ html.dark .skill-domains > div { border-color: #27272a; }
 #gh-total-count { line-height: 1.8; }
 @media (min-width: 740px) {
   #projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 1239px) {
-  .nav-index-floating { display: none; }
 }
 @media (max-width: 739px) {
   #projects > .relative > .absolute.left-1\/2 { display: none; }
