@@ -16,7 +16,7 @@ function publicFilter(source) {
   if (fs.lstatSync(source).isSymbolicLink()) return false;
   const rel = path.relative(imgRoot, source);
   if (rel.startsWith('..') || path.isAbsolute(rel) || rel === '') return true;
-  if (rel.startsWith('logos')) return true;
+  if (rel.startsWith('logos') || rel.startsWith('evidence')) return true;
   return IMG_ALLOW.has(rel);
 }
 for (const name of ['index.html', '404.html', 'privacy.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'style.css', 'portfolio.css', 'reveal-fx.css', 'script.js', 'reveal-fx.js', 'theme.js', 'project-page.js', 'projects', 'experience', 'opensource', 'favicon.ico', 'img', 'fonts', 'cursor', 'video', 'llms.txt', 'CNAME']) {

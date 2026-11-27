@@ -172,6 +172,10 @@ function requestHandler(req, res) {
     res.writeHead(405); return res.end('Method not allowed');
   }
   let relative = pathname === '/' ? 'index.html' : pathname.slice(1);
+  if (['growth', 'growth/'].includes(relative)) {
+    res.writeHead(302, { 'Location': '/#growth' });
+    return res.end();
+  }
   if (['projects', 'projects/'].includes(relative)) {
     res.writeHead(302, { 'Location': '/#projects' });
     return res.end();

@@ -1,11 +1,11 @@
 # Harshith Padakanti
 
-> 19, Full-stack and backend developer, OSS contributor, competitive programmer.
+> 19, Full-stack developer, builder, content creator & marketer.
 > "I'm not crazy, I'm just not you!"
 > ~some 50y/o unc
 
 ## Personal Summary
-Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science undergraduate based in India. He builds backend services, web applications, real-time apps, and developer tooling. He also practices competitive programming on LeetCode, Codeforces, and CodeChef.
+Harshith Padakanti (online handle Harshith1702 / @harshith_irl) is a computer science undergraduate and technical builder based in India. He builds full-stack web applications, real-time backend systems, and developer tooling, while driving organic distribution and product growth through storytelling, content writing, and marketing across Reddit, X, and LinkedIn. He also actively contributes to open source and practices competitive programming on LeetCode, Codeforces, and CodeChef.
 
 ## Contacts and Verified Profiles
 - Location: India
@@ -25,11 +25,17 @@ Harshith Padakanti (online handle Wenz / Harshith1702) is a computer science und
 - Timeline: 2024 - 2028
 
 ## Core Technical Skills
-- Languages: Java, TypeScript, JavaScript, Python, C, PHP, Dart, SQL
-- Interfaces: HTML, CSS, React, Next.js, Vite, Tailwind CSS, Flutter
-- Backend: Node.js, Express, Flask, Socket.IO, WebSockets, REST APIs, GraphQL
+- Languages: TypeScript, JavaScript, Python, C, SQL
+- Frontend: React, Next.js, Tailwind CSS
+- Backend: Node.js, Express, Socket.IO, REST APIs
 - Databases: PostgreSQL, MySQL, SQLite
-- Tools: Git, GitHub, Linux, Docker, GitHub Actions, pytest
+- Tools: Git, GitHub Actions, Linux, Docker
+
+## Growth, Marketing & Storytelling
+- Storytelling & Copywriting: Honest, transparent build stories that convert cold traffic into product users (e.g. 316K views on r/datastructures introducing GrindLens)
+- Content Writing: Writing technical breakdowns, dev lessons, build-in-public yap, and placement satire on LinkedIn (309,119 impressions, 1,523 followers) and Reddit
+- Growth Marketing & Distribution: 1.8M lifetime impressions on X (@harshith_irl), 1.1M 8-day spike
+- Viral Redirect Plays: Hijacked trending moments (fuckpdf.vercel.app drove 610.7K views to a friend's tool in 24 hours; fuckdsa.vercel.app routed 82.8K views to GrindLens)
 
 ## Key Projects
 

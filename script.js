@@ -404,102 +404,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ----------------------------------------------------------
-  // 4.2. PERSONA SWITCHER (WENZ / HARSHITH)
-  // ----------------------------------------------------------
-  const personas = {
-    wenz: {
-      name: 'Wenz',
-      subtitle: '19, Full-stack and backend developer, OSS',
-      avatar: 'img/about_wednesday.jpg',
-      alt: 'Wednesday Addams',
-      greeting: '*Wednesday approves* 🖤',
-      bio: 'I love solving problems I face and things I get curious about. Also solving others\' code through open source and other projects.'
-    },
-    harshith: {
-      name: 'Harshith Padakanti',
-      subtitle: '19, Full-stack and backend developer, OSS',
-      avatar: 'img/about_harshith.jpg',
-      alt: 'Harshith Padakanti',
-      greeting: '*Harshith!* 🖐',
-      bio: 'I love solving problems I face and things I get curious about. Also solving others\' code through open source and other projects.'
-    }
-  };
-
-  const profileName = document.getElementById('profile-name');
-  const profileSubtitle = document.getElementById('profile-subtitle');
-  const profileBio = document.getElementById('profile-bio');
-  const profileAvatar = document.getElementById('profile-avatar');
-  const personaRevealBtn = document.getElementById('persona-reveal-btn');
-
-  // Always clear stale persona so initial visit always shows Wenz with Reveal button
-  try { localStorage.removeItem('persona'); } catch (e) {}
-  let currentPersona = 'wenz';
-
-  function applyPersona(personaKey, showBubble = false) {
-    const p = personas[personaKey] || personas.wenz;
-    currentPersona = personaKey;
-
-    if (profileName) profileName.textContent = p.name;
-    if (profileSubtitle) profileSubtitle.textContent = p.subtitle;
-    if (profileBio) profileBio.textContent = p.bio;
-    if (profileAvatar) {
-      profileAvatar.src = p.avatar;
-      profileAvatar.alt = p.alt;
-    }
-
-    if (personaRevealBtn) {
-      if (personaKey === 'harshith') {
-        personaRevealBtn.classList.add('revealing');
-        personaRevealBtn.style.display = 'none';
-      } else {
-        personaRevealBtn.classList.remove('revealing');
-        personaRevealBtn.style.display = '';
-      }
-    }
-
-    if (showBubble) {
-      if (profileName) {
-        profileName.classList.remove('persona-animate-down');
-        void profileName.offsetWidth;
-        profileName.classList.add('persona-animate-down');
-      }
-      if (profileAvatar) {
-        profileAvatar.classList.remove('persona-avatar-fade');
-        void profileAvatar.offsetWidth;
-        profileAvatar.classList.add('persona-avatar-fade');
-      }
-    }
-
-    if (showBubble && typeof showThingBubble === 'function') {
-      showThingBubble(p.greeting, 1800);
-    }
-  }
-
-  function togglePersona(showBubble = true) {
-    const next = currentPersona === 'wenz' ? 'harshith' : 'wenz';
-    applyPersona(next, showBubble);
-  }
-
-  if (personaRevealBtn) {
-    personaRevealBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      applyPersona('harshith', true);
-    });
-  }
-
-  // Initialize persona on load: always start with Wenz and visible Reveal option
-  applyPersona('wenz', false);
-
-  // ----------------------------------------------------------
-  // 5. AVATAR ZOOM LIGHTBOX
+  // 5. AVATAR & PROOF ZOOM LIGHTBOX
   // ----------------------------------------------------------
   const avatarZoomModal = document.getElementById('avatar-zoom-modal');
   const avatarZoomImg = document.getElementById('avatar-zoom-img');
+  const avatarZoomVideo = document.getElementById('avatar-zoom-video');
+  const profileAvatarVideo = document.getElementById('profile-avatar-video');
+
+  function openImageZoom(src, alt) {
+    if (avatarZoomModal && avatarZoomImg) {
+      if (avatarZoomVideo) {
+        avatarZoomVideo.pause();
+        avatarZoomVideo.classList.add('hidden');
+      }
+      avatarZoomImg.classList.remove('hidden');
+      avatarZoomImg.src = src;
+      avatarZoomImg.alt = alt || 'Expanded proof';
+      avatarZoomModal.classList.add('open');
+      avatarZoomModal.setAttribute('aria-hidden', 'false');
+    }
+  }
 
   function openAvatarZoom() {
-    if (avatarZoomModal && avatarZoomImg && profileAvatar) {
-      avatarZoomImg.src = profileAvatar.src;
-      avatarZoomImg.alt = profileAvatar.alt || 'Expanded avatar';
+    if (avatarZoomModal && avatarZoomVideo) {
+      if (avatarZoomImg) {
+        avatarZoomImg.classList.add('hidden');
+      }
+      avatarZoomVideo.classList.remove('hidden');
+      avatarZoomVideo.currentTime = 0;
+      avatarZoomVideo.play().catch(() => {});
       avatarZoomModal.classList.add('open');
       avatarZoomModal.setAttribute('aria-hidden', 'false');
     }
@@ -509,20 +442,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (avatarZoomModal) {
       avatarZoomModal.classList.remove('open');
       avatarZoomModal.setAttribute('aria-hidden', 'true');
+      if (avatarZoomVideo) {
+        avatarZoomVideo.pause();
+        avatarZoomVideo.classList.add('hidden');
+      }
+      if (avatarZoomImg) {
+        avatarZoomImg.classList.remove('hidden');
+      }
     }
   }
 
-  if (profileAvatar) {
-    profileAvatar.addEventListener('click', openAvatarZoom);
-    profileAvatar.tabIndex = 0;
-    profileAvatar.setAttribute('role', 'button');
-    profileAvatar.addEventListener('keydown', (e) => {
+  if (profileAvatarVideo) {
+    profileAvatarVideo.addEventListener('click', openAvatarZoom);
+    profileAvatarVideo.tabIndex = 0;
+    profileAvatarVideo.setAttribute('role', 'button');
+    profileAvatarVideo.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         openAvatarZoom();
       }
     });
   }
+
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-zoom-src]');
+    if (trigger) {
+      const src = trigger.getAttribute('data-zoom-src');
+      const alt = trigger.getAttribute('data-zoom-alt') || 'Screenshot evidence';
+      if (src) {
+        e.preventDefault();
+        openImageZoom(src, alt);
+      }
+    }
+  });
 
   if (avatarZoomModal) {
     avatarZoomModal.addEventListener('click', closeAvatarZoom);
@@ -656,9 +608,6 @@ document.addEventListener('DOMContentLoaded', () => {
         closeCmdk();
       } else if (action === 'thing') {
         toggleThingCompanion();
-        closeCmdk();
-      } else if (action === 'persona') {
-        togglePersona(true);
         closeCmdk();
       } else if (action === 'github') {
         window.open('https://github.com/Harshith1702', '_blank', 'noopener,noreferrer');
@@ -912,32 +861,73 @@ document.addEventListener('DOMContentLoaded', () => {
   // 10. OPEN SOURCE CONTRIBUTIONS
   // ----------------------------------------------------------
   // ----------------------------------------------------------
-  // 11. FLOATING RIGHT INDEX SCROLL SPY
+  // 11. FLOATING RIGHT INDEX SCROLL SPY & NAVIGATION
   // ----------------------------------------------------------
   const indexLinks = document.querySelectorAll('.nav-index-link');
-  const floatingIndexTrackedSections = ['about', 'experience', 'projects', 'activity', 'competitive', 'education', 'opensource', 'skills', 'playlist'];
+  const floatingIndexTrackedSections = [
+    'about', 'growth', 'experience', 'projects', 'activity',
+    'competitive', 'education', 'opensource', 'skills', 'playlist'
+  ];
 
-  function updateIndexActive() {
-    const scrollY = window.scrollY + 200;
-    let currentId = 'about';
-    for (const id of floatingIndexTrackedSections) {
-      const el = document.getElementById(id);
-      if (el) {
-        const top = el.offsetTop;
-        if (scrollY >= top) {
-          currentId = id;
-        }
-      }
-    }
+  function setActiveIndex(id) {
     indexLinks.forEach(link => {
-      if (link.getAttribute('data-section') === currentId) {
+      if (link.getAttribute('data-section') === id) {
         link.classList.add('active-index');
       } else {
         link.classList.remove('active-index');
       }
     });
   }
+
+  indexLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('data-section') || link.getAttribute('href').replace('#', '');
+      if (targetId === 'about') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        history.pushState(null, '', '#about');
+        setActiveIndex('about');
+        return;
+      }
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        const rect = targetEl.getBoundingClientRect();
+        const headerOffset = 70;
+        const targetPos = window.scrollY + rect.top - headerOffset;
+        window.scrollTo({
+          top: Math.max(0, targetPos),
+          behavior: 'smooth'
+        });
+        history.pushState(null, '', '#' + targetId);
+        setActiveIndex(targetId);
+      }
+    });
+  });
+
+  function updateIndexActive() {
+    const atBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 60);
+    if (atBottom) {
+      setActiveIndex('playlist');
+      return;
+    }
+
+    const scrollPos = window.scrollY + 120;
+    let currentId = 'about';
+
+    for (const id of floatingIndexTrackedSections) {
+      const el = document.getElementById(id);
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        if (scrollPos >= top) {
+          currentId = id;
+        }
+      }
+    }
+    setActiveIndex(currentId);
+  }
+
   window.addEventListener('scroll', updateIndexActive, { passive: true });
+  window.addEventListener('resize', updateIndexActive, { passive: true });
   updateIndexActive();
 
 });

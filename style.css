@@ -1401,6 +1401,38 @@ html.dark .experience-logo .brand-for-dark { display: block; }
 }
 html.light .text-zinc-400 { color: #71717a; }
 html.dark .dark-invert { filter: invert(1); }
+/* growth section */
+#growth .g-figures { display: grid; grid-template-columns: repeat(2, 1fr); margin: 22px 0 6px; border-top: 1px solid rgba(127, 127, 127, 0.22); border-bottom: 1px solid rgba(127, 127, 127, 0.22); }
+#growth .g-figures > div { padding: 14px 12px 12px 0; }
+#growth .g-platform { margin: 10px 0 -14px; padding-top: 14px; border-top: 1px solid rgba(127, 127, 127, 0.22); font: 11px var(--font-geist-mono, ui-monospace, monospace); color: #71717a; }
+#growth .g-platform.g-x { margin-top: 0; padding-top: 0; border-top: 0; }
+#growth .g-rows { display: flex; flex-direction: column; gap: 32px; }
+#growth .g-rows .ash-project-card { display: grid; grid-template-columns: 1fr; gap: 14px; }
+#growth div:has(> .g-rows) > .dashed-border-y { display: none; }
+#growth .g-links { list-style: none; margin: 10px 0 0; padding: 0; font: 12px/1.4 var(--font-geist-mono, ui-monospace, monospace); }
+#growth .g-links li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px solid rgba(127, 127, 127, 0.22); }
+#growth .g-links a { text-decoration: underline; text-underline-offset: 3px; }
+/* growth cases: grouped by platform (x, reddit, linkedin), first case featured, the rest as compact rows */
+#growth .g-rows .ash-project-screen { display: flex; flex-direction: column; aspect-ratio: auto; padding: 0; gap: 8px; border: 0; border-radius: 0; background: none; box-shadow: none; overflow: visible; }
+#growth .g-rows .ash-project-screen > div:first-child { order: 2; }
+#growth .g-rows .ash-project-screen > div:first-child span { padding: 0; border: 0; background: none; text-transform: none; letter-spacing: 0; font-size: 11px; color: #71717a; }
+#growth .g-rows .ash-inner-window { position: static; transform: none !important; width: 100%; height: auto; border: 1px solid rgba(127, 127, 127, 0.28); border-radius: 4px; box-shadow: none; }
+#growth .g-rows .ash-inner-window img { height: auto; max-height: 200px; object-fit: contain; }
+#growth .g-rows > .g-x { order: 1; }
+#growth .g-rows > :nth-child(4) { order: 2; }
+#growth .g-rows > :nth-child(6) { order: 3; }
+#growth .g-rows > .g-reddit { order: 4; }
+#growth .g-rows > :nth-child(5) { order: 5; }
+#growth .g-rows > :nth-child(8) { order: 6; }
+#growth .g-rows > .g-li { order: 7; }
+#growth .g-rows > :nth-child(7) { order: 8; }
+@media (min-width: 768px) {
+  #growth .g-figures { grid-template-columns: repeat(5, 1fr); }
+  #growth .g-rows .ash-project-card { grid-template-columns: 200px 1fr; gap: 24px; align-items: start; }
+  #growth .g-rows > :nth-child(4) { grid-template-columns: 1.3fr 1fr; }
+  #growth .g-rows > :nth-child(4) .ash-inner-window img { max-height: 340px; }
+  #growth .g-rows .ash-project-card > div:last-child { margin-top: 0; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
