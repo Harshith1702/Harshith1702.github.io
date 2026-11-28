@@ -1,5 +1,18 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app"
+        }
+      ],
+      "destination": "https://harshithp.me/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/visit/count",
